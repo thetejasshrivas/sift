@@ -9,7 +9,7 @@
 
 | Test ID | Category | Scenario | Linked REQ | Status | Evidence |
 |:---|:---|:---|:---|:---|:---|
-| **TS-001** | Ingestion | Parse valid 300-row CSV; headers parsed; schema mapped; 300 rows loaded in <5 seconds | REQ-001, REQ-002 | PENDING | — |
+| **TS-001** | Ingestion | Parse valid 300-row CSV; headers parsed; schema mapped; 300 rows loaded in <5 seconds | REQ-001, REQ-002 | PASS | Executed 2026-10-09: 300 rows parsed & mapped in 0.52 ms in tests/unit/ingest.test.ts (<5s requirement satisfied) |
 | **TS-002** | Data Policy | Missing tier column — tiers set to `UNKNOWN` (1.0x weight); quality warning banner rendered if UNKNOWN >5% | REQ-003, REQ-004 | PENDING | — |
 | **TS-003** | Math | Priority score invariant: I_n=0.8, F_n=0.5, S_n=1.0, weights 40/40/20 → P_c = 72.0 exactly | REQ-008 | PENDING | — |
 | **TS-004** | Security | Static analysis of client JS bundle — zero API key strings detected | REQ-013 | PENDING | — |
@@ -18,7 +18,7 @@
 | **TS-007** | Adversarial | Profane/angry feedback ("Your app is trash, export fails!") — extract functional failure; preserve row; no error thrown | REQ-005 | PENDING | — |
 | **TS-008** | Math Edge | All sliders set to 0 — auto-default to 40/40/20; score does not evaluate to NaN | REQ-008 | PENDING | — |
 | **TS-009** | AI Schema | Malformed LLM response — retries triggered; failed items routed to Unclustered Feedback bucket; app renders gracefully | REQ-005 | PENDING | — |
-| **TS-010** | Ingestion | Duplicate feedback IDs in CSV — append row suffix (FB-001_row2); all IDs globally unique in memory | REQ-001 | PENDING | — |
+| **TS-010** | Ingestion | Duplicate feedback IDs in CSV — append row suffix (FB-001_row2); all IDs globally unique in memory | REQ-001 | PASS | Executed 2026-10-09: duplicate IDs assigned FB-001_row2, FB-001_row3, 100% unique IDs in memory in tests/unit/ingest.test.ts |
 | **TS-011** | Math Edge | Free-tier-only dataset (10 Free customers, I_c=10.0) — I_n computes to 1.0 correctly (not 0.0) | REQ-008 | PENDING | — |
 | **TS-012** | AI Pipeline | Rate limit HTTP 429 response — exponential backoff triggered (up to 3 attempts); retries succeed or partial status flagged | REQ-006 | PENDING | — |
 | **TS-013** | Output Safety | Source feedback lacking browser/OS context — [NEEDS INVESTIGATION] placeholder injected in Engineering Spec | REQ-007, REQ-012 | PENDING | — |
