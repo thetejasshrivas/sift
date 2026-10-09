@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "lint": "tsc --noEmit",
-    "scan:secrets": "node scripts/secret-scan.js"
+    "scan:secrets": "node scripts/secret-scan.js",
+    "smoke:provider": "node scripts/provider-smoke.js"
   },
   "dependencies": {
     "ajv": "8.17.1",

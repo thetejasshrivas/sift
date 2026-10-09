@@ -30,7 +30,7 @@
 
 | Service | Free Tier Limit | Current Usage | Status |
 |:---|:---|:---|:---|
-| AI Provider (Google AI Studio: `rich-crowbar-463013-e0`) | Free tier; zero billing confirmed; limits pending TS-018 | 0 | AUDITED (TS-018 pending) |
+| AI Provider (Google AI Studio: `rich-crowbar-463013-e0`) | Model: `gemini-3.5-flash`; Free tier (zero billing); ~3,083 in / 2,696 out tokens per 50-row batch | 1 batch (~13.5k tokens total) | VERIFIED LIVE (Gate G-AI2 PASSED) |
 | Serverless proxy hosting (Cloudflare Workers) | 100,000 req/day; 10ms CPU/req; 128MB | 0 | APPROVED (DEC-STACK) |
 
 ---
@@ -42,6 +42,27 @@
 | Provider | Project | Models Visible | Tier | Limits | Billing State | Card Required? | Date Checked | Source |
 |:---|:---|:---|:---|:---|:---|:---|:---|:---|
 | **Google AI Studio** | `rich-crowbar-463013-e0` | None listed in console (standard studio default pool) | Free Tier | None listed in console (standard free-tier quota applies) | `free` (None / No billing linked) | **No** | 2026-10-09 | `https://aistudio.google.com/` |
+
+---
+
+## Live Provider Smoke Test Results (AG-AI-02 / Gate G-AI2)
+
+*Audited via live API execution of `scripts/provider-smoke.js` against Google AI Studio project `rich-crowbar-463013-e0` on 2026-10-09.*
+
+| Parameter | Value |
+|:---|:---|
+| **Verified Live Model** | `gemini-3.5-flash` |
+| **API Endpoint** | `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent` |
+| **HTTP Status** | `200 OK` |
+| **Batch Size Tested** | 50 rows (`fixtures/synthetic_50.csv`) |
+| **Schema Validation** | **PASSED** via Ajv against PRD §5.3 Draft-07 schema (`http://json-schema.org/draft-07/schema#`) |
+| **Clusters Extracted** | 8 thematic problem clusters (`CLUST-01` through `CLUST-08`) |
+| **Round-Trip Latency** | 32,352 ms |
+| **Prompt Tokens** | 3,083 tokens |
+| **Candidates Tokens** | 2,696 tokens |
+| **Total Tokens** | 13,502 tokens (including internal reasoning overhead) |
+| **Error Shape Probe** | Confirmed (deliberately broken request returned HTTP 404 with standard Google API error object) |
+| **Gate G-AI2 Status** | **PASSED** |
 
 ---
 

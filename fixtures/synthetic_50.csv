@@ -1,0 +1,51 @@
+feedback_id,text,tier,account_id,user_id
+FB-001,"Export to CSV truncates after 1000 rows without showing any error or warning message.",Enterprise,ACC-101,USR-001
+FB-002,"When exporting our monthly analytics report to CSV the file download times out.",Enterprise,ACC-102,USR-002
+FB-003,"The CSV export feature fails completely on large datasets over 5000 records.",Enterprise,ACC-101,USR-003
+FB-004,"We need CSV export to include custom metadata fields currently they are omitted.",Pro,ACC-103,USR-004
+FB-005,"Exporting table data to CSV produces a blank file in Safari browser.",Pro,ACC-104,USR-005
+FB-006,"CSV download button is unresponsive when multiple date filters are active.",Free,ACC-105,USR-006
+FB-007,"Exported CSV files have broken character encoding for non-English accents and characters.",Enterprise,ACC-106,USR-007
+FB-008,"Analytics dashboard takes over 15 seconds to load when switching workspace views.",Enterprise,ACC-101,USR-008
+FB-009,"The metrics overview page hangs and causes browser tab to freeze up.",Enterprise,ACC-102,USR-009
+FB-010,"Dashboard loading speed is terribly sluggish on mobile and tablet screens.",Pro,ACC-107,USR-010
+FB-011,"Charts on executive dashboard fail to render when there are more than 50 data points.",Pro,ACC-108,USR-011
+FB-012,"High latency loading report charts during peak business hours in European timezone.",Enterprise,ACC-106,USR-012
+FB-013,"Real-time chart refresh causes constant flickering and high CPU usage in Chrome.",Free,ACC-109,USR-013
+FB-014,"Historical trend view crashes with an unhandled JavaScript error when zooming in.",Pro,ACC-103,USR-014
+FB-015,"Admins cannot invite external contractors with read-only guest permissions.",Enterprise,ACC-110,USR-015
+FB-016,"Custom user roles cannot be assigned to multiple team members in bulk.",Enterprise,ACC-101,USR-016
+FB-017,"Member permissions silently revert to viewer when changing team groups.",Enterprise,ACC-110,USR-017
+FB-018,"Need granular project-level role permissions rather than workspace-wide admin access.",Pro,ACC-111,USR-018
+FB-019,"Inviting a new teammate sends an expired link if not clicked within 10 minutes.",Pro,ACC-104,USR-019
+FB-020,"Revoking team member access does not immediately terminate active browser sessions.",Enterprise,ACC-102,USR-020
+FB-021,"Cannot download PDF VAT invoices and receipts from the billing administration page.",Enterprise,ACC-101,USR-021
+FB-022,"Monthly invoice receipt emails are not sent to our designated billing email address.",Enterprise,ACC-106,USR-022
+FB-023,"Credit card update form returns payment failure without specifying reason.",Pro,ACC-112,USR-023
+FB-024,"Need to add custom company tax registration number and PO number on monthly invoices.",Enterprise,ACC-110,USR-024
+FB-025,"Subscription renewal charge occurred two days before scheduled billing cycle date.",Pro,ACC-107,USR-025
+FB-026,"Invoices tab shows incorrect currency symbol when billing country is set to UK.",Free,ACC-113,USR-026
+FB-027,"Okta SAML single sign-on redirect loop fails with error code 403 on login.",Enterprise,ACC-101,USR-027
+FB-028,"SAML SSO certificate rotation cannot be completed self-service in security settings.",Enterprise,ACC-102,USR-028
+FB-029,"Azure AD integration fails to sync user groups and department metadata.",Enterprise,ACC-110,USR-029
+FB-030,"Google Workspace SSO logout does not invalidate application refresh token.",Pro,ACC-114,USR-030
+FB-031,"Two-factor authentication SMS codes frequently arrive delayed by 10 to 15 minutes.",Pro,ACC-108,USR-031
+FB-032,"Enforcing mandatory MFA for all team members lacks an admin enforcement toggle.",Enterprise,ACC-106,USR-032
+FB-033,"Full-text search in feedback view does not support boolean AND and OR operators.",Pro,ACC-103,USR-033
+FB-034,"Search input clears query text automatically whenever new feedback items arrive.",Free,ACC-115,USR-034
+FB-035,"Filtering feedback by customer tier does not persist across page navigation.",Pro,ACC-111,USR-035
+FB-036,"Cannot search feedback text using exact phrase matching with quotation marks.",Enterprise,ACC-101,USR-036
+FB-037,"Date range filter resets to last 7 days every time a filter tag is removed.",Free,ACC-116,USR-037
+FB-038,"Tag search autocomplete is case sensitive and misses mixed-case tags.",Pro,ACC-112,USR-038
+FB-039,"Slack integration sends duplicate webhook alert notifications for every feedback item.",Enterprise,ACC-102,USR-039
+FB-040,"Webhook payload delivery fails with timeout when payload contains long feedback text.",Enterprise,ACC-110,USR-040
+FB-041,"Cannot configure webhook endpoint retry policy or view failure delivery logs.",Enterprise,ACC-106,USR-041
+FB-042,"Email digest notifications contain broken links to individual feedback tickets.",Pro,ACC-104,USR-042
+FB-043,"Webhook HMAC signature validation fails when payload contains unicode emojis.",Enterprise,ACC-101,USR-043
+FB-044,"Zapier integration trigger fires multiple times for a single feedback submission.",Free,ACC-117,USR-044
+FB-045,"Public API rate limits are applied per user account instead of per organization token.",Enterprise,ACC-101,USR-045
+FB-046,"API documentation lacks request body examples for the feedback batch create endpoint.",Pro,ACC-108,USR-046
+FB-047,"REST API returns HTTP 500 internal server error instead of 404 when item is missing.",Pro,ACC-114,USR-047
+FB-048,"API response headers do not include remaining rate limit quota headers.",Enterprise,ACC-102,USR-048
+FB-049,"Pagination cursor in feedback list API endpoint becomes invalid after 100 pages.",Enterprise,ACC-106,USR-049
+FB-050,"SDK client throws unhandled type error when API response contains null metadata fields.",Pro,ACC-103,USR-050

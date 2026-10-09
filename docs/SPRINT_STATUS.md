@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
 **Last updated:** 2026-10-09  
-**Current sprint task:** AG-PF-07
+**Current sprint task:** AG-AI-03
 
 ---
 
@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | AG-PF-07 |
-| **Task Name** | Provider verification (TS-018 smoke test) |
+| **Task ID** | AG-AI-03 |
+| **Task Name** | Provider quota verification (6 sequential batches per TS-018) |
 | **Status** | READY |
 | **Assigned to** | Antigravity agent |
 | **Started** | — |
@@ -32,6 +32,7 @@
 | **G-A3** | Dev, test, build, scan all run green on empty skeleton | PASSED |
 | **G-A4** | Arch skeleton verified, docs/ARCHITECTURE.md written, tagged arch-skeleton | PASSED |
 | **G-AI1** | Key exists locally; billing=none confirmed from dashboard; limits recorded | PASSED |
+| **G-AI2** | ≥1 live model returns schema-valid output on key (gemini-3.5-flash verified) | PASSED |
 
 ## Blockers
 
@@ -53,6 +54,7 @@
 | **AG-ARCH-03** | Scaffold project and folders (G-A3 all green) | 2026-10-09 |
 | **AG-ARCH-04** | Local static server & verification (Gate G-A4 passed) | 2026-10-09 |
 | **AG-AI-01** | Founder audits AI provider account (GUI; Gate G-AI1 passed) | 2026-10-09 |
+| **AG-AI-02** | Live provider smoke test (gemini-3.5-flash; Gate G-AI2 passed) | 2026-10-09 |
 
 ## Upcoming Tasks
 
