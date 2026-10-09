@@ -31,7 +31,19 @@
 | Service | Free Tier Limit | Current Usage | Status |
 |:---|:---|:---|:---|
 | AI Provider (TBD — pending TS-018) | Unknown until verified | 0 | REQUIRES VERIFICATION |
-| Serverless proxy hosting (TBD — OPT-001) | Unknown until selected | 0 | REQUIRES FOUNDER DECISION |
+| Serverless proxy hosting (TBD — OPT-001) | Sourced facts recorded below | 0 | PENDING FOUNDER DECISION |
+
+---
+
+## Candidate Hosting Platform Verified Facts (Audited 2026-10-09)
+
+*Audited via official documentation pages for task AG-ARCH-01.*
+
+| Candidate Host | Plan / Tier | Credit Card Required? | Commercial Use Permitted? | Function & Compute Limits | Rate-Limiting Features | Official URL & Citation Date |
+|:---|:---|:---|:---|:---|:---|:---|
+| **Cloudflare Workers + Pages** | Free Tier | **No** (none for core Workers / Pages) | **Yes** (commercial projects permitted on Free tier) | 100,000 req/day; 10ms CPU time/req (network I/O wait is unbounded & excluded from CPU limit); 128MB memory; 100 worker scripts | Native Rate Limiting API binding (`env.RATE_LIMITER.limit()`); edge DDoS mitigation; strict CORS headers | `https://developers.cloudflare.com/workers/platform/limits/`<br>`https://www.cloudflare.com/plans/developer-platform/`<br>(Audited: 2026-10-09) |
+| **Vercel** | Hobby (Free) | **No** | **No** (strictly restricted to personal, non-commercial use under Terms of Service) | 1,000,000 invocations/mo; 4 CPU-hours/mo; 360 GB-hours memory; max duration 300s (default 10s-60s) | No native free IP rate limiting without external paid/third-party add-ons (e.g. Upstash Redis) | `https://vercel.com/pricing`<br>`https://vercel.com/docs/functions/runtimes#serverless-function-limits`<br>(Audited: 2026-10-09) |
+| **Netlify** | Free | **No** | **Yes** (commercial use permitted on Free plan) | Shared pool of 300 credits/mo: 10 credits/GB-hr compute, 15 credits per production deploy (limits active testing/deploys to ~20/mo) | No native free rate-limiting; requires custom middleware or external store | `https://www.netlify.com/pricing/`<br>(Audited: 2026-10-09) |
 
 ---
 
@@ -45,3 +57,4 @@
 ---
 
 *Governed by AGENTS.md Standing Contract and PRD v2.0 Section 10.4.*
+

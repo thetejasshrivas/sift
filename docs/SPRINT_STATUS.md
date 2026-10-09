@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
 **Last updated:** 2026-10-09  
-**Current sprint task:** AG-PF-07
+**Current sprint task:** AG-ARCH-01
 
 ---
 
@@ -9,12 +9,12 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | AG-PF-07 |
-| **Task Name** | Provider verification (TS-018 smoke test) |
-| **Status** | PENDING |
+| **Task ID** | AG-ARCH-01 |
+| **Task Name** | Evaluate stack options (no code) |
+| **Status** | DONE |
 | **Assigned to** | Antigravity agent |
-| **Started** | — |
-| **Completed** | — |
+| **Started** | 2026-10-09 |
+| **Completed** | 2026-10-09 |
 
 ## Gates
 
@@ -27,6 +27,7 @@
 | **G-PF4** | Inventory table complete; zero installs performed; founder has read every Required/Optional decision | PASSED (pending founder read) |
 | **G-PF5** | Baseline commit created + .env ignored (proved by command) | PASSED |
 | **G-PF6** | Secret scan works; .env untracked; names-only .env.example committed | PASSED |
+| **G-A1** | Stack decision proposal with sourced facts exists | PASSED |
 
 ## Blockers
 
@@ -43,12 +44,14 @@
 | **AG-PF-04** | Plugin / skill / MCP / browser-tool inventory | 2026-10-09 |
 | **AG-PF-05** | Git safety setup (baseline commit & tag, .gitignore, .env.example) | 2026-10-09 |
 | **AG-PF-06** | Secret handling setup (scripts/secret-scan, names-only .env.example) | 2026-10-09 |
+| **AG-ARCH-01** | Evaluate stack options (no code; rescored matrix & proposal) | 2026-10-09 |
 
 ## Upcoming Tasks
 
 | Task ID | Description | Depends on |
 |:---|:---|:---|
-| AG-PF-07 | Provider verification (TS-018 smoke test) | G-PF2, G-PF3, G-PF4, G-PF5, G-PF6 |
+| AG-ARCH-02 | Minimal vertical slice architecture setup & local server | G-A1 |
+| AG-PF-07 | Provider verification (TS-018 smoke test) | G-PF6 |
 | AG-M1-xx | Milestone 1 — Ingestion & Schema Pipeline | TS-018 PASS |
 | AG-M2-xx | Milestone 2 — Serverless Proxy & AI Pipeline | Milestone 1 |
 | AG-M3-xx | Milestone 3 — Deterministic Scoring Engine | Milestone 2 |

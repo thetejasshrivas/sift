@@ -509,3 +509,100 @@ failed to install playwright: could not install driver:
 
 *AG-PF-06 written 2026-10-09. Governed by AGENTS.md Standing Contract.*
 
+---
+
+## AG-ARCH-01 — Stack Options Evaluation & Architecture Proposal
+
+**Task:** AG-ARCH-01  
+**Audited by:** Antigravity IDE agent  
+**Audit date:** 2026-10-09  
+**Gate:** G-A1  
+**Status: PASSED**
+
+---
+
+### 1. Rescored Candidate Host Comparison Matrix (Verified Sourced Facts)
+
+| Evaluation Dimension | Cloudflare (Workers + Pages Free) | Vercel (Hobby Free) | Netlify (Free Tier) | Sift PRD / MDD Requirement |
+|:---|:---|:---|:---|:---|
+| **Zero Additional Cost Target** | **5 / 5** — 100k req/day free (~3M/mo); no card required | **4 / 5** — 1M invocations/mo; no card required; hard pause on limit | **2 / 5** — 300 credits/mo; deploy costs 15 credits; ~20 deploys/mo max | MDD §4.7 / PRD §10.4: Target budget ₹0 / $0.00 |
+| **Commercial Use Terms** | **5 / 5** — Fully permitted on Free plan without forced upgrade | **1 / 5** — **Strictly prohibited** for commercial use (requires $20/user/mo Pro) | **4 / 5** — Permitted on Free plan | Sift is a B2B SaaS tool designed for product teams |
+| **Built-in IP Rate Limiting** | **5 / 5** — Native edge Rate Limiting API binding (`env.RATE_LIMITER.limit()`) | **2 / 5** — No free native IP rate limiting (requires paid/external Upstash Redis) | **2 / 5** — No native free IP rate limiting | PRD REQ-013: 10 RPM/IP rate throttling mandatory |
+| **Upstream AI Latency Handling** | **5 / 5** — 10ms CPU limit; **network I/O wait is excluded and unbounded** | **4 / 5** — Up to 300s function duration on Hobby | **3 / 5** — 10s default execution limit (tight for AI batching) | PRD REQ-005 / REQ-013: LLM batch responses take 2–5s network wait |
+| **Request Payload Limit** | **5 / 5** — 100MB HTTP request body limit | **5 / 5** — 4.5MB serverless request body limit | **5 / 5** — 6MB request body limit | PRD REQ-013: 2MB request payload cap (HTTP 413) |
+| **Static Frontend Hosting** | **5 / 5** — Cloudflare Pages: unlimited bandwidth, 500 builds/mo, global edge CDN | **4 / 5** — 100GB bandwidth/mo, fast previews, but commercial restriction | **2 / 5** — Builds consume monthly credit pool (15 credits per deploy) | MDD §4.7 / PRD §11.1: Fast client loading <5s |
+| **Vendor Lock-in Risk** | **4 / 5** — Standard Web Fetch API request/response handler; easily shimmed locally | **3 / 5** — Vercel Serverless Function format (`@vercel/node`) | **3 / 5** — Netlify Functions format | IC-016: Standard browser & Web APIs preferred |
+| **Overall Weighted Score** | **33 / 35 (94%) — RECOMMENDED** | **23 / 35 (66%) — REJECTED** | **21 / 35 (60%) — REJECTED** | — |
+
+---
+
+### 2. Frontend Framework Comparison
+
+| Framework | Sift Fit Analysis | Recommendation |
+|:---|:---|:---|
+| **React 18/19 SPA with Vite** | Pure static client bundle (`dist/`). Aligns 100% with `DEC-001` (ephemeral client-side state) and `IC-016` (full browser stack). Delivers sub-16ms re-ranking calculation for 60 FPS slider drag (`REQ-009`, `REQ-010`) without SSR/hydration overhead. Approved baseline library in `AGENTS.md` §4.3. | **RECOMMENDED** |
+| **Next.js (App Router / Pages)** | Designed for server-side rendering, hydration, and persistent databases—directly conflicting with `DEC-001` (zero SQL/NoSQL DB) and `DEC-008` (stateless proxy). Next.js on Cloudflare requires complex adapter `@cloudflare/next-on-pages` prone to breaking changes. Excessive complexity for a client-side ephemeral CSV tool. | **REJECTED** |
+| **Vanilla JS (No Framework)** | Zero dependencies, but building an interactive 2x2 matrix, badged ranked cards, live sliders with reactive re-sorting, expandable drawer panels, and verbatim receipt verification in imperative DOM code produces brittle spaghetti code that is difficult to test and maintain. | **REJECTED** |
+
+---
+
+### 3. Stack Decision Proposal (for Founder Approval under OPT-001)
+
+1. **Frontend Architecture:**
+   - **Framework:** React SPA built with Vite.
+   - **Styling:** Vanilla CSS (custom design system, zero external component frameworks like Tailwind or MUI, adhering to project guidelines).
+   - **CSV Ingestion:** PapaParse (parsed entirely in ephemeral browser memory per `REQ-001`, `DEC-001`).
+   - **Math Engine:** Pure client-side JavaScript deterministic 3-parameter scoring (`REQ-008`, `REQ-009`).
+2. **Backend / Proxy Architecture:**
+   - **Hosting Platform:** **Cloudflare Workers (Free Tier) + Cloudflare Pages**.
+   - **Proxy Endpoint:** `POST /api/cluster` implemented as a Cloudflare Worker using standard Web `Request`/`Response` APIs.
+   - **Security Controls:**
+     - Strict CORS (restricted to production frontend origin).
+     - 2MB payload cap (`REQ-013`, returning HTTP 413).
+     - Native IP rate throttling (10 RPM/IP via Cloudflare Rate Limiter binding, returning HTTP 429).
+     - Stateless forwarding: Zero payload logging (`DEC-008`, `IC-011`).
+     - Secret storage: `AI_API_KEY` stored exclusively as an encrypted Cloudflare Worker secret.
+3. **Local Development Environment:**
+   - Client dev server via `npm run dev` (Vite, port 5173).
+   - Local proxy testing via lightweight local Node mock or `wrangler dev` (port 8787).
+
+---
+
+### 4. Rejected Options & Detailed Rationale
+
+1. **Vercel Serverless Functions (`REJECTED`):**
+   - *Rationale:* Vercel's Terms of Service strictly forbid commercial projects on the Hobby plan. If Sift is launched, demonstrated, or evaluated as a commercial B2B product, it violates Vercel ToS and risks account termination or forced $20/seat/month upgrade. Additionally, Vercel provides no free native IP rate-limiting, forcing reliance on external paid services (Upstash Redis).
+2. **Netlify Functions (`REJECTED`):**
+   - *Rationale:* Netlify's 300 credits/month unified pool penalizes deployment during active development (15 credits per production deploy means ~20 deploys exhausts the entire account budget before compute is even consumed).
+3. **Next.js (`REJECTED`):**
+   - *Rationale:* Sift is explicitly defined as an ephemeral in-memory tool (`DEC-001`). SSR introduces server state, hydration lag, and deployment friction on Cloudflare.
+4. **Firebase Hosting / Cloud Functions (`REJECTED`):**
+   - *Rationale:* Firebase is strictly prohibited per `DEC-001` and `AG-PF-04` inventory audit due to database persistence and billing risks.
+
+---
+
+### 5. Open Risks & Mitigations
+
+| Risk | Impact | Mitigation |
+|:---|:---|:---|
+| **RISK-ARCH-01:** Cloudflare free-tier CPU limit (10ms) | Low | Network I/O wait (`fetch` to upstream Gemini API) is explicitly excluded from CPU time calculation on Cloudflare Workers. CPU limit only applies to JSON parsing/header validation (<2ms). |
+| **RISK-ARCH-02:** Local proxy testing offline | Medium | Provide a lightweight Node.js local proxy development script (`scripts/dev-proxy.js` or `wrangler dev`) so local dev does not require live Cloudflare deployment. |
+| **RISK-ARCH-03:** Cloudflare account onboarding | Low | Founder must create a free Cloudflare account before Milestone 2 deployment; zero billing or credit card required. |
+
+---
+
+### Gate G-A1 Assessment
+
+| Criterion | Finding / Evidence | Status |
+|:---|:---|:---|
+| Comparison matrix rescored using verified facts only | Matrix completed with 7 dimensions across Cloudflare, Vercel, Netlify | ✅ PASSED |
+| Current free-tier facts checked from official pages | Audited & recorded in `docs/COST_LOG.md` with official URLs and dates | ✅ PASSED |
+| Stack decision proposal with reasons, rejected options, and open risks | Detailed proposal written: React+Vite SPA + Cloudflare Workers | ✅ PASSED |
+| Zero code scaffolded | No new project scaffolding created (deferred to AG-ARCH-02/03) | ✅ PASSED |
+
+**Gate G-A1: PASSED (Proposal with Sourced Facts Exists)**
+
+---
+
+*AG-ARCH-01 written 2026-10-09. Governed by AGENTS.md Standing Contract.*
+
