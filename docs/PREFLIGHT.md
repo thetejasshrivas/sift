@@ -455,7 +455,57 @@ failed to install playwright: could not install driver:
 
 **Gate G-PF5: PASSED**
 
+*AG-PF-05 written 2026-10-09. Governed by AGENTS.md Standing Contract.*
+
 ---
 
-*AG-PF-05 written 2026-10-09. Governed by AGENTS.md Standing Contract.*
+## AG-PF-06 — Secret Handling Setup
+
+**Task:** AG-PF-06  
+**Executed by:** Antigravity IDE agent  
+**Execution date:** 2026-10-09  
+**Gate:** G-PF6  
+**Status: PASSED**
+
+---
+
+### Implementation Details
+
+1. **Secret Scanning Script (`scripts/secret-scan` / `scripts/secret-scan.js`):**
+   - Reads `.env` values without printing or logging them.
+   - Searches working tree, git commit history (`git log -p`), and future build outputs for defined secret values and common credential patterns (Google AI Studio keys, private keys, AWS tokens, generic secret assignments).
+   - Reports strictly `MATCH` / `NO MATCH` along with offending file paths (never secret values).
+   - Exits 0 on clean scan, 1 on credential match.
+2. **Scan Verification Evidence:**
+   - Working tree / history baseline scan: `NO MATCH: No secrets detected in working tree or git history.` (exit code 0).
+   - Injected test secret in dummy tracked file: `MATCH: docs/test-dummy-leak.txt` without logging secret value (exit code 1).
+   - Post-cleanup verification: `NO MATCH: No secrets detected in working tree or git history.` (exit code 0).
+3. **Environment Variable Names Documented in `.env.example`:**
+   - Names only (zero values / secrets):
+     - `AI_API_KEY=`
+     - `AI_MODEL=`
+     - `ALLOWED_ORIGIN=`
+     - `RATE_LIMIT_RPM=`
+     - `MAX_PAYLOAD_BYTES=`
+4. **npm Script `scan:secrets` Status:**
+   - **DEFERRED to AG-ARCH-03:** `package.json` does not exist yet (pre-scaffolding state). Script will be added to `package.json` during AG-ARCH-03 scaffolding.
+5. **`.env` Tracking Status:**
+   - Untracked and ignored: `git check-ignore -v .env` → `.gitignore:9:.env .env`.
+
+---
+
+### Gate G-PF6 Assessment
+
+| Criterion | Finding / Command Evidence | Status |
+|:---|:---|:---|
+| Secret scan script works | `node scripts/secret-scan.js` runs cleanly; proved detection on test leak | ✅ PASSED |
+| `.env` untracked | `git check-ignore -v .env` confirms ignore rule; not staged in git | ✅ PASSED |
+| Names-only `.env.example` committed | Contains 5 required variable names with empty values; committed | ✅ PASSED |
+| `scan:secrets` npm script disposition | Recorded as deferred until AG-ARCH-03 (no `package.json` yet) | ✅ RECORDED |
+
+**Gate G-PF6: PASSED**
+
+---
+
+*AG-PF-06 written 2026-10-09. Governed by AGENTS.md Standing Contract.*
 
