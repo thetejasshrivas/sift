@@ -166,7 +166,9 @@ async function runSmokeTest() {
 
   // STEP 2: Pick candidates from LIVE results supporting structured output
   console.log('\n--- STEP 2: Selecting Live Candidate Model ---');
+  const envModel = process.env.AI_MODEL && process.env.AI_MODEL.trim();
   const preferred = [
+    ...(envModel ? [envModel] : []),
     'gemini-3.5-flash',
     'gemini-3.5-flash-lite',
     'gemini-3.7-flash',

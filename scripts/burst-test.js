@@ -51,7 +51,7 @@ async function runBurstTest() {
   const apiKey = getApiKey();
   console.log('[SECURITY] AI_API_KEY securely loaded (%d chars). Value hidden.\n', apiKey.length);
 
-  const model = 'gemini-3.5-flash';
+  const model = (process.env.AI_MODEL && process.env.AI_MODEL.trim()) || 'gemini-3.5-flash';
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
   // Test 6 sequential/burst calls as required by TS-018 Step 3
