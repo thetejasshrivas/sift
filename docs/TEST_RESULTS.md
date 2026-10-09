@@ -10,7 +10,7 @@
 | Test ID | Category | Scenario | Linked REQ | Status | Evidence |
 |:---|:---|:---|:---|:---|:---|
 | **TS-001** | Ingestion | Parse valid 300-row CSV; headers parsed; schema mapped; 300 rows loaded in <5 seconds | REQ-001, REQ-002 | PASS | Executed 2026-10-09: 300 rows parsed & mapped in 0.52 ms in tests/unit/ingest.test.ts (<5s requirement satisfied) |
-| **TS-002** | Data Policy | Missing tier column — tiers set to `UNKNOWN` (1.0x weight); quality warning banner rendered if UNKNOWN >5% | REQ-003, REQ-004 | PENDING | — |
+| **TS-002** | Data Policy | Missing tier column — tiers set to `UNKNOWN` (1.0x weight); quality warning banner rendered if UNKNOWN >5% | REQ-003, REQ-004 | PASS | Executed 2026-10-09: Unmapped/missing tier column sets 100% of rows to UNKNOWN (1.0x weight, Tier-Weighted label); quality warning banner triggers (100% > 5%) in tests/unit/identity.test.ts |
 | **TS-003** | Math | Priority score invariant: I_n=0.8, F_n=0.5, S_n=1.0, weights 40/40/20 → P_c = 72.0 exactly | REQ-008 | PENDING | — |
 | **TS-004** | Security | Static analysis of client JS bundle — zero API key strings detected | REQ-013 | PENDING | — |
 | **TS-005** | Guardrail | Exact quote verification — green Verified badge for exact match; yellow Unverified badge for modified text | REQ-011 | PENDING | — |
@@ -25,14 +25,14 @@
 | **TS-014** | Accessibility | Keyboard navigation — all interactive components accessible via keyboard; 100% focus trap and tab stop coverage | — | PENDING | — |
 | **TS-015** | UI Responsive | Tablet viewport (800px) — tabbed Matrix/Card layout renders; zero horizontal overflow scrolling | REQ-010 | PENDING | — |
 | **TS-016** | Security | Proxy payload size limit — 5MB POST payload returns HTTP 413 Payload Too Large | REQ-013 | PENDING | — |
-| **TS-017** | Data Policy | Missing Account IDs — display Confirmed: 0, Estimated: N; warning pill visible | REQ-004 | PENDING | — |
+| **TS-017** | Data Policy | Missing Account IDs — display Confirmed: 0, Estimated: N; warning pill visible | REQ-004 | PASS | Executed 2026-10-09: Dataset lacking Account IDs or unmapped account column resolves Confirmed: 0, Estimated: N (provisional U=N), and flags warning pill 'Account IDs Unmapped — Frequency Estimated' in tests/unit/identity.test.ts |
 | **TS-018** | Provider Verification | AI Studio Smoke Test (4-step protocol): HTTP 200 / JSON schema valid / 6 batches no 429 / zero billing confirmed | REQ-013 | PASS | Executed 2026-10-09: HTTP 200 on gemini-3.5-flash; Ajv draft-07 valid (8 clusters); 6/6 burst requests 200 OK (0x 429); zero billing confirmed in dashboard (AG-AI-01/02/03) |
 | **TS-019** | AI Reconciliation | Ambiguous cross-batch match (similarity 0.70) — cluster flagged "Uncertain Cluster — Review Recommended" | REQ-006 | PENDING | — |
 | **TS-020** | Production Gate | Full test suite run — 100% pass rate across TS-001 through TS-019 | All P0 REQs | PENDING | — |
 | **TS-021** | TBD | Pre-registered — scenario to be defined in implementation sprint | TBD | PENDING | — |
 | **TS-022** | TBD | Pre-registered — scenario to be defined in implementation sprint | TBD | PENDING | — |
 | **TS-023** | TBD | Pre-registered — scenario to be defined in implementation sprint | TBD | PENDING | — |
-| **TS-024** | TBD | Pre-registered — scenario to be defined in implementation sprint | TBD | PENDING | — |
+| **TS-024** | Data Quality | Data quality metrics calculation (Unknown Tier %, Missing Account ID %, distinct-row union issue %) and warning banner trigger threshold (>5%) | REQ-004, §4.6, IC-012 | PASS | Executed 2026-10-09: 3 metrics calculated; distinct-row union avoids double-counting overlapping issues; banner triggers strictly when union issue % > 5.0% and formats exact PRD §4.6 message in tests/unit/identity.test.ts |
 | **TS-025** | TBD | Pre-registered — scenario to be defined in implementation sprint | TBD | PENDING | — |
 | **TS-026** | TBD | Pre-registered — scenario to be defined in implementation sprint | TBD | PENDING | — |
 | **TS-027** | TBD | Pre-registered — scenario to be defined in implementation sprint | TBD | PENDING | — |
