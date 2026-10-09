@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
 **Last updated:** 2026-10-09  
-**Current sprint task:** AG-AI-03
+**Current sprint task:** AG-M1-01
 
 ---
 
@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | AG-AI-03 |
-| **Task Name** | Provider quota verification (6 sequential batches per TS-018) |
+| **Task ID** | AG-M1-01 |
+| **Task Name** | Ingestion & Schema Pipeline (Dropzone & PapaParse Ingest) |
 | **Status** | READY |
 | **Assigned to** | Antigravity agent |
 | **Started** | — |
@@ -33,6 +33,7 @@
 | **G-A4** | Arch skeleton verified, docs/ARCHITECTURE.md written, tagged arch-skeleton | PASSED |
 | **G-AI1** | Key exists locally; billing=none confirmed from dashboard; limits recorded | PASSED |
 | **G-AI2** | ≥1 live model returns schema-valid output on key (gemini-3.5-flash verified) | PASSED |
+| **G-AI3** | Capacity decision recorded for 300-row baseline (FIT) and 2,000-row max (FIT) | PASSED |
 
 ## Blockers
 
@@ -55,6 +56,7 @@
 | **AG-ARCH-04** | Local static server & verification (Gate G-A4 passed) | 2026-10-09 |
 | **AG-AI-01** | Founder audits AI provider account (GUI; Gate G-AI1 passed) | 2026-10-09 |
 | **AG-AI-02** | Live provider smoke test (gemini-3.5-flash; Gate G-AI2 passed) | 2026-10-09 |
+| **AG-AI-03** | Capacity qualification & bounded burst test (Gate G-AI3 passed) | 2026-10-09 |
 
 ## Upcoming Tasks
 

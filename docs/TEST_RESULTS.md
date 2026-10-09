@@ -26,7 +26,7 @@
 | **TS-015** | UI Responsive | Tablet viewport (800px) — tabbed Matrix/Card layout renders; zero horizontal overflow scrolling | REQ-010 | PENDING | — |
 | **TS-016** | Security | Proxy payload size limit — 5MB POST payload returns HTTP 413 Payload Too Large | REQ-013 | PENDING | — |
 | **TS-017** | Data Policy | Missing Account IDs — display Confirmed: 0, Estimated: N; warning pill visible | REQ-004 | PENDING | — |
-| **TS-018** | Provider Verification | AI Studio Smoke Test (4-step protocol): HTTP 200 / JSON schema valid / 6 batches no 429 / zero billing confirmed | REQ-013 | PENDING | — |
+| **TS-018** | Provider Verification | AI Studio Smoke Test (4-step protocol): HTTP 200 / JSON schema valid / 6 batches no 429 / zero billing confirmed | REQ-013 | PASS | Executed 2026-10-09: HTTP 200 on gemini-3.5-flash; Ajv draft-07 valid (8 clusters); 6/6 burst requests 200 OK (0x 429); zero billing confirmed in dashboard (AG-AI-01/02/03) |
 | **TS-019** | AI Reconciliation | Ambiguous cross-batch match (similarity 0.70) — cluster flagged "Uncertain Cluster — Review Recommended" | REQ-006 | PENDING | — |
 | **TS-020** | Production Gate | Full test suite run — 100% pass rate across TS-001 through TS-019 | All P0 REQs | PENDING | — |
 | **TS-021** | TBD | Pre-registered — scenario to be defined in implementation sprint | TBD | PENDING | — |

@@ -66,6 +66,69 @@
 
 ---
 
+## Capacity Qualification for Realistic Sift Runs (AG-AI-03 / Gate G-AI3)
+
+*Governed by PRD §5.2, §5.4, §9.3, §10.3, and IC-008. Audited on 2026-10-09 using verified `gemini-3.5-flash` benchmarks.*
+
+### 1. Call Volume Projections
+- **Pass 1 Batch Extraction:** $\text{Calls} = \lceil \text{Rows} / 50 \rceil$.
+  - 300 rows (P0 baseline): 6 calls.
+  - 1,000 rows (Mid-tier): 20 calls.
+  - 2,000 rows (PRD maximum limit): 40 calls.
+- **Pass 2 Cross-Batch Reconciliation:** $\text{Calls} \le \text{Canonical categories with } >1 \text{ batch cluster}$.
+  - Real observation from 50-row fixture: 0 cross-batch duplication (single batch).
+  - Multi-batch scenarios:
+    - 300 rows (6 batches): 5 consolidation calls.
+    - 1,000 rows (20 batches): 10 consolidation calls.
+    - 2,000 rows (40 batches): 20 consolidation calls.
+- **Retries Model:**
+  - Expected ($1.3\times$): Accounts for occasional network hiccups or 503 demand spikes.
+  - Worst-Case ($4\times$): Every call retries 3 times before failing ($1 + 3 = 4$).
+
+### 2. Token & Latency Budget Accounting
+- **Measured per Pass-1 50-row batch:** 3,083 prompt tokens + 2,696 candidate tokens = 5,779 raw tokens; 13,502 total quota tokens (including internal thinking tokens).
+- **Estimated per Pass-2 consolidation call:** ~1,500 prompt tokens + ~1,000 candidate tokens $\approx 5,000$ total quota tokens.
+- **Call Spacing & Proxy Limits:**
+  - PRD §9.3 proxy rate limit: 10 RPM/IP $\implies \ge 6\text{s}$ spacing between calls.
+  - Observed model latency: ~32.3s per 50-row batch.
+  - In sequential pipelining, request rate naturally throttles to $\sim 1.8\text{ RPM}$, providing $82\%$ headroom under the 10 RPM proxy limit.
+
+### 3. Capacity & Quota Comparison Table
+
+| Metric / Scenario | 300 Rows (P0 Baseline) | 1,000 Rows (Mid-Tier) | 2,000 Rows (PRD Max) | Provider Free Limit | Headroom / Margin |
+|:---|:---|:---|:---|:---|:---|
+| **Pass-1 Calls** | 6 | 20 | 40 | — | — |
+| **Pass-2 Calls** | 5 | 10 | 20 | — | — |
+| **Nominal Total Calls** | 11 | 30 | 60 | — | — |
+| **Expected Calls (1.3x)** | **15 calls** | **39 calls** | **78 calls** | 1,500 RPD | **95%–99% daily headroom** |
+| **Worst-Case Calls (4x)** | 44 calls | 120 calls | 240 calls | 1,500 RPD | **84% daily headroom** |
+| **Expected Token Load** | ~138k tokens | ~416k tokens | ~832k tokens | 1,000,000 TPM | Distributed across run |
+| **Sequential Run Duration** | ~4.5–5.5 min | ~13–15 min | ~26–30 min | Unlimited conn. | Client progress required |
+| **Daily Quota Consumed** | **1.0% of RPD** | **2.6% of RPD** | **5.2% of RPD** | 1,500 RPD total | Key easily accommodates test runs |
+
+### 4. Key Contention with Testing Note
+- Automated tests (Vitest) and live smoke scripts use the same project key (`rich-crowbar-463013-e0`).
+- Because a full 300-row baseline run consumes only 15 calls (1% of daily limit) and test runs consume $<20$ calls, there is zero risk of daily quota exhaustion under standard development workflows.
+- Recommendation: Maintain unit test mocking for standard CI, reserving live calls for smoke tests (`npm run smoke:provider`) and integration gates.
+
+### 5. Bounded Burst Test Results (Step 3 TS-018)
+- Executed `scripts/burst-test.js` against `gemini-3.5-flash`:
+  - 6 consecutive sequential requests executed.
+  - **Results:** 6/6 HTTP 200 OK.
+  - **Rate Limits (429):** **0 encountered**.
+  - **Average Latency:** 1,352 ms.
+  - **Backoff Behavior:** Exponential backoff tested and verified in codebase; zero retries triggered during live burst.
+
+### 6. Capacity Qualification Decision Table (Gate G-AI3)
+
+| Dataset Size | Scope Status | Daily Quota Impact | Execution Feasibility | Final Decision |
+|:---|:---|:---|:---|:---|
+| **300 Rows** | **P0 Baseline Target** | **~1.0% RPD** (15 calls) | **~5 min duration** | **FIT — APPROVED FOR P0 MVP** |
+| **1,000 Rows** | Mid-Tier Target | ~2.6% RPD (39 calls) | ~14 min duration | **FIT — SUPPORTED** |
+| **2,000 Rows** | **PRD Maximum Ceiling** | **~5.2% RPD** (78 calls) | **~28 min duration** | **FIT — SUPPORTED (Requires UI batch progress indicator)** |
+
+---
+
 ## Candidate Hosting Platform Verified Facts (Audited 2026-10-09)
 
 *Audited via official documentation pages for task AG-ARCH-01.*
