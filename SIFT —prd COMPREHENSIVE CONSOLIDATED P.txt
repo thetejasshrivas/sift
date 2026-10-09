@@ -1,0 +1,1079 @@
+SIFT — COMPREHENSIVE CONSOLIDATED PRODUCT REQUIREMENTS DOCUMENT (PRD v2.0)
+
+**Product Name:** Sift — AI Product Feedback → Insight Agent  
+**Document Version:** PRD v2.0 — Final Consolidated Specification (Repaired Baseline)  
+**Status:** Pending Final Integrity Verification  
+**Discovery Authority:** SIFT MDD v2.0.1 (`SIFT_MDD_v2.0.1_FINAL.md`)  
+**Target Delivery:** Working MVP Baseline  
+**Development Environment:** Google Antigravity  
+**Target Budget:** ₹0 additional spending  
+**Output Filename:** `SIFT_PRD_v2.0_FINAL_CONSOLIDATED.md`  
+
+---
+
+## SOURCE RECOVERY & INTEGRITY MATRIX
+
+| Source Document | Important Content Recovered & Restored | Final Destination Section | Superseded / Excluded Details | Missing Material |
+| :--- | :--- | :--- | :--- | :--- |
+| **MDD v2.0.1** | Vision, mission, JTBD, 4-tier identity isolation, UNKNOWN metadata 1.0x weight policy, exact substring quote receipts, baseline 40/40/20 weights, fixed matrix coords, P0/P1/P2 boundaries, ₹0 budget limit. | Parts I, IV, VI, VII, VIII, X, XIV, XV | Per-cluster dynamic weight rebalancing (superseded by unified global scoring). | None. |
+| **PRD v1.2.1** | Provider status (`REQUIRES VERIFICATION`), Google AI Studio smoke test (`TS-018`), conservative 2-pass reconciliation with `Uncertain Cluster` flags, 5-tier safety decoupling, reset gate checklists to `[ ]`, CS Advisory tagged P1 Polish. | Parts V, VII, X, XII, XIII, XV | Single-pass heuristic similarity matching above 0.85 (superseded by 2-pass reconciliation). | None. |
+| **PRD v1.2** | Complete serverless proxy architecture, security model, payload caps (2MB limit, HTTP 413), rate throttling (10 RPM/IP), API contract JSON schemas, detailed missing account dual-reporting (`Confirmed` vs `Estimated`), data quality alert banners. | Parts IV, V, IX, X, XI, XII | Direct client-side embedding of private API keys (superseded by serverless proxy). | None. |
+| **PRD v1.1** | Complete 20-step end-to-end user journey map, responsive viewport rules (Desktop/Tablet/Mobile), color tokens, worked mathematical scoring examples, accessibility specs, initial test scenarios. | Parts III, VI, VIII, XII | Dynamic matrix dot movement on slider calibration (superseded by fixed coordinates). | None. |
+| **PRD v1.0** | Original 7-module capability mapping, initial nonfunctional performance targets, state transition lifecycle rules. | Parts II, III, XI, XIII | Persistent local storage / database caching proposals (superseded by ephemeral memory). | None. |
+
+---
+
+## AGENT ORIENTATION GUIDE
+
+### 1. What Sift Is
+Sift is a client-side, browser-based, AI-assisted product discovery and decision-support workspace for growth-stage B2B SaaS teams. It ingests raw, unstructured, multi-channel customer feedback tables (CSV files), cleans and normalizes data locally in browser memory, performs token-aware two-pass semantic clustering via a secure serverless proxy route to a free-tier cloud AI provider, calculates deterministic hybrid weighted priority scores, and generates copy-ready role-tailored execution deliverables (Strategic Rationales for PMs, Engineering Specs for Developers).
+
+### 2. What Must Be Built
+* **Browser-Local CSV Ingestion & Schema Mapper:** Parse CSV exports locally using PapaParse, auto-detect metadata headers, and assign stable row IDs (`FB-001`).
+* **Data Identity & Quality Engine:** Differentiate 4 identity tiers (`Feedback ID`, `User ID`, `Account ID`, `Cluster ID`). Isolate missing customer tier/ARR as `UNKNOWN` (1.0x weight). Provide dual-reporting for account coverage (`Confirmed` vs. `Estimated`). Render Data Quality Warning Banners if missing metadata exceeds 5%.
+* **Two-Pass AI Semantic Clustering Pipeline:** Execute token-aware 50-row batch processing (~8,000 tokens per call) via a secure serverless proxy route to a free-tier cloud AI provider. Perform client-side category grouping and secondary LLM consolidation with explicit `Uncertain Cluster — Review Recommended` flags for ambiguous matches (0.60–0.84 similarity).
+* **Deterministic Prioritization Engine:** Calculate Hybrid Priority Scores ($P_c \in [0, 100]$) using normalized interactive calibration sliders (Default: 40% Impact / 40% Frequency / 20% Severity). Matrix plot coordinates ($F_n, I_n$) remain fixed while ranked cards re-sort dynamically at 60 FPS.
+* **Dual-View Discovery Workspace:** Render an interactive 2x2 Spatial Priority Matrix alongside a badged, sorted Ranked Insight Card List with deep-dive drawer panels.
+* **Evidence Verification & Guardrail Panel:** Execute client-side exact substring verification against raw CSV text in browser memory for all quote receipts. Decouple observations, verified quotes, AI root-cause hypotheses, and proposed investigations. Inject `[NEEDS INVESTIGATION: Technical Context Missing in Source Feedback]` placeholders when context is absent.
+* **Action Output Generators:** Produce copy-ready Markdown Strategic Rationales (PM) and Engineering Specs (Dev). P1 scope includes CS Advisory drafts carrying mandatory engineering review disclaimers.
+
+### 3. What Is Explicitly Excluded
+* Mandatory persistent SQL/NoSQL databases or server storage.
+* Live write-back integrations (Jira, Linear, Intercom APIs).
+* Paid third-party data enrichment services or paid infrastructure.
+* Direct client-side embedding of private API credentials.
+
+### 4. Which Decisions Are Frozen
+All choices documented in MDD v2.0.1 (Section 6.1) and PRD v1.2.1 are locked: ephemeral local memory model, 3-parameter scoring formula, `UNKNOWN` 1.0x weight fallback, exact substring receipt matching, dynamic sliders with fixed matrix coordinates, and strict 5-tier safety decoupling.
+
+### 5. Which Technical Choices Remain Open
+* **AI Provider Candidate Selection:** AI inference provider feasibility is marked **`REQUIRES VERIFICATION`** pending execution of a 4-step Google AI Studio smoke test (`TS-018`) against active free-tier candidates (e.g., `gemini-2.5-flash`, `gemini-2.5-flash-lite`, `gemini-3.5-flash-lite`).
+* **Serverless Proxy Hosting Platform:** Vercel Serverless Functions vs. Cloudflare Workers Free Tier (both zero-cost options).
+
+---
+
+## TABLE OF CONTENTS
+1. **PART I — PRODUCT AND DISCOVERY FOUNDATION**
+   - 1.1 Original Assignment Problem Statement (Verbatim)
+   - 1.2 Assignment Interpretation and Seven Mandatory Operational Requirements
+   - 1.3 Executive Overview of Sift
+   - 1.4 Product Vision and Mission
+   - 1.5 Core Problem Definition
+   - 1.6 Target Users, ICP, and Cross-Functional Personas
+   - 1.7 Jobs to be Done (JTBD) Framework
+   - 1.8 Existing Workflows, Market Alternatives, and Opportunity Assessment
+   - 1.9 Value Proposition and Four Differentiation Pillars
+   - 1.10 MVP Success Criteria and Target Hypotheses
+   - 1.11 Approved Scope Boundaries (P0, P1, P2) and Explicit Exclusions
+2. **PART II — COMPLETE FUNCTIONAL SCOPE & FEATURE REGISTER**
+   - 2.1 Capability Index and Module Mapping
+   - 2.2 P0 Functional Specifications (MVP Core — REQ-001 through REQ-013)
+   - 2.3 P1 Functional Specifications (Polish — REQ-014 and REQ-015)
+   - 2.4 P2 Functional Specifications (Post-MVP Future — REQ-016)
+   - 2.5 Explicit Non-Goals and Boundary Constraints
+3. **PART III — COMPLETE USER EXPERIENCE & 20-STEP USER JOURNEY**
+   - 3.1 End-to-End Operational Journey Map (Steps 1–20)
+   - 3.2 Viewport & Device Adaptations (Desktop, Tablet, Mobile)
+   - 3.3 State Management & Transition Rules
+4. **PART IV — DATA INGESTION, NORMALIZATION, AND IDENTITY MODEL**
+   - 4.1 Local CSV Handling, Format, and Encoding Guidelines
+   - 4.2 Header Normalization and Smart Schema Mapping Grid
+   - 4.3 Four-Tier Identity Isolation Rules (Feedback ID, User ID, Account ID, Cluster ID)
+   - 4.4 Missing Metadata & UNKNOWN Customer Tier Policy
+   - 4.5 Missing Account Identity & Provisional Counting Policy
+   - 4.6 Data Quality Alert Banners & Noise Preservation
+5. **PART V — COMPLETE AI INTELLIGENCE ENGINE & RECONCILIATION PIPELINE**
+   - 5.1 AI vs. Deterministic Processing Responsibilities
+   - 5.2 Token-Aware 50-Row Batching Pipeline
+   - 5.3 Structured Response JSON Schema & Validation
+   - 5.4 Conservative Two-Pass Cross-Batch Theme Reconciliation Protocol
+   - 5.5 Duplicate Source Assignment & Unclustered Fallback Bucket
+   - 5.6 Ambiguous Themes & Uncertainty Flagging
+   - 5.7 Severity Rating Classification Logic
+   - 5.8 API Retries, Exponential Backoff, Partial Recovery State, and Evidence Preservation
+6. **PART VI — PRIORITIZATION AND DETERMINISTIC SCORING ENGINE**
+   - 6.1 Mathematical Scoring Specification & Formulas
+   - 6.2 Slider Normalization & All-Zero Slider Override Policy
+   - 6.3 Metric Component Normalization ($I_n, F_n, S_n$)
+   - 6.4 Zero Denominator Policy & Dataset-Wide Comparability
+   - 6.5 Score Rounding, Tie-Breaking, and Critical Blocker Flagging
+   - 6.6 Worked Numerical Scoring Examples
+7. **PART VII — EVIDENCE VERIFICATION, TRUST AND RECOMMENDATION SAFETY**
+   - 7.1 Client-Side Substring Quote Verification Engine
+   - 7.2 Five-Tier Safety Decoupling Framework
+   - 7.3 Missing Context Safety Placeholders (`[NEEDS INVESTIGATION]`)
+   - 7.4 Action Output Templates (PM Strategic Rationale, Dev Eng Spec, P1 CS Advisory)
+8. **PART VIII — UX/UI DESIGN SYSTEM & WORKSPACE SPECIFICATION**
+   - 8.1 Evidence-First Design Philosophy & Information Architecture
+   - 8.2 Color Tokens, Typography, and Semantic Status Roles
+   - 8.3 Workspace Component Specifications (2x2 Matrix, Ranked Cards, Sliders, Drawer)
+   - 8.4 Accessibility Specification (WCAG 2.1 AA)
+9. **PART IX — TECHNICAL ARCHITECTURE AND SECURITY SPECIFICATION**
+   - 9.1 Proposed Ephemeral System Architecture & Data Flow
+   - 9.2 Complete Client/Server Interface Contracts & JSON Schemas
+   - 9.3 Serverless Proxy Security Model & Request Protection
+   - 9.4 Stateless Processing, Ephemeral Memory, and Data Lifecycle
+10. **PART X — AI PROVIDER FEASIBILITY & ZERO-COST CONSTRAINTS**
+    - 10.1 Inference-Provider Status (`REQUIRES VERIFICATION`)
+    - 10.2 Candidate Model Evaluation Pool & Free-Tier Quotas
+    - 10.3 Four-Step Provider Verification Protocol (`TS-018`)
+    - 10.4 Zero-Cost Architecture Proof & Budget Boundaries
+11. **PART XI — NONFUNCTIONAL REQUIREMENTS**
+    - 11.1 Client Performance Targets
+    - 11.2 Reliability, Failover, and Error Visibility
+    - 11.3 Security, Privacy, and Data Minimization
+    - 11.4 Browser Compatibility & Memory Management
+12. **PART XII — COMPLETE TESTING AND QUALITY ASSURANCE STRATEGY**
+    - 12.1 Comprehensive Test Scenario Suite (`TS-001` through `TS-020`)
+    - 12.2 Verification & Observability Metrics
+13. **PART XIII — REQUIREMENTS REGISTER AND TRACEABILITY MATRIX**
+    - 13.1 Comprehensive Requirements Register
+    - 13.2 Requirement-to-Test Traceability Matrix
+    - 13.3 Original Assignment Traceability Matrix
+14. **PART XIV — DEPENDENCY-AWARE IMPLEMENTATION ROADMAP**
+    - 14.1 Milestone Execution Order (Milestones 1–5)
+    - 14.2 Minimal Vertical Slice Target
+    - 14.3 Contingency Paths & AI Failover Fallback
+15. **PART XV — DECISIONS, RISKS, AND READINESS GATES**
+    - 15.1 Complete Decision Register (Approved vs. Proposed vs. Unresolved)
+    - 15.2 Superseded Decisions Register
+    - 15.3 Open Technical Decisions & Risk Register
+    - 15.4 Measured Readiness Gates & Checklists
+    - 15.5 Implementation Handoff Brief (Gemini Gem & Antigravity)
+
+---
+
+# PART I — PRODUCT AND DISCOVERY FOUNDATION
+
+## 1.1 Original Assignment Problem Statement (Verbatim)
+> "AI Product Feedback -> Insight Agent
+> 
+> Companies today collect massive amounts of product feedback through reviews, support tickets, user calls, and surveys. However, most teams struggle to convert this raw, unstructured data into clear, actionable insights.
+> 
+> Feedback is often noisy, emotional, fragmented, and biased, making it difficult to identify what truly matters. As a result, important signals get missed, and product decisions are driven by incomplete or misleading information.
+> 
+> Your Challenge:
+> Design an AI-powered agent that transforms raw user feedback into prioritized, actionable product insights that teams can confidently act on.
+> 
+> Core Problem to Solve:
+> How might we help product teams identify what truly matters from noisy, biased, and fragmented feedback?
+> 
+> What Your Solution Should Do:
+> - Aggregate feedback from multiple sources such as reviews, support tickets, and user conversations
+> - Cluster similar issues and identify recurring themes
+> - Go beyond surface-level complaints to identify root causes
+> - Prioritize insights based on impact, frequency, and severity
+> - Recommend clear actions, not just summaries
+> - Provide transparent reasoning behind insights to build trust
+> 
+> Constraints:
+> - Feedback data is noisy, emotional, and often biased
+> - Small or skewed sample sizes can lead to misleading conclusions
+> - Outputs must be explainable, as product teams may not trust black-box recommendations
+> 
+> Goal:
+> Build a solution that helps teams move from feedback collection to confident decision-making, ensuring that the most important user problems are identified, prioritized, and acted upon effectively."
+
+## 1.2 Assignment Interpretation and Seven Mandatory Operational Requirements
+The assignment mandates a transformational decision-support solution to bridge the gap between unstructured multi-channel feedback collection and confident, defensible roadmap execution. Seven mandatory operational capabilities are derived directly from the assignment parameters:
+
+1. **Multi-Source Feedback Ingestion:** Ingest and parse unstructured feedback originating from distinct touchpoints (support tickets, sales call transcripts, public reviews, in-app feedback) via standard CSV exports.
+2. **Deep Theme Clustering:** Move beyond keyword tagging to group semantically equivalent feedback items under unified, cohesive thematic clusters.
+3. **Root-Cause Identification:** Look beyond surface-level symptom reporting to formulate backing root-cause hypotheses grounded in technical or workflow failure conditions.
+4. **Multivariable Prioritization:** Evaluate and score insights dynamically across Impact (revenue/tier weight), Frequency (volume), and Severity (operational blocker level).
+5. **Action-Oriented Recommendations:** Avoid passive summarization by generating explicit, role-tailored action recommendations (strategic rationales, engineering specifications).
+6. **Explainable Reasoning and Traceability:** Provide transparent mathematical scoring breakdowns and direct line-of-sight back to exact verbatim customer quotes.
+7. **Noise, Bias, and Sample Size Safeguards:** Detect, filter, or down-weight non-actionable spam, emotional venting, duplicated entries, or statistically unrepresentative sample sizes to preserve decision quality.
+
+## 1.3 Executive Overview of Sift
+Sift is an AI-native product discovery and decision-support workspace designed for growth-stage B2B SaaS teams. Sift ingests unstructured feedback exports (CSV working tables), separates non-actionable spam from emotional but actionable user feedback, semantically clusters recurring issues, formulates root-cause hypotheses, and calculates a dynamic, deterministic Hybrid Weighted Priority Score.
+
+Rather than acting as a static dashboard or simple summarizer, Sift offers a dual-view discovery workspace combining a 2x2 Spatial Priority Matrix with a Color-Coded Card View, driven by interactive calibration sliders. Every insight generated by Sift is traceable to source customer quotes via deterministic row-ID verification, exposes its mathematical formula, and produces copy-ready action outputs: Strategic Trade-off Rationales for Product Managers, Engineering Specs for Developers, and Workaround Advisory Drafts for Customer Success teams (P1).
+
+## 1.4 Product Vision and Mission
+* **Product Vision:** To eliminate opinion-driven roadmap debates in product organizations by turning scattered customer feedback into undisputed, evidence-backed execution.
+* **Product Mission:** To equip B2B SaaS teams with an intelligent, transparent discovery partner that ingests noisy feedback, isolates true root causes, exposes revenue impact, and delivers actionable specs—ensuring sprint decisions protect ARR and elevate product quality.
+
+## 1.5 Core Problem Definition
+Product organizations face a persistent "Data Overload vs. Decision Paralysis" challenge. B2B SaaS companies collect hundreds of monthly customer comments across support tools, sales calls, app reviews, and surveys. Converting this feedback into sprint priorities frequently fails due to three systemic breakdowns:
+
+1. **Loudest-Voice Bias:** Teams over-index on recent, angry, or highly vocal accounts while missing quiet, systemic issues that drive silent churn across the user base.
+2. **Symptom vs. Root Cause Confusion:** Traditional tools group surface keywords (e.g., "Search is slow"), forcing teams to guess the underlying technical failure (e.g., "504 API Gateway Timeout on payloads >10,000 records").
+3. **The Trust Deficit (Black-Box AI):** Standard LLM tools generate broad bulleted summaries that teams cannot defend in sprint planning because they lack mathematical transparency, source quote receipts, or account-tier context.
+
+## 1.6 Target Users, ICP, and Cross-Functional Personas
+Sift’s Ideal Customer Profile (ICP) is an early-to-growth stage B2B SaaS company (Seed to Series A, 15–50 employees, $500k–$5M ARR) operating in a multi-channel feedback environment. Sift serves four primary cross-functional stakeholders:
+
+| Persona Name & Role | Primary Work Environment | Core Goals & Decisions | Key Frustrations & Pain Points |
+| :--- | :--- | :--- | :--- |
+| **Priya Sharma**<br>*(Lead Product Manager)* | 2-week sprint cycles; Linear, Slack, Google Sheets. | Deliver a defensible, revenue-backed roadmap for sprint planning. | Spends 4–5 hours per sprint manually parsing 300+ spreadsheet rows; lacks hard evidence during planning debates. |
+| **Ankit Verma**<br>*(Head of Customer Success)* | 40+ SMB & 8 Enterprise accounts; Intercom, QBR decks. | Prevent account churn, protect $50k+ ARR renewals, provide immediate workarounds. | Submitted feedback disappears into engineering black holes; lacks concrete timelines or workarounds for high-ARR accounts. |
+| **Rohan Mehta**<br>*(Staff Software Engineer)* | Owns architecture; Linear/Jira, GitHub. | Maintain code stability, eliminate tech debt, execute clear specs. | Vague PM tickets (e.g., "users say search is slow") lacking reproduction context or error conditions. |
+| **Kavita Nair**<br>*(Chief Product Officer)* | Board decks, executive alignment, macro vision. | Align engineering resources with top revenue risks and macro customer sentiment. | Lacks a consolidated view connecting operational customer feedback to overall ARR preservation. |
+
+## 1.7 Jobs to be Done (JTBD) Framework
+* **Main JTBD:** "When I am preparing for sprint planning with scattered, noisy customer feedback, I want to automatically group, prioritize, and isolate the root causes of user friction using verifiable ARR weights, so that I can confidently pitch an evidence-backed execution plan that engineering and executives accept without endless debate."
+* **Micro-JTBD 1 (Ingestion & Filtering):** "When I upload a raw feedback sheet, I want the system to parse emotional text while stripping non-actionable spam, so I only evaluate genuine customer signals."
+* **Micro-JTBD 2 (Prioritization & Trade-off):** "When I evaluate competing product requests, I want to dynamically adjust weights between Enterprise revenue risks and mass user friction, so I can align the sprint with current business goals."
+* **Micro-JTBD 3 (Handoff & Execution):** "When an insight is approved, I want to export pre-drafted engineering specs and customer success workarounds, so my team moves instantly from discovery to execution."
+
+## 1.8 Existing Workflows, Market Alternatives, and Opportunity Assessment
+
+| Capability / Feature | Manual Spreadsheets | Productboard / Canny | Generic AI Summarizers | Sift (MDD v2.0.1 Target) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Ingestion Efficiency** | Manual copying/pasting | Manual tagging / SDK | Fast upload | Fast local ephemeral CSV |
+| **Revenue-Weighted Scoring** | Static manual formulas | Basic / static voting | None | Dynamic calibration sliders |
+| **Root-Cause Isolation** | Manual PM guessing | None | Hypothetical bullet points | Hypotheses + Safety Placeholders |
+| **Explainable Math** | Formulas visible | Black-box algorithm | Black-box summaries | 100% Exposed Component Math |
+| **Quote Receipts** | Spreadsheet rows | Linked user threads | None / Hallucinated | Exact Client Substring Check |
+| **Action Outputs** | Manual document drafting | Static feature cards | Generic text bullets | Role-Tailored Execution Specs |
+
+* **Unweighted Volume Illusions:** 10 free-tier users requesting dark mode can outvote 1 Enterprise account threatening to churn over a CSV export crash.
+* **Lack of Evidence Receipts:** Engineers reject vague tickets ("users complain about performance") that lack technical context, browser logs, or verbatim examples.
+* **Operational Disconnect:** Discovery insights often end in static summary documents rather than actionable engineering specs or CS advisory notes.
+
+## 1.9 Value Proposition and Four Differentiation Pillars
+* **Value Proposition:** Sift transforms unstructured feedback tables into evidence-backed sprint decisions by isolating root causes, scoring revenue impact, and drafting actionable specs.
+* **Four Differentiation Pillars:**
+  1. **Hybrid Calibration Scoring Engine:** Balances Enterprise ARR protection against mass user UX friction via live interactive sliders.
+  2. **100% Explainable & Traceable:** Exposes exact mathematical formulas and provides one-click verification back to verbatim customer quotes.
+  3. **Action-First Output Hierarchy:** Generates Strategic Trade-off Rationales (PM) and Engineering Specs (Dev).
+  4. **Dual-View Discovery Workspace:** Combines a spatial 2x2 Priority Matrix with Color-Coded Metric Cards for intuitive sprint planning.
+
+## 1.10 MVP Success Criteria and Target Hypotheses
+* **Target Time-to-Insight (Hypothesis):** Aim to decrease time spent parsing feedback from an estimated 4–5 hours to under 5 minutes per sprint cycle.
+* **Target Sprint Acceptance Rate (Hypothesis):** Target high acceptance of AI-generated Engineering Specs by technical leads without major rewrites.
+* **Target Traceability Utilization:** Encourage frequent user clicks on source quote receipts to verify insights.
+* **MVP Acceptance Benchmark:** Parse a 300-row CSV file locally in under 5 seconds, group feedback into cohesive thematic clusters, expose 100% accurate mathematical scoring breakdowns, and provide direct quote verification for all source receipts.
+
+## 1.11 Approved Scope Boundaries (P0, P1, P2) and Explicit Exclusions
+
+
+```
+
++-----------------------------------------------------------------------------------+
+|                                  P0 — MVP CORE                                    |
+| - Local Ephemeral CSV Ingestion & Smart Schema Mapper                             |
+| - Data Normalization (UNKNOWN metadata preservation, 1.0 weight)                 |
+| - LLM Semantic Clustering & Two-Pass Reconciliation Pipeline                      |
+| - Root-Cause Hypothesis Generator with Investigation Placeholders                |
+| - Deterministic Scoring Engine (40/40/20 Default) + Live Sliders                  |
+| - Dual-View Workspace (2x2 Matrix + Ranked Card View)                             |
+| - Substring Quote Verification Panel                                              |
+| - Copy-Ready Strategic Rationales & Safe Engineering Specs                        |
++-----------------------------------------------------------------------------------+
+|
++-----------------------------------------------------------------------------------+
+|                                  P1 — POLISH                                      |
+| - Level 3 CS Advisory Workaround Drafts (with mandatory safety disclaimers)       |
+| - Unique Account vs. Incident Deduplication Visualization                         |
++-----------------------------------------------------------------------------------+
+|
++-----------------------------------------------------------------------------------+
+|                              P2 — POST-MVP FUTURE                                 |
+| - Manual Theme Split / Merge UI Controls                                          |
+| - Executive PDF / Presentation Deck Export                                         |
++-----------------------------------------------------------------------------------+
+|
++-----------------------------------------------------------------------------------+
+|                               EXPLICIT EXCLUSIONS                                 |
+| - Mandatory Persistent SQL/NoSQL Databases                                        |
+| - Direct Write-Back Integrations (Jira, Linear, Intercom)                         |
+| - Paid Third-Party Data Enrichment APIs                                           |
++-----------------------------------------------------------------------------------+
+
+```
+
+---
+
+# PART II — COMPLETE FUNCTIONAL SCOPE & FEATURE REGISTER
+
+## 2.1 Capability Index and Module Mapping
+Sift's functionality is partitioned into seven distinct operational modules:
+* **Module A:** CSV Ingestion & Schema Mapping
+* **Module B:** Data Normalization, Quality & Identity Policy
+* **Module C:** AI Semantic Analysis & Cross-Batch Reconciliation
+* **Module D:** Deterministic Prioritization Scoring Engine
+* **Module E:** Evidence Verification & Safety Guardrails
+* **Module F:** Visualization & Workspace Controls
+* **Module G:** Action Output Generators
+
+## 2.2 P0 Functional Specifications (MVP Core — REQ-001 through REQ-013)
+
+### REQ-001: Ephemeral Browser-Local CSV Ingestion
+* **Module:** Ingestion
+* **Priority:** P0 (MVP Core)
+* **Description:** The system must accept user-uploaded `.csv` files up to 10MB or 2,000 rows via drag-and-drop or file picker and parse them entirely in browser memory using PapaParse without transmitting raw bulk files to persistent storage.
+* **Inputs:** File handle from UI dropzone.
+* **User Interactions:** User drags `.csv` file onto landing dropzone or selects via file browser.
+* **System Responses:** PapaParse reads text stream, auto-detects delimiter (comma, tab, semicolon), validates encoding (UTF-8, UTF-16, ASCII), and renders a row preview modal within 5 seconds for 300 rows.
+* **Validation Rules:** Reject non-CSV file types (`.xlsx`, `.pdf`, `.json`) with an immediate UI toast alert. Reject files exceeding 10MB or 2,000 rows with an error banner.
+* **Error Cases & Recovery:** If file reading fails or delimiter detection is ambiguous, prompt user to manually select delimiter or choose a valid `.csv` file.
+* **Business Rules:** Ephemeral local processing only. Raw CSV text stays in React component state.
+* **Dependencies:** PapaParse library.
+* **Acceptance Criteria:** 300-row CSV parses in <5 seconds; row array resides in client memory; zero network upload requests made to static server.
+
+### REQ-002: Smart Schema Mapping Engine
+* **Module:** Schema Mapping
+* **Priority:** P0 (MVP Core)
+* **Description:** The system must auto-detect CSV header names using case-insensitive alias matching and present an interactive mapping grid allowing manual column overrides.
+* **Inputs:** Array of header strings from parsed CSV.
+* **User Interactions:** User inspects pre-populated dropdown mapping grid and selects correct matching column for mandatory and optional fields.
+* **System Responses:** Pre-populates dropdowns based on alias dictionaries:
+  * `Raw Feedback Text` (Required): `feedback`, `text`, `comment`, `description`, `notes`, `review`, `issue_description`.
+  * `Customer Tier / ARR` (Optional): `tier`, `plan`, `arr`, `mrr`, `customer_tier`, `account_type`.
+  * `Feedback ID` (Optional): `id`, `uuid`, `row_id`, `ticket_id`, `feedback_id`.
+  * `User ID` (Optional): `user_id`, `author_id`, `email`, `submitter`.
+  * `Account ID` (Optional): `account_id`, `company`, `org_id`, `domain`, `customer_name`.
+* **Validation Rules:** `Raw Feedback Text` mapping is mandatory. If unmapped, disable "Analyze Data" button and highlight dropdown in red.
+* **Error Cases & Recovery:** If mandatory column is missing, user can select any column containing text or abort ingestion.
+* **Business Rules:** If `Feedback ID` column is missing, system auto-generates stable IDs (`FB-001`, `FB-002`, ...). If duplicate IDs exist, append row suffix (`FB-001_row2`).
+* **Dependencies:** REQ-001.
+* **Acceptance Criteria:** Schema mapper pre-fills correct alias matches with >90% accuracy on standard export templates; allows manual dropdown override; validates mandatory field.
+
+### REQ-003: UNKNOWN Metadata Isolation Policy
+* **Module:** Data Policy
+* **Priority:** P0 (MVP Core)
+* **Description:** Missing, blank, or invalid customer tier/ARR entries must be strictly classified as `UNKNOWN` and assigned a neutral baseline tier weight multiplier of $1.0$ without fabricating numerical ARR.
+* **Inputs:** Parsed column value for Customer Tier.
+* **User Interactions:** Automatic background execution during schema validation.
+* **System Responses:** Replaces `null`, `""`, `"N/A"`, or unrecognized tier strings with `"UNKNOWN"`. Sets `TierWeight(u) = 1.0`.
+* **Validation Rules:** Tiers mapped to recognized buckets: `Enterprise` (3.0), `Pro / Mid-Market` (2.0), `Free / Starter` (1.0), `UNKNOWN` (1.0).
+* **Error Cases & Recovery:** Non-standard tier strings (e.g., "Custom Gold") default to `UNKNOWN` (1.0) and render an informational pill in schema preview.
+* **Business Rules:** Never guess or impute company ARR. Preserve data integrity by treating unknown accounts identical to baseline free users.
+* **Dependencies:** REQ-002.
+* **Acceptance Criteria:** All missing tier rows assigned `UNKNOWN` status and 1.0x multiplier; raw dataset values unmodified.
+
+### REQ-004: Data Quality Alert Banner
+* **Module:** Data Policy
+* **Priority:** P0 (MVP Core)
+* **Description:** Display an high-visibility warning banner whenever `UNKNOWN` customer tier or unmapped account rows exceed 5% of dataset rows.
+* **Inputs:** Count of `UNKNOWN` tier rows and unmapped account rows.
+* **User Interactions:** User reads warning banner on workspace header and clicks "View Quality Details" for row breakdowns.
+* **System Responses:** Renders yellow warning banner above workspace cards:
+  > *"Data Quality Warning: X% of records lack customer tier or account metadata and are evaluated provisionally (1.0x weight). Priority scores may reflect submission volume rather than verified account revenue."*
+* **Validation Rules:** Trigger condition: $(\text{UNKNOWN Rows} / \text{Total Rows}) > 0.05$.
+* **Error Cases & Recovery:** Dismissing banner collapses message to a compact header pill.
+* **Business Rules:** Transparent data quality reporting prevents PMs from over-interpreting unweighted volume as enterprise revenue risk.
+* **Dependencies:** REQ-003.
+* **Acceptance Criteria:** Banner renders when threshold exceeded; calculations remain unaffected; banner collapsible.
+
+### REQ-005: AI Semantic Clustering Engine
+* **Module:** AI Pipeline
+* **Priority:** P0 (MVP Core)
+* **Description:** Process feedback rows in token-aware 50-row batches via serverless proxy to generate cohesive problem clusters matching strict JSON output schema.
+* **Inputs:** Array of feedback objects `{ feedback_id, text, tier }`.
+* **User Interactions:** User clicks "Analyze Data" button.
+* **System Responses:** Sends batched HTTP POST requests to serverless proxy route `/api/cluster`. Renders progress bar with batch completion count.
+* **Validation Rules:** Validate returned JSON against schema. Extract `cluster_title`, `problem_summary`, `root_cause_hypothesis`, `severity_rating` (1–3), `member_feedback_ids`, and `quotes`.
+* **Error Cases & Recovery:** On HTTP 429/503 or malformed JSON, trigger exponential backoff retry (up to 3 attempts). If retry fails, route remaining items to `Unclustered Feedback` bucket (`CLUST-UNC`).
+* **Business Rules:** Max 50 rows (~8,000 tokens) per API request. Preserve every source `Feedback ID`.
+* **Dependencies:** REQ-001, REQ-002, REQ-013.
+* **Acceptance Criteria:** API payload fits within limits; valid JSON parsed into React cluster state; failed items fallback to unclustered bucket.
+
+### REQ-006: Conservative Two-Pass Cross-Batch Reconciliation
+* **Module:** AI Pipeline
+* **Priority:** P0 (MVP Core)
+* **Description:** Reconcile duplicate thematic clusters across batch boundaries using a client-side category-grouping pass followed by a secondary LLM consolidation pass, flagging ambiguous matches.
+* **Inputs:** Array of preliminary batch clusters from Pass 1.
+* **User Interactions:** Automatic pipeline step during analysis.
+* **System Responses:**
+  1. Group Pass 1 clusters by exact canonical category tags (`Authentication`, `Export`, `UI Alignment`, etc.).
+  2. Perform secondary LLM consolidation pass within each category group.
+  3. If similarity is ambiguous (0.60–0.84), flag both clusters with `Uncertain Cluster — Review Recommended`.
+  4. Merged clusters combine member `Feedback ID` arrays without duplicates, set $S_c = \max(S_i)$, and preserve all source quotes.
+* **Validation Rules:** Clusters with similarity $\ge 0.85$ merge automatically. Clusters with similarity <0.60 remain distinct.
+* **Error Cases & Recovery:** Secondary pass failure preserves Pass 1 batch clusters as distinct items with an advisory banner.
+* **Business Rules:** Conservative consolidation prevents over-merging distinct product issues.
+* **Dependencies:** REQ-005.
+* **Acceptance Criteria:** Batch clusters reconciled cleanly; ambiguous matches flagged with UI warning badge; zero IDs lost.
+
+### REQ-007: Technical Root-Cause Hypothesis Generator
+* **Module:** AI Pipeline
+* **Priority:** P0 (MVP Core)
+* **Description:** Formulate technical root-cause hypotheses grounded in software failure modes, inserting mandatory safety placeholders when environmental context is absent.
+* **Inputs:** Cluster verbatim quote group and problem summary.
+* **User Interactions:** User views root-cause section in deep-dive drawer panel.
+* **System Responses:** Renders AI-inferred hypothesis (e.g., "504 API Gateway Timeout due to unpaginated query execution").
+* **Validation Rules:** If source text lacks browser, OS, payload size, or error code details, inject `[NEEDS INVESTIGATION: Technical Context Missing in Source Feedback]`.
+* **Error Cases & Recovery:** Non-technical feedback defaults hypothesis to workflow friction explanation with investigation placeholder.
+* **Business Rules:** Root causes are explicitly labeled as hypotheses to prevent blind engineering execution without investigation.
+* **Dependencies:** REQ-005.
+* **Acceptance Criteria:** Hypothesis generated for every cluster; placeholder injected whenever reproduction context is missing.
+
+### REQ-008: Deterministic Hybrid Priority Scoring Engine
+* **Module:** Scoring Engine
+* **Priority:** P0 (MVP Core)
+* **Description:** Compute deterministic Hybrid Priority Scores ($P_c \in [0, 100]$) using normalized component metrics ($I_n, F_n, S_n$) and normalized interactive calibration weights ($W_{\text{ARR}}, W_{\text{Vol}}, W_{\text{Sev}}$).
+* **Inputs:** Cluster metrics ($I_c, U_c, S_c$), dataset maximums ($\max I, \max U$), and slider weight values ($w_{\text{ARR}}, w_{\text{Vol}}, w_{\text{Sev}}$).
+* **User Interactions:** Background calculation executed instantly upon clustering or slider adjustment.
+* **System Responses:** Exposes exact mathematical formula and component values ($I_n, F_n, S_n$) in card hover tooltip and deep-dive drawer.
+* **Validation Rules:**
+  $$P_c = \text{Round}_1 \left( 100 \times \left[ W_{\text{ARR}} \cdot I_n + W_{\text{Vol}} \cdot F_n + W_{\text{Sev}} \cdot S_n \right] \right)$$
+  If all sliders set to 0, default to baseline 40/40/20 weights. Zero denominators default safely to 0.0.
+* **Error Cases & Recovery:** Mathematical edge cases (e.g., single-item dataset) evaluate $I_n = 1.0, F_n = 1.0$ without throwing NaN errors.
+* **Business Rules:** Math is 100% deterministic and client-calculated in JavaScript. Scoring is dataset-wide comparable.
+* **Dependencies:** REQ-003, REQ-005, REQ-006.
+* **Acceptance Criteria:** $P_c$ computes accurately across all test vectors; formulas fully exposed in UI.
+
+### REQ-009: Live Interactive Calibration Sliders
+* **Module:** Workspace Controls
+* **Priority:** P0 (MVP Core)
+* **Description:** Provide 3 interactive calibration sliders (Impact/ARR, Volume/Frequency, Severity) that re-calculate priority scores and re-sort workspace cards dynamically at 60 FPS.
+* **Inputs:** Drag position of range sliders ($0$ to $100$).
+* **User Interactions:** User drags any calibration slider.
+* **System Responses:** Recalculates $P_c$ for all clusters in memory in <16ms and updates ranked card ordering smoothly.
+* **Validation Rules:** Normalized weights always sum to $1.0$ ($100\%$). Matrix plot coordinates ($F_n, I_n$) remain fixed during slider dragging.
+* **Error Cases & Recovery:** Rapid slider dragging debounces state updates to maintain fluid 60 FPS rendering.
+* **Business Rules:** Matrix coordinates reflect fixed physical metrics ($F_n, I_n$); sliders re-rank priority order without moving matrix dots.
+* **Dependencies:** REQ-008.
+* **Acceptance Criteria:** Re-ranking completes in <16ms; matrix plot coordinates remain completely stationary; zero UI jank.
+
+### REQ-010: Dual-View Discovery Workspace (2x2 Matrix + Ranked Cards)
+* **Module:** Visualization
+* **Priority:** P0 (MVP Core)
+* **Description:** Render an interactive 2x2 Spatial Priority Matrix alongside a badged, sorted Ranked Insight Card List with synchronized hover and selection states.
+* **Inputs:** Array of scored cluster objects.
+* **User Interactions:** User hovers over matrix dot or clicks ranked card expand button.
+* **System Responses:** Hovering matrix dot highlights corresponding card; clicking card opens 600px right-hand slide-out drawer.
+* **Validation Rules:** Matrix $Y$-axis represents Normalized Impact ($I_n$); $X$-axis represents Normalized Frequency ($F_n$). Quadrants: High Impact / High Vol (Top-Right), High Impact / Low Vol (Top-Left), Low Impact / High Vol (Bottom-Right), Low Impact / Low Vol (Bottom-Left).
+* **Error Cases & Recovery:** Clicking background area closes open drawers and resets highlights.
+* **Business Rules:** Desktop layout renders side-by-side (Matrix 45%, Cards 55%).
+* **Dependencies:** REQ-008, REQ-009.
+* **Acceptance Criteria:** Matrix dots and cards bi-directionally synchronized; drawer opens smoothly; responsive layout adjusts correctly.
+
+### REQ-011: Client-Side Substring Quote Verification Engine
+* **Module:** Verification
+* **Priority:** P0 (MVP Core)
+* **Description:** Verify AI-extracted quote snippets against raw CSV text in client memory using exact substring matching and render visual verification status badges.
+* **Inputs:** AI quote snippet string and raw CSV row text for `Feedback ID`.
+* **User Interactions:** User expands quote receipt list inside deep-dive drawer.
+* **System Responses:** Executes `Snippet.trim() In RawText.trim()`. Renders green `Verified Quote` badge for exact match; yellow `Unverified / Rewritten` badge for modified text.
+* **Validation Rules:** Exact match requires 100% substring containment (case-insensitive option enabled).
+* **Error Cases & Recovery:** If string match fails due to LLM summarization, display yellow warning badge and provide button to reveal full raw source row text.
+* **Business Rules:** Client-side verification builds PM trust by proving quote authenticity.
+* **Dependencies:** REQ-001, REQ-005.
+* **Acceptance Criteria:** Substring validation evaluates accurately on exact vs modified text; status badges rendered correctly.
+
+### REQ-012: Strategic Rationale & Developer Spec Generators
+* **Module:** Action Outputs
+* **Priority:** P0 (MVP Core)
+* **Description:** Generate copy-ready Markdown Strategic Rationales (PM focus) and Engineering Specifications (Dev focus) incorporating exact quotes, scoring breakdowns, and safety placeholders.
+* **Inputs:** Expanded cluster object, score metrics, verbatim quotes, and root-cause hypothesis.
+* **User Interactions:** User clicks "Copy Strategic Rationale" or "Copy Engineering Spec" button inside deep-dive drawer.
+* **System Responses:** Generates structured Markdown text and writes to system clipboard, displaying a green "Copied!" confirmation toast.
+* **Validation Rules:** Engineering spec MUST include 5 decoupled safety sections and inject `[NEEDS INVESTIGATION]` placeholders where reproduction context is missing.
+* **Error Cases & Recovery:** Clipboard API failure falls back to rendered text box with auto-select text focus.
+* **Business Rules:** Outputs must be copy-ready for instant paste into Linear, Jira, Slack, or PRD documents.
+* **Dependencies:** REQ-007, REQ-008, REQ-011.
+* **Acceptance Criteria:** Markdown specs generated instantly; clipboard populated correctly; safety placeholders present.
+
+### REQ-013: Serverless Proxy Endpoint Security & Key Protection
+* **Module:** Security & Proxy
+* **Priority:** P0 (MVP Core)
+* **Description:** Protect cloud AI private API credentials using a stateless serverless proxy route enforcing CORS restrictions, payload caps (2MB limit, HTTP 413), rate throttling (10 RPM/IP), model invocation locking, and zero payload logging.
+* **Inputs:** Client JSON payload containing batched feedback text.
+* **User Interactions:** Transparent background execution during analysis.
+* **System Responses:** Validates request headers, checks rate limit counters, forwards payload to cloud AI endpoint with server-side API key header, sanitizes response, and returns JSON to client.
+* **Validation Rules:** Reject non-CORS requests; reject payloads >2MB with HTTP 413; reject requests exceeding 10 RPM with HTTP 429. Private API key MUST reside strictly in proxy environment variables (`PROCESS.ENV.AI_API_KEY`).
+* **Error Cases & Recovery:** Upstream API errors return sanitized JSON error objects without exposing internal proxy stack traces or API keys.
+* **Business Rules:** Zero client-side key exposure; zero server payload logging.
+* **Dependencies:** None.
+* **Acceptance Criteria:** Static analysis confirms zero keys in client bundle; payload limit enforced; CORS restricted to production domain.
+
+## 2.3 P1 Functional Specifications (Polish — REQ-014 and REQ-015)
+
+### REQ-014: Level 3 CS Advisory Workaround Drafts
+* **Module:** Action Outputs
+* **Priority:** P1 (Polish)
+* **Description:** Generate client-facing workaround advisory notes for Level 3 Critical Blocker issues carrying mandatory engineering review disclaimers.
+* **Inputs:** Level 3 severity cluster details.
+* **User Interactions:** User clicks "Generate CS Advisory" button in deep-dive drawer.
+* **System Responses:** Produces copy-ready Markdown customer communication draft with step-by-step workaround instructions.
+* **Validation Rules:** MUST include header banner: `*Draft CS Advisory (P1) — Requires Engineering Approval before client distribution.*`
+* **Dependencies:** REQ-005, REQ-012.
+* **Acceptance Criteria:** CS advisory generated for Level 3 items; disclaimer banner prominently rendered.
+
+### REQ-015: Account Deduplication Visualizer
+* **Module:** Visualization
+* **Priority:** P1 (Polish)
+* **Description:** Render graphical visualizer bars comparing unique affected accounts ($U_c$) against total incident submission volume ($N_c$) per cluster.
+* **Inputs:** Cluster metrics $U_c$ and $N_c$.
+* **User Interactions:** User views metric cards or deep-dive drawer.
+* **System Responses:** Displays dual-bar visualizer showing account concentration ratio ($U_c / N_c$).
+* **Dependencies:** REQ-004, REQ-010.
+* **Acceptance Criteria:** Visualizer bar clearly differentiates multi-ticket spam from broad multi-account issues.
+
+## 2.4 P2 Functional Specifications (Post-MVP Future — REQ-016)
+
+### REQ-016: Manual Theme Split and Merge UI Controls
+* **Module:** Workspace Controls
+* **Priority:** P2 (Post-MVP Future)
+* **Description:** Provide interactive UI controls allowing PMs to manually merge two existing thematic clusters or split an existing cluster into sub-themes.
+* **Inputs:** User selection of target clusters.
+* **User Interactions:** User selects two cards and clicks "Merge Themes", or clicks "Split Theme" on a single card.
+* **System Responses:** Recalculates metrics and updates workspace state.
+* **Dependencies:** REQ-006, REQ-010.
+* **Acceptance Criteria:** Manual edits update scoring math dynamically; state preserved during session.
+
+## 2.5 Explicit Non-Goals and Boundary Constraints
+* No persistent SQL/NoSQL databases or server storage.
+* No live write-back API integrations with Jira, Linear, or Intercom.
+* No paid data enrichment or scraping services.
+
+---
+
+# PART III — COMPLETE USER EXPERIENCE & 20-STEP USER JOURNEY
+
+## 3.1 End-to-End Operational Journey Map (Steps 1–20)
+
+| Step # | Stage | User Goal | Trigger | Visible Interface | User Action | System Response | Success / Failure / Recovery State |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **1** | Arrival | Understand Sift scope | Browser navigation | Empty State / Hero Screen | Reads overview & security privacy pill | Displays drag-drop zone & privacy disclosure banner | **Success:** Clear landing visual. |
+| **2** | Trust | Verify privacy safety | Click Privacy Pill | Modal: Ephemeral Memory Model | Reads cloud AI data disclosure | Confirms local parsing model | **Success:** User reassured on data safety. |
+| **3** | Ingestion | Ingest CSV file | Drag file to zone | Dropzone with file preview | Drops `feedback_export.csv` | Parses file header via PapaParse; extracts column names | **Failure:** Non-CSV file. **Recovery:** Error alert toast. |
+| **4** | Validation | Verify file structure | CSV file drop | Schema Mapping Modal | Reviews parsed row count and header list | Pre-populates mapped columns | **Success:** >0 rows parsed. |
+| **5** | Schema Detection | Auto-map headers | File validation | Dropdown Mapping Grid | Verifies auto-detected column names | Maps `Raw Feedback`, `Customer Tier`, `Date` | **Success:** Required fields mapped. |
+| **6** | Manual Mapping | Fix mapped fields | Mapped field mismatch | Dropdown Select Boxes | Overrides auto-detected headers manually | Updates schema configuration object | **Success:** Field schema confirmed. |
+| **7** | Data Preview | Review quality | Schema confirmed | Data Quality Summary Banner | Inspects detected data quality indicators | Shows count of `UNKNOWN` customer tiers & unmapped accounts | **Warning:** >5% `UNKNOWN` tiers triggers warning banner. |
+| **8** | AI Disclosure | Initiate analysis | Click "Analyze Data" | Pre-Flight Cloud AI Notice | Confirms cloud AI processing | Triggers client API call / proxy pipeline | **Success:** Data pipeline armed. |
+| **9** | Progress | Track clustering | Analysis started | Progress Bar & Step Log | Observes processing status | Displays batch progress ("Batch 1/3 - Reconciling Themes...") | **Failure:** Network timeout. **Recovery:** Retry button. |
+| **10** | Degradation | Handle batch failure | Partial API failure | Warning Alert Banner | Clicks "Continue with Partial Data" | Processes successful batches, assigns remainder to `Unclustered Feedback` | **Recovery:** Partial view loaded cleanly. |
+| **11** | Results | View initial insights | Analysis complete | Dual-View Workspace | Views 2x2 Matrix and Ranked Cards | Renders clusters sorted by $P_c$ | **Success:** Workspace populated. |
+| **12** | Calibration | Re-weight priorities | Change sprint goal | Weight Sliders (ARR, Vol, Sev) | Drags ARR slider from 40% to 60% | Recalculates $P_c$; re-sorts cards dynamically | **Success:** Card list re-ranked (60 FPS). |
+| **13** | Matrix | Spatial exploration | Inspect high ARR risk | Interactive 2x2 Matrix | Hovers over top-left matrix dot | Shows tooltip with cluster ARR risk & volume | **Success:** Spotting high-impact anomalies. |
+| **14** | Cards | Card deep-dive | Review ranked item | Ranked Insight Card List | Clicks "Expand Card #1" | Opens Deep-Dive Drawer Panel | **Success:** Card panel opens smoothly. |
+| **15** | Receipts | Verify evidence | Check quote validity | Traceable Evidence Panel | Clicks "Verify Source Receipts" | Runs client string check; tags `Verified` vs `Unverified` quotes | **Success:** Exact string match confirmed. |
+| **16** | Hypotheses | Evaluate root cause | Review technical issue | Root Cause Hypothesis Box | Reads AI explanation & safety placeholders | Displays hypothesis with `[NEEDS INVESTIGATION]` | **Success:** Technical context understood. |
+| **17** | Action Review | Review deliverables | Prepare sprint ticket | Action Outputs Tab | Navigates between PM and Eng tabs (CS Advisory tagged P1) | Generates role-tailored Markdown specs | **Success:** Action outputs generated. |
+| **18** | Copy/Export | Export spec to clipboard | Click "Copy Spec" | Copy Button with confirmation | Clicks "Copy Markdown Spec" | Copies spec text to system clipboard | **Success:** Clipboard populated. |
+| **19** | New Analysis | Process new file | Complete session | Reset Button in header | Clicks "Start New Analysis" | Triggers session reset modal | **Success:** Prompted for confirmation. |
+| **20** | Reset | Purge session memory | Confirm reset | Empty Landing Screen | Confirms session reset | Flushes browser memory; resets state | **Success:** Ephemeral data purged. |
+
+## 3.2 Viewport & Device Adaptations (Desktop, Tablet, Mobile)
+* **Desktop (≥1280px):** Side-by-side dual-view layout (2x2 Matrix on left 45%, Ranked Cards on right 55%).
+* **Tablet (768px–1279px):** Tabbed workspace view ("Matrix View" tab vs. "Ranked List View" tab). Sliders stack vertically in a collapsible calibration header.
+* **Mobile (<768px):** Primary focus on Ranked Card List. The 2x2 Matrix renders as a static quadrant summary card. Evidence panels open as full-screen overlay sheets.
+
+## 3.3 State Management & Transition Rules
+Client state resides entirely in ephemeral React memory. Navigating away from the page or clicking "Start New Analysis" purges all in-memory arrays and flushes session state.
+
+---
+
+# PART IV — DATA INGESTION, NORMALIZATION, AND IDENTITY MODEL
+
+## 4.1 Local CSV Handling, Format, and Encoding Guidelines
+* Parse standard `.csv` files locally via PapaParse. Limit file size to 10MB or 2,000 rows to ensure browser memory performance.
+* Auto-detect delimiters (comma, tab, semicolon) and support UTF-8, UTF-16, ASCII encodings.
+
+## 4.2 Header Normalization and Smart Schema Mapping Grid
+Headers are converted to lowercase and matched against alias maps:
+* `Raw Feedback Text` (Required): `feedback`, `text`, `comment`, `description`, `notes`, `review`, `issue_description`.
+* `Customer Tier / ARR` (Optional): `tier`, `plan`, `arr`, `mrr`, `customer_tier`, `account_type`.
+* `Feedback ID` (Optional): `id`, `uuid`, `row_id`, `ticket_id`, `feedback_id`.
+* `User ID` (Optional): `user_id`, `author_id`, `email`, `submitter`.
+* `Account ID` (Optional): `account_id`, `company`, `org_id`, `domain`, `customer_name`.
+
+## 4.3 Four-Tier Identity Isolation Rules
+1. `Feedback ID`: Unique row identifier (`FB-001`).
+2. `User ID`: End-user submitter identifier.
+3. `Account ID`: Paying corporate entity identifier.
+4. `Cluster ID`: Assigned grouping identifier (`CLUST-01`).
+
+## 4.4 Missing Metadata & UNKNOWN Customer Tier Policy
+Missing or invalid customer tiers are strictly classified as `UNKNOWN`. They carry a default tier weight multiplier of $1.0$ (identical to standard baseline/Free accounts) without assigning forced numerical ARR values.
+
+## 4.5 Missing Account Identity & Provisional Counting Policy
+When `Account ID` is missing or unmapped, the system MUST NOT fabricate company identity. It displays dual-reporting: `Confirmed Unique Accounts` (count of verified account IDs) vs. `Estimated Account Coverage` ($U_c = N_c$ assumed provisionally). A warning pill (`Account IDs Unmapped — Frequency Estimated`) is displayed.
+
+## 4.6 Data Quality Alert Banners & Noise Preservation
+If `UNKNOWN` customer tier or unmapped account rows exceed 5% of dataset rows, display a Data Quality Warning Banner:
+> *"Data Quality Warning: 12% of records lack customer tier or account metadata and are evaluated provisionally (1.0x weight). Priority scores may reflect submission volume rather than verified account revenue."*
+
+---
+
+# PART V — COMPLETE AI INTELLIGENCE ENGINE & RECONCILIATION PIPELINE
+
+## 5.1 AI vs. Deterministic Processing Responsibilities
+* **AI Responsibilities:** Semantic text parsing, emotion extraction, thematic cluster generation, severity assessment (1–3), root-cause hypothesis generation, and Markdown spec drafting.
+* **Deterministic Responsibilities:** Mathematical score computation, account/incident counting, exact substring quote verification, and workspace filtering/sorting.
+
+## 5.2 Token-Aware 50-Row Batching Pipeline
+Feedback rows are chunked into 50-item batches (~8,000 tokens) per LLM call to respect API token constraints. Each row retains its assigned `Feedback ID` throughout execution.
+
+## 5.3 Structured Response JSON Schema & Validation
+The serverless proxy validates upstream LLM JSON against the following strict JSON Schema draft-07:
+
+```json
+{
+  "$schema": "[http://json-schema.org/draft-07/schema#](http://json-schema.org/draft-07/schema#)",
+  "type": "object",
+  "required": ["clusters"],
+  "properties": {
+    "clusters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "cluster_id",
+          "cluster_title",
+          "canonical_category",
+          "problem_summary",
+          "root_cause_hypothesis",
+          "severity_rating",
+          "member_feedback_ids",
+          "quotes"
+        ],
+        "properties": {
+          "cluster_id": { "type": "string" },
+          "cluster_title": { "type": "string" },
+          "canonical_category": { "type": "string" },
+          "problem_summary": { "type": "string" },
+          "root_cause_hypothesis": { "type": "string" },
+          "severity_rating": { "type": "integer", "minimum": 1, "maximum": 3 },
+          "member_feedback_ids": { "type": "array", "items": { "type": "string" } },
+          "quotes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["feedback_id", "quote_snippet"],
+              "properties": {
+                "feedback_id": { "type": "string" },
+                "quote_snippet": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+```
+
+## 5.4 Conservative Two-Pass Cross-Batch Theme Reconciliation Protocol
+
+* **Pass 1 (Batch Extraction):** LLM generates preliminary batch clusters with titles, canonical category tags, summaries, severity ratings, and supporting IDs.
+* **Pass 2 (Client Category Grouping & LLM Consolidation Pass):**
+1. Client groups preliminary clusters by exact `canonical_category` strings.
+2. For categories containing $>1$ batch cluster, send a secondary consolidation prompt to the serverless proxy containing cluster summaries and quote IDs (without re-sending raw text).
+3. If similarity between two themes is high ($\ge 0.85$), merge them under a unified cluster title, combining member `member_feedback_ids` without duplicates and setting severity $S_c = \max(S_i)$.
+4. Additional inference requests during consolidation pass must not exceed 1 request per canonical category group.
+
+
+
+## 5.5 Duplicate Source Assignment & Unclustered Fallback Bucket
+
+* **Duplicate Membership:** If an individual `Feedback ID` is assigned to multiple clusters by the LLM, the client reconciliation engine retains it in the cluster with the highest severity or largest membership, stripping duplicates from secondary clusters.
+* **Unclustered Fallback:** Any `Feedback ID` present in the parsed CSV that is omitted from all returned clusters is routed to the `Unclustered Feedback` bucket (`CLUST-UNC`, $S_c = 1, P_c = 0$).
+
+## 5.6 Ambiguous Themes & Uncertainty Flagging
+
+When Pass 2 consolidation encounters ambiguous thematic similarity (calculated similarity metric between $0.60$ and $0.84$), the engine MUST NOT forcibly merge the clusters. Both clusters are preserved as separate items and marked with an explicit UI badge: `Uncertain Cluster — Review Recommended`.
+
+## 5.7 Severity Rating Classification Logic
+
+* `Level 1 (Low):` Minor cosmetic friction or visual alignment issue.
+* `Level 2 (Medium):` Workflow degraded, but operational workaround exists.
+* `Level 3 (High):` Critical workflow blocker, data corruption, or system crash.
+
+## 5.8 API Retries, Exponential Backoff, Partial Recovery State, and Evidence Preservation
+
+Up to 3 retries are executed on HTTP 429/503 errors using exponential backoff ($2^n \times 1000\text{ms} + \text{jitter}$). Permanently failed batches route remaining items to `Unclustered Feedback` and display a partial analysis notice. All raw CSV text and assigned `Feedback ID` entries remain 100% preserved in client memory regardless of API errors.
+
+---
+
+# PART VI — PRIORITIZATION AND DETERMINISTIC SCORING ENGINE
+
+## 6.1 Mathematical Scoring Specification & Formulas
+
+### 1. Slider Weight Normalization
+
+Given interactive slider inputs $w_{\text{ARR}}, w_{\text{Vol}}, w_{\text{Sev}} \in [0, 100]$:
+
+
+$$W_{\text{ARR}} = \frac{w_{\text{ARR}}}{w_{\text{ARR}} + w_{\text{Vol}} + w_{\text{Sev}}}, \quad W_{\text{Vol}} = \frac{w_{\text{Vol}}}{w_{\text{ARR}} + w_{\text{Vol}} + w_{\text{Sev}}}, \quad W_{\text{Sev}} = \frac{w_{\text{Sev}}}{w_{\text{ARR}} + w_{\text{Vol}} + w_{\text{Sev}}}$$
+
+## 6.2 Slider Normalization & All-Zero Slider Override Policy
+
+If $w_{\text{ARR}} = w_{\text{Vol}} = w_{\text{Sev}} = 0$, default automatically to approved baseline weights: $W_{\text{ARR}} = 0.40, W_{\text{Vol}} = 0.40, W_{\text{Sev}} = 0.20$.
+
+## 6.3 Metric Component Normalization ($I_n, F_n, S_n$)
+
+$$\text{TierWeight}(u) = \begin{cases} 3.0 & \text{if Enterprise} \\ 2.0 & \text{if Pro / Mid-Market} \\ 1.0 & \text{if Free / Starter} \\ 1.0 & \text{if UNKNOWN} \end{cases}$$
+
+$$I_c = \sum_{u \in U_c} \text{TierWeight}(u)$$
+
+$$I_n = \begin{cases} \frac{I_c}{\max_{k} I_k} & \text{if } \max_{k} I_k > 0 \\ 0 & \text{if } \max_{k} I_k = 0 \end{cases}$$
+
+$$F_n = \begin{cases} \frac{U_c}{\max_{k} U_k} & \text{if } \max_{k} U_k > 0 \\ 0 & \text{if } \max_{k} U_k = 0 \end{cases}$$
+
+$$S_n = \frac{S_c}{3.0}, \quad \text{where } S_c = \max_{i \in \text{Cluster members}} (\text{Severity}_i) \in \{1, 2, 3\}$$
+
+## 6.4 Zero Denominator Policy & Dataset-Wide Comparability
+
+Zero denominators default safely to $0.0$, preventing divide-by-zero errors. Free-tier-only datasets yield $I_c = \sum (1.0) = N > 0$, resulting in $I_n = 1.0$. Scoring is normalized against global dataset maximums across all workspace cards.
+
+## 6.5 Score Rounding, Tie-Breaking, and Critical Blocker Flagging
+
+$$P_c = \text{Round}_1 \left( 100 \times \left[ W_{\text{ARR}} \cdot I_n + W_{\text{Vol}} \cdot F_n + W_{\text{Sev}} \cdot S_n \right] \right)$$
+
+
+Ties are broken by raw Impact ($I_c$), then Frequency ($U_c$), then Cluster ID. Level 3 Severity items with $U_c < 3$ display a `Critical Blocker (Low Frequency)` red badge.
+
+## 6.6 Worked Numerical Scoring Examples
+
+* **Dataset Max Values:** $\max I = 15.0$, $\max U = 20$.
+* **Cluster A Metrics:** $I_c = 12.0$, $U_c = 10$, $S_c = 3$.
+* **Slider Weights:** $w_{\text{ARR}} = 50, w_{\text{Vol}} = 30, w_{\text{Sev}} = 20 \implies W_{\text{ARR}} = 0.50, W_{\text{Vol}} = 0.30, W_{\text{Sev}} = 0.20$.
+* **Component Calculations:** $I_n = 12.0 / 15.0 = 0.80$, $F_n = 10 / 20 = 0.50$, $S_n = 3.0 / 3.0 = 1.00$.
+* **Final Score:** $P_c = \text{Round}_1(100 \times [0.50 \cdot 0.80 + 0.30 \cdot 0.50 + 0.20 \cdot 1.00]) = \text{Round}_1(100 \times [0.40 + 0.15 + 0.20]) = 75.0 / 100$.
+
+---
+
+# PART VII — EVIDENCE VERIFICATION, TRUST AND RECOMMENDATION SAFETY
+
+## 7.1 Client-Side Substring Quote Verification Engine
+
+Client-side substring matching validates returned LLM quotes against raw CSV text in client memory:
+
+
+$$\text{Verified} = \begin{cases} \text{TRUE} & \text{if } \text{Snippet} \subseteq \text{RawText}(\text{Feedback ID}) \\ \text{FALSE} & \text{otherwise} \end{cases}$$
+
+
+Matches receive a green `Verified Quote` badge; mismatches receive a yellow `Unverified / Rewritten` badge.
+
+## 7.2 Five-Tier Safety Decoupling Framework
+
+1. **Customer-Reported Observations:** Surface user complaints.
+2. **Verified Source Quotations:** Exact verbatim quote substrings.
+3. **AI-Inferred Causes:** Technical root-cause hypotheses.
+4. **Proposed Engineering Investigations:** Diagnostic verification steps for developers.
+5. **Suggested Potential Solutions & Acceptance Criteria:** Candidate fixes requiring engineering confirmation.
+
+## 7.3 Missing Context Safety Placeholders (`[NEEDS INVESTIGATION]`)
+
+When environment or reproduction context is missing, the spec automatically inserts `[NEEDS INVESTIGATION: Technical Context Missing in Source Feedback]` placeholders.
+
+## 7.4 Action Output Templates (PM Strategic Rationale, Dev Eng Spec, P1 CS Advisory)
+
+### 1. PM Strategic Trade-Off Rationale Template
+
+```markdown
+# Strategic Trade-off Rationale: [Cluster Title]
+
+**Priority Score:** [P_c]/100 | **Severity:** Level [1-3] | **Affected Accounts:** [U_c] ([Confirmed/Estimated])
+
+## 1. Executive Summary
+[Problem Summary text]
+
+## 2. Business Impact & Revenue Risk
+- **Impact Score (I_n):** [I_n] (Raw Tier Weight: [I_c])
+- **Frequency Score (F_n):** [F_n] (Total Incidents: [N_c])
+- **Account Segment Breakdown:** Enterprise: [Count], Mid-Market: [Count], Free/Starter: [Count], UNKNOWN: [Count]
+
+## 3. Verbatim Customer Evidence
+> "[Quote Snippet 1]" — Account: [Account ID/UNKNOWN] (Feedback ID: [FB-001]) [Verified Quote]
+> "[Quote Snippet 2]" — Account: [Account ID/UNKNOWN] (Feedback ID: [FB-002]) [Verified Quote]
+
+## 4. Strategic Recommendation
+[Recommended PM Action]
+
+```
+
+### 2. Developer Engineering Specification Template
+
+```markdown
+# Engineering Specification: [Cluster Title]
+
+**Target Cluster ID:** [CLUST-01] | **Severity Rating:** Level [1-3]
+
+## 1. Customer-Reported Observation
+[Problem Summary]
+
+## 2. Verified Verbatim Receipts
+- `[FB-001]`: "[Quote Snippet 1]" [Verified]
+- `[FB-002]`: "[Quote Snippet 2]" [Verified]
+
+## 3. AI Root-Cause Hypothesis
+[Root Cause Hypothesis text]
+
+## 4. Proposed Technical Investigation
+[NEEDS INVESTIGATION: Technical Context Missing in Source Feedback]
+1. Inspect API logs for endpoint `/api/v1/export` during timeframe of reported incidents.
+2. Verify payload memory utilization on exports >10,000 rows.
+
+## 5. Candidate Acceptance Criteria
+- [ ] Export completes within <3.0 seconds for 10,000 row payloads.
+- [ ] HTTP 504 Gateway Timeout rate reduced to <0.01%.
+
+```
+
+---
+
+# PART VIII — UX/UI DESIGN SYSTEM & WORKSPACE SPECIFICATION
+
+## 8.1 Evidence-First Design Philosophy & Information Architecture
+
+Sift uses an Evidence-First, Executive-Ready design system featuring high-contrast slate surfaces, clear status badges, and dual-view spatial exploration.
+
+## 8.2 Color Tokens, Typography, and Semantic Status Roles
+
+* Slate Neutral (`#0F172A` / `#1E293B` / `#F8FAFC`)
+* Gold Badge (`#D97706` Enterprise Risk)
+* Blue Badge (`#2563EB` High Volume)
+* Red Badge (`#DC2626` Critical Blocker)
+* Green Badge (`#059669` Verified Quote)
+
+## 8.3 Workspace Component Specifications (2x2 Matrix, Ranked Cards, Sliders, Drawer)
+
+* **2x2 Matrix:** $Y$-axis Impact ($I_n$), $X$-axis Frequency ($F_n$). Coordinates remain fixed as sliders move.
+* **Ranked Cards:** Sorted dynamically by $P_c$ score.
+* **Sliders:** Dragging updates $P_c$ and re-sorts card list in real-time (60 FPS).
+* **Deep-Dive Drawer:** 600px right-hand slide-out drawer containing quotes, hypotheses, and spec exports.
+
+## 8.4 Accessibility Specification (WCAG 2.1 AA)
+
+Minimum 4.5:1 text contrast, complete keyboard tab-stop coverage, and ARIA live region updates (`aria-live="polite"`).
+
+---
+
+# PART IX — TECHNICAL ARCHITECTURE AND SECURITY SPECIFICATION
+
+## 9.1 Proposed Ephemeral System Architecture & Data Flow
+
+Client-side PapaParse CSV parser $\rightarrow$ Ephemeral memory state $\rightarrow$ Serverless proxy endpoint $\rightarrow$ Free-tier cloud AI provider $\rightarrow$ Two-pass client reconciliation $\rightarrow$ Deterministic scoring $\rightarrow$ Substring quote verification $\rightarrow$ React dual-view UI.
+
+## 9.2 Complete Client/Server Interface Contracts & JSON Schemas
+
+### Serverless Proxy Endpoint Request Schema (POST `/api/cluster`)
+
+```json
+{
+  "$schema": "[http://json-schema.org/draft-07/schema#](http://json-schema.org/draft-07/schema#)",
+  "type": "object",
+  "required": ["batch_index", "total_batches", "items"],
+  "properties": {
+    "batch_index": { "type": "integer", "minimum": 0 },
+    "total_batches": { "type": "integer", "minimum": 1 },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["feedback_id", "text"],
+        "properties": {
+          "feedback_id": { "type": "string" },
+          "text": { "type": "string" },
+          "tier": { "type": "string" }
+        }
+      }
+    }
+  }
+}
+
+```
+
+## 9.3 Serverless Proxy Security Model & Request Protection
+
+Serverless proxy (Vercel Serverless / Cloudflare Workers) enforces strict CORS, 2MB request payload limits, model invocation locking, IP rate throttling (10 RPM/IP), sanitized error responses, and zero payload logging. Private API keys reside strictly in encrypted proxy environment variables.
+
+## 9.4 Stateless Processing, Ephemeral Memory, and Data Lifecycle
+
+All state exists purely in browser session memory. Tab closure or clicking "Start New Analysis" flushes all stored memory arrays.
+
+---
+
+# PART X — AI PROVIDER FEASIBILITY & ZERO-COST CONSTRAINTS
+
+## 10.1 Inference-Provider Status (`REQUIRES VERIFICATION`)
+
+AI inference provider feasibility is strictly marked **`REQUIRES VERIFICATION`** pending execution of Google AI Studio smoke test `TS-018`.
+
+## 10.2 Candidate Model Evaluation Pool & Free-Tier Quotas
+
+Candidate pool includes active free-tier routes (e.g., `gemini-2.5-flash`, `gemini-2.5-flash-lite`, `gemini-3.5-flash-lite`) operating under Google AI Studio free allowances.
+
+## 10.3 Four-Step Provider Verification Protocol (`TS-018`)
+
+1. **Model Accessibility Test:** Verify HTTP 200 connectivity.
+2. **Structured JSON Schema Test:** Verify valid JSON matching PRD schema.
+3. **Quota Verification:** Verify 6 sequential batch requests complete without HTTP 429 errors.
+4. **Zero Billing Verification:** Confirm key operates under standard free-tier quota without active billing.
+
+## 10.4 Zero-Cost Architecture Proof & Budget Boundaries
+
+Total infrastructure and AI spending target: **₹0 / $0.00**.
+
+---
+
+# PART XI — NONFUNCTIONAL REQUIREMENTS
+
+## 11.1 Client Performance Targets
+
+Client CSV parsing <5s for 300 rows; slider re-ranking calculation <16ms (60 FPS).
+
+## 11.2 Reliability, Failover, and Error Visibility
+
+Exponential backoff retries on network failures; graceful fallback to `Unclustered Feedback` on permanent batch failure.
+
+## 11.3 Security, Privacy, and Data Minimization
+
+Zero client-side secret exposure, zero server payload logging, ephemeral local memory model.
+
+## 11.4 Browser Compatibility & Memory Management
+
+Target modern evergreen web browsers supporting Web Workers and Client Storage API.
+
+---
+
+# PART XII — COMPLETE TESTING AND QUALITY ASSURANCE STRATEGY
+
+## 12.1 Comprehensive Test Scenario Suite (`TS-001` through `TS-020`)
+
+| Test ID | Category | Scenario Description | Input Data | Expected Result | Pass / Fail Criteria | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| **TS-001** | Ingestion | Parse valid 300-row CSV | `valid_300rows.csv` | Headers parsed; schema mapped | 300 rows loaded in <5 seconds | Unexecuted |
+| **TS-002** | Data Policy | Missing tier column | `no_tier_column.csv` | Tiers set to `UNKNOWN` (1.0x weight); Quality warning banner rendered | Banner visible if `UNKNOWN` >5% | Unexecuted |
+| **TS-003** | Math | Priority score invariant | $I_n=0.8, F_n=0.5, S_n=1.0$ Weights: 40/40/20 | $P_c = 72.0$ | Computed $P_c == 72.0$ exactly | Unexecuted |
+| **TS-004** | Security | Secret leakage check | Client JS bundle source | Zero API key strings detected in client bundle | Pass static security scan | Unexecuted |
+| **TS-005** | Guardrail | Exact quote verification | LLM snippet vs raw source text | Green `Verified` badge for exact match; Yellow for modified | String match evaluates correctly | Unexecuted |
+| **TS-006** | UI Math | Live slider re-ranking | Adjust ARR slider to 100% | Cards re-ranked in 60 FPS; Matrix plot coordinates ($F_n, I_n$) remain fixed | Matrix coords unchanged; Cards re-sorted | Unexecuted |
+| **TS-007** | Adversarial | Profane / Angry feedback | "Your app is trash, export fails!" | Extract functional failure ("export fails"); preserve row | Row processed without throwing error | Unexecuted |
+| **TS-008** | Math Edge | All sliders set to 0 | $w_{\text{ARR}}=0, w_{\text{Vol}}=0, w_{\text{Sev}}=0$ | Default to normalized 40/40/20 weights | Score does not evaluate to `NaN` | Unexecuted |
+| **TS-009** | AI Schema | Malformed LLM response | Corrupted JSON from API | Retries request; fallbacks to `Unclustered Feedback` | App renders unclustered bucket gracefully | Unexecuted |
+| **TS-010** | Ingestion | Duplicate feedback IDs | Duplicate `FB-001` in CSV | Append row suffix (`FB-001_row2`) | All IDs globally unique in memory | Unexecuted |
+| **TS-011** | Math Edge | Free-tier only dataset | 10 Free-tier customers ($I_c=10.0$) | $I_n = 10.0 / 10.0 = 1.0$ (Free weight = 1.0) | $I_n$ computes to 1.0 correctly (not 0.0) | Unexecuted |
+| **TS-012** | AI Pipeline | Rate limit HTTP 429 | AI Provider 429 response | Exponential backoff triggers (up to 3 attempts) | Retries succeed or flag partial status | Unexecuted |
+| **TS-013** | Output Safety | Missing technical context | Source feedback lacking browser/OS | Inject `[NEEDS INVESTIGATION]` in Eng Spec | Placeholder string present in exported spec | Unexecuted |
+| **TS-014** | Accessibility | Keyboard navigation | Tab sequence through UI | All interactive components accessible via keyboard | 100% focus trap & tab stop coverage | Unexecuted |
+| **TS-015** | UI Responsive | Tablet viewport (800px) | Switch to tablet screen | Viewport renders tabbed Matrix/Card layout | Zero horizontal overflow scrolling | Unexecuted |
+| **TS-016** | Security | Proxy payload size limit | 5MB POST payload to proxy | HTTP 413 Payload Too Large returned | Excessively large requests blocked | Unexecuted |
+| **TS-017** | Data Policy | Missing Account IDs | CSV lacking `Account ID` column | Show `Confirmed: 0` and `Estimated: N`; render warning pill | Unmapped account warning pill visible | Unexecuted |
+| **TS-018** | Provider Verification | AI Studio Smoke Test | Candidate model endpoint | HTTP 200, valid JSON schema, zero billing required | All 4 smoke test steps pass | Unexecuted |
+| **TS-019** | AI Reconciliation | Ambiguous cross-batch match | Similarity score 0.70 | Flag cluster `Uncertain Cluster - Review Recommended` | Cluster rendered with review flag | Unexecuted |
+| **TS-020** | Production Gate | Build-readiness check | Run complete test suite | 100% pass rate across TS-001 through TS-019 | Build pipeline succeeds | Unexecuted |
+
+## 12.2 Verification & Observability Metrics
+
+* **Score Mathematical Accuracy:** 100% unit test pass rate.
+* **Quote Verification Precision:** 100% accuracy on client substring checking.
+* **UI Slider Latency:** Re-ranking calculation completes in <16ms.
+
+---
+
+# PART XIII — REQUIREMENTS REGISTER AND TRACEABILITY MATRIX
+
+## 13.1 Comprehensive Requirements Register
+
+| Req ID | Priority | Feature Description | Inputs | Expected Outputs | Verification Method |
+| --- | --- | --- | --- | --- | --- |
+| **REQ-001** | P0 | Ephemeral CSV Ingestion | File handle | Parsed row array | Functional Test (TS-001) |
+| **REQ-002** | P0 | Smart Schema Mapper | Headers array | Schema mapping config | Unit Test (TS-001) |
+| **REQ-003** | P0 | UNKNOWN Metadata Isolation | Missing tier fields | `UNKNOWN` classification (1.0x weight) | Data Policy Unit Test (TS-002) |
+| **REQ-004** | P0 | Quality Warning Banner | UNKNOWN row count | Banner UI if >5% | UI Component Test (TS-002, TS-017) |
+| **REQ-005** | P0 | LLM Semantic Clustering | Feedback text array | Structured JSON clusters | Integration Test (TS-009) |
+| **REQ-006** | P0 | Cross-Batch Reconciliation | Preliminary batch clusters | Unified reconciled clusters | Pipeline Test (TS-019) |
+| **REQ-007** | P0 | Root-Cause Generator | Cluster quote group | Inferred hypothesis + Placeholders | Integration Test (TS-013) |
+| **REQ-008** | P0 | Deterministic Scoring Engine | Normalized weights & metrics | Computed $P_c$ score (0–100) | Mathematical Unit Test (TS-003, TS-008, TS-011) |
+| **REQ-009** | P0 | Live Calibration Sliders | User slider inputs | Real-time score re-ranking | UI Performance Test (TS-006) |
+| **REQ-010** | P0 | Dual-View Workspace | Cluster object array | Interactive Matrix + Card view | Integration Test (TS-006, TS-015) |
+| **REQ-011** | P0 | Substring Quote Verification | Snippet + Source string | Verified / Unverified status badge | Substring Unit Test (TS-005) |
+| **REQ-012** | P0 | Strategic & Eng Spec Generator | Cluster detail object | Markdown spec output | Output Validation Test (TS-013) |
+| **REQ-013** | P0 | Serverless Proxy Security | Incoming proxy requests | Validated, rate-limited requests | Security Test (TS-004, TS-016) |
+| **REQ-014** | P1 | Level 3 CS Advisory Drafts | Critical cluster object | CS Workaround Markdown draft | Output Validation Test |
+| **REQ-015** | P1 | Account vs Incident Visualizer | Cluster account array | $U_c$ vs $N_c$ breakdown visual | Visual Component Test |
+| **REQ-016** | P2 | Manual Split/Merge Controls | User merge selection | Updated cluster arrangement | UI Interaction Test |
+
+## 13.2 Requirement-to-Test Traceability Matrix
+
+* `REQ-001` $\rightarrow$ `TS-001`, `TS-010`
+* `REQ-002` $\rightarrow$ `TS-001`
+* `REQ-003` $\rightarrow$ `TS-002`
+* `REQ-004` $\rightarrow$ `TS-002`, `TS-017`
+* `REQ-005` $\rightarrow$ `TS-007`, `TS-009`
+* `REQ-006` $\rightarrow$ `TS-012`, `TS-019`
+* `REQ-007` $\rightarrow$ `TS-013`
+* `REQ-008` $\rightarrow$ `TS-003`, `TS-008`, `TS-011`
+* `REQ-009` $\rightarrow$ `TS-006`
+* `REQ-010` $\rightarrow$ `TS-006`, `TS-015`
+* `REQ-011` $\rightarrow$ `TS-005`
+* `REQ-012` $\rightarrow$ `TS-013`
+* `REQ-013` $\rightarrow$ `TS-004`, `TS-016`, `TS-018`
+
+## 13.3 Original Assignment Traceability Matrix
+
+All 7 mandatory operational capabilities from Section 1.2 map 100% to REQ-001 through REQ-013.
+
+---
+
+# PART XIV — DEPENDENCY-AWARE IMPLEMENTATION ROADMAP
+
+## 14.1 Milestone Execution Order (Milestones 1–5)
+
+* **Milestone 1 (Ingestion & Schema Pipeline):** Client CSV dropzone, PapaParse, schema mapper, ID generator, UNKNOWN classifier.
+* **Milestone 2 (Serverless Proxy & AI Pipeline):** Serverless proxy setup, security controls, AI Studio smoke test verification (`TS-018`), batching engine, conservative two-pass reconciliation.
+* **Milestone 3 (Deterministic Scoring & Calibration Engine):** Client JavaScript math engine, slider normalizer, edge-case handlers, 60 FPS re-ranking engine.
+* **Milestone 4 (Dual-View Workspace & Verification UI):** 2x2 Spatial Matrix, Ranked Cards, Traceable Evidence drawer with exact substring matching.
+* **Milestone 5 (Action Output Generators & Polish):** PM Strategic Rationale and Dev Eng Spec generators with `[NEEDS INVESTIGATION]` safety placeholders.
+
+## 14.2 Minimal Vertical Slice Target
+
+Milestones 1 through 4 constitute the minimal functional vertical slice.
+
+## 14.3 Contingency Paths & AI Failover Fallback
+
+If cloud AI calls fail completely, the system fallbacks gracefully by populating the `Unclustered Feedback` bucket, enabling users to evaluate raw data and deterministic scores.
+
+---
+
+# PART XV — DECISIONS, RISKS, AND READINESS GATES
+
+## 15.1 Complete Decision Register (Approved vs. Proposed vs. Unresolved)
+
+| ID | Decision Summary | Status | Source / Authority |
+| --- | --- | --- | --- |
+| **DEC-001** | Ephemeral browser parsing without persistent database | Approved | MDD v2.0.1 Baseline |
+| **DEC-002** | 3-parameter scoring model (40/40/20 default) with live sliders | Approved | MDD v2.0.1 Baseline |
+| **DEC-003** | `UNKNOWN` metadata isolation with 1.0x weight multiplier | Approved | MDD v2.0.1 Correction Pass |
+| **DEC-004** | Substring exact quote match verification for receipts | Approved | MDD v2.0.1 Baseline |
+| **DEC-005** | Serverless proxy endpoint for Cloud AI key protection | Confirmed | PRD v1.2.1 Technical Architecture Spec |
+| **DEC-006** | AI Provider Free-Tier Feasibility Verification | **REQUIRES VERIFICATION** | PRD v1.2.1 Errata Pass (TS-018) |
+| **DEC-007** | Two-pass conservative cross-batch reconciliation | Confirmed | PRD v1.2.1 AI Pipeline Spec |
+
+## 15.2 Superseded Decisions Register
+
+Earlier proposals for per-cluster dynamic weight redistributions were superseded by the **Unified Global Comparability Policy**.
+
+## 15.3 Open Technical Decisions & Risk Register
+
+* **Open Technical Decision (OPT-001):** Serverless Proxy Hosting Platform selection (Vercel Serverless Functions vs. Cloudflare Workers Free Tier).
+* **Risk Register (RISK-001):** Free-Tier API Rate Limits & Model Availability (Mitigated by TS-018 Provider Verification Protocol and client exponential backoff).
+
+## 15.4 Measured Readiness Gates & Checklists
+
+### Provider-Verification Gate Checklist
+
+* [ ] Provider Verification Protocol executed against founder's Google AI Studio project.
+* [ ] Candidate free-capable model confirmed active and responding with HTTP 200.
+* [ ] Structured JSON output verified against schema without formatting errors.
+* [ ] Zero billing requirement confirmed on project key.
+
+### Build-Readiness Gate Checklist
+
+* [ ] Provider-Verification Gate successfully passed.
+* [ ] All PRD v2.0 specifications frozen.
+* [ ] Zero hardcoded API keys detected in client bundle static analysis.
+* [ ] Automated test suite framework configured for TS-001 through TS-020.
+
+### Deployment-Readiness Gate Checklist
+
+* [ ] Build-Readiness Gate successfully passed.
+* [ ] 100% pass rate achieved across TS-001 through TS-020.
+* [ ] Serverless proxy endpoint deployed with CORS restricted strictly to production origin.
+* [ ] Client memory profile verified clean after processing 2,000-row CSV file.
+
+## 15.5 Implementation Handoff Brief (Gemini Gem & Antigravity)
+
+* **For Gemini Gem (Founder AI Advisor):** Guide the nontechnical founder through executing Provider Verification Smoke Test `TS-018` in Google AI Studio before authorizing coding.
+* **For Google Antigravity (AI Coding Agent):** Implement Milestones 1 through 5 strictly adhering to the 100% client-side deterministic math formulas, 2-pass reconciliation logic, and 5-tier safety placeholders specified herein.
+

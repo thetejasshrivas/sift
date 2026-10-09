@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Environment files and credentials
+.env
+.env.*
+!.env.example
+
+# Hosting and serverless deployment platform caches
+.vercel/
+.netlify/
+.wrangler/
+
+# Test outputs, coverage, and reports
+coverage/
+test-results/
+playwright-report/
+
+# Logs
+*.log
+
+# Scratch and temporary directories
+scratch/
+
+# Network traces and captured evidence
+docs/evidence/**/*.har
