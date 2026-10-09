@@ -26,7 +26,7 @@ These decisions are **frozen** and must not be reopened without explicit founder
 
 | Decision ID | Summary | Options | Needs By |
 |:---|:---|:---|:---|
-| **OPT-001** | Serverless proxy hosting platform | Vercel Serverless Functions vs. Cloudflare Workers Free Tier | Before AG-M2 |
+| **OPT-001** | Serverless proxy hosting platform | RESOLVED by DEC-STACK (Cloudflare Workers Free Tier) | Resolved 2026-10-09 |
 | **OPT-002** | AI inference provider & model | Verified free-tier candidates (TS-018 required first) | Before AG-M2 |
 
 ## Superseded Decisions
@@ -47,8 +47,32 @@ These decisions are **frozen** and must not be reopened without explicit founder
 |:---|:---|:---|:---|
 | 2026-10-09 | AG-PF-00 | Source `.txt` files remain at workspace root (read-only); `docs/source/` directory created as reserved mount point | Task requires never editing source docs; files kept at root; docs/source reserved for future reference |
 | 2026-10-09 | AG-PF-03 | **DEC-PF03** (Status: APPROVED) — Founder approved Option B fallback for AG-PF-03. Browser automation tool is NOT AVAILABLE due to Playwright driver CDN HTTP 404. Approved fallback: manual founder inspection checklist for all visual QA gates (M1-C, M4). No claim of automated browser QA will be made. | Antigravity IDE browser tool fails to acquire `playwright-1.57.0-win32_x64.zip` from Microsoft/Akamai/Verizon CDNs (HTTP 404). Option B approved to avoid blocking sprint while maintaining visual QA rigor via manual founder testing. |
+| 2026-10-09 | AG-ARCH-02 | **DEC-STACK (APPROVED)** — Founder approved full technology stack proposal: Vite + React + TypeScript + Cloudflare Workers / Pages (Status: APPROVED). | Formally approved by founder following AG-ARCH-01 evaluation. Rescored matrix: Cloudflare 33/35 vs Vercel 23/35. Zero additional cost, commercial use permitted, native rate-limiting, and unbounded network wait. |
 
+---
+
+### DEC-STACK (APPROVED) — Technology Stack Specification
+
+- **Decision ID:** `DEC-STACK (APPROVED)`
+- **Status:** APPROVED
+- **Date:** 2026-10-09
+- **Founder Decision:** `"A — I accept DEC-STACK as proposed (Vite + React + TypeScript + Cloudflare Workers / Pages)"`
+- **Chosen Frontend:** React SPA with Vite
+- **Language:** TypeScript
+- **Test Runner:** Vitest
+- **Serverless Proxy Host:** Cloudflare Workers (Free Tier)
+- **Static Hosting:** Cloudflare Pages (Free Tier)
+- **Browser-Test Method:** Manual founder inspection checklist fallback (`DEC-PF03`)
+- **Package Manager:** npm (v11.19.0 verified in `AG-PF-02`)
+- **CSV Parser:** PapaParse
+- **Schema Validator:** ajv
+- **Explicitly Rejected / Not Used:**
+  - **Vercel Functions:** Commercial use restriction on Hobby tier (requires $20/seat/mo Pro plan) and lack of free native IP rate limiting.
+  - **Netlify:** Deploy credit pool constraint (300 credits/mo shared budget; 15 credits per production deploy caps active deploys to ~20/mo).
+  - **Next.js:** SSR unnecessary for ephemeral client app (`DEC-001`, `DEC-008`).
+  - **Firebase / Supabase:** Persistent database prohibited by `DEC-001`.
 
 ---
 
 *Governed by AGENTS.md Standing Contract. Any decision overriding a Locked entry requires founder approval and a new row in this log.*
+
