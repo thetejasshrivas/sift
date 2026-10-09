@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | M1-B |
-| **Task Name** | Identity isolation & UNKNOWN data policy (REQ-003, REQ-004) |
+| **Task ID** | M1-C |
+| **Task Name** | Ingestion UI: dropzone, schema modal, quality summary, privacy notices |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
 | **Started** | 2026-10-09 |
@@ -37,6 +37,7 @@
 | **G-AI4** | DEC-PROVIDER approved; UI disclosure text drafted; model read from env AI_MODEL | PASSED |
 | **G-M1A** | Ingestion unit tests pass with evidence (REQ-001, REQ-002, TS-001, TS-010) | PASSED |
 | **G-M1B** | TS-002, TS-017, TS-024 logic tests pass with evidence | PASSED |
+| **G-M1C** | Screenshots (375/768/1280px) & network evidence saved in docs/evidence/m1/ | PASSED |
 
 ## Blockers
 
@@ -63,6 +64,7 @@
 | **AG-AI-04** | Provider decision record & privacy disclosure (Gate G-AI4 passed) | 2026-10-09 |
 | **M1-A** | CSV ingestion & smart schema mapping (Gate G-M1A passed) | 2026-10-09 |
 | **M1-B** | UNKNOWN handling, identity model, data-quality metrics (Gate G-M1B passed) | 2026-10-09 |
+| **M1-C** | Ingestion UI: dropzone, schema modal, quality summary, privacy notices (Gate G-M1C passed) | 2026-10-09 |
 
 ## Upcoming Tasks
 

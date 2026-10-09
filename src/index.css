@@ -1,12 +1,41 @@
+/**
+ * SIFT Design System — PRD §8.2, §8.4
+ * Slate surfaces, semantic badges, WCAG 2.1 AA contrast
+ */
+
 :root {
-  --bg-primary: #0a0f1d;
-  --bg-secondary: #111827;
-  --text-primary: #f9fafb;
-  --text-secondary: #9ca3af;
-  --accent-cyan: #06b6d4;
-  --accent-blue: #3b82f6;
-  --border-color: #1f2937;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  /* Slate Neutral Surfaces */
+  --bg-app: #0F172A;        /* Slate 900 */
+  --bg-surface: #1E293B;    /* Slate 800 */
+  --bg-card: #334155;       /* Slate 700 */
+  --bg-hover: #475569;      /* Slate 600 */
+
+  /* Text Roles (WCAG AA Compliant >= 4.5:1 contrast against dark slate) */
+  --text-primary: #F8FAFC;   /* Slate 50 */
+  --text-secondary: #CBD5E1; /* Slate 300 */
+  --text-muted: #94A3B8;     /* Slate 400 */
+
+  /* Borders */
+  --border-subtle: #334155;  /* Slate 700 */
+  --border-strong: #475569;  /* Slate 600 */
+  --border-focus: #38BDF8;   /* Sky 400 */
+
+  /* Semantic Status Roles */
+  --color-gold: #D97706;     /* Enterprise Risk */
+  --color-gold-bg: rgba(217, 119, 6, 0.15);
+  --color-blue: #2563EB;     /* High Volume / Action */
+  --color-blue-bg: rgba(37, 99, 235, 0.15);
+  --color-red: #DC2626;      /* Critical Blocker / Error */
+  --color-red-bg: rgba(220, 38, 38, 0.15);
+  --color-green: #059669;    /* Verified / Baseline */
+  --color-green-bg: rgba(5, 150, 105, 0.15);
+  --color-amber: #F59E0B;    /* Data Quality Warning */
+  --color-amber-bg: #451A03;
+  --color-amber-border: #F59E0B;
+  --color-amber-text: #FEF3C7;
+
+  /* Typography */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   color-scheme: dark;
 }
 
@@ -17,7 +46,61 @@
 }
 
 body {
-  background-color: var(--bg-primary);
+  background-color: var(--bg-app);
   color: var(--text-primary);
+  font-family: var(--font-family);
   min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Accessible focus ring */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* Buttons & Interactive Elements */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Modals & Overlays */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  max-width: 680px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+  padding: 1.75rem;
+}
+
+/* Responsive Viewports per PRD §3.2 */
+@media (max-width: 767px) {
+  .modal-content {
+    padding: 1.25rem;
+  }
 }
