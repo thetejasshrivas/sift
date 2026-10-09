@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { calculatePreFlightEstimate } from '../ai';
 
 export interface PreFlightNoticeProps {
   rowCount: number;
@@ -20,10 +21,8 @@ export const PreFlightNotice: React.FC<PreFlightNoticeProps> = ({
   onStartNew,
   isAnalyzing
 }) => {
-  // Capacity estimation math per PRD §5.2, §5.4, IC-008
-  const pass1Calls = Math.ceil(rowCount / 50);
-  const pass2UpperBound = Math.min(8, Math.max(3, Math.ceil(pass1Calls * 0.8)));
-  const totalCallsEstimate = pass1Calls + pass2UpperBound;
+  // Capacity estimation math per PRD §5.2, §5.4, IC-008, DEC-PROVIDER
+  const estimate = calculatePreFlightEstimate(rowCount);
 
   return (
     <div
@@ -47,8 +46,9 @@ export const PreFlightNotice: React.FC<PreFlightNoticeProps> = ({
           </h4>
           <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
             Analyzing this dataset ({rowCount} records) will require approximately{' '}
-            <strong style={{ color: '#38BDF8' }}>{totalCallsEstimate} cloud AI calls</strong> ({pass1Calls} Pass-1 50-row
-            batches + ~{pass2UpperBound} Pass-2 theme consolidation calls) via serverless proxy to Google AI Studio.
+            <strong style={{ color: '#38BDF8' }}>{estimate.totalCalls} cloud AI calls</strong> ({estimate.pass1Calls} Pass-1 50-row
+            batches + up to {estimate.pass2CallsUpperBound} Pass-2 theme consolidation calls; estimated duration:{' '}
+            <strong style={{ color: '#38BDF8' }}>~{estimate.estimatedMinutes} min</strong> at 10 RPM pacing) via serverless proxy to Google AI Studio.
             Sift enforces zero payload logging on proxy infrastructure.
           </p>
         </div>

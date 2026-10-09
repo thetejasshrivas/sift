@@ -10,3 +10,4 @@ export * from './SchemaMappingGrid';
 export * from './DataQualityBanner';
 export * from './RowPreviewTable';
 export * from './PreFlightNotice';
+export * from './ProgressBar';

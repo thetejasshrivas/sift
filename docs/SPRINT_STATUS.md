@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | M2-A |
-| **Task Name** | Serverless proxy with security controls |
+| **Task ID** | M2-B |
+| **Task Name** | Client batching, provider calls, retries, pacing |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
 | **Started** | 2026-10-09 |
@@ -39,6 +39,7 @@
 | **G-M1B** | TS-002, TS-017, TS-024 logic tests pass with evidence | PASSED |
 | **G-M1C** | Screenshots (375/768/1280px) & network evidence saved in docs/evidence/m1/ | PASSED |
 | **G-M2A** | TS-016, TS-022, TS-023 and proxy unit tests PASS | PASSED |
+| **G-M2B** | TS-009, TS-012, TS-031, TS-033, TS-034 PASS (mocked) | PASSED |
 
 ## Blockers
 
@@ -63,10 +64,11 @@
 | **AG-AI-02** | Live provider smoke test (gemini-3.5-flash; Gate G-AI2 passed) | 2026-10-09 |
 | **AG-AI-03** | Capacity qualification & bounded burst test (Gate G-AI3 passed) | 2026-10-09 |
 | **AG-AI-04** | Provider decision record & privacy disclosure (Gate G-AI4 passed) | 2026-10-09 |
-| **M1-A** | CSV ingestion & smart schema mapping (Gate G-M1A passed) | 2026-10-09 |
-| **M1-B** | UNKNOWN handling, identity model, data-quality metrics (Gate G-M1B passed) | 2026-10-09 |
-| **M1-C** | Ingestion UI: dropzone, schema modal, quality summary, privacy notices (Gate G-M1C passed) | 2026-10-09 |
+| **AG-M1-A** | CSV ingestion & smart schema mapping (Gate G-M1A passed) | 2026-10-09 |
+| **AG-M1-B** | UNKNOWN handling, identity model, data-quality metrics (Gate G-M1B passed) | 2026-10-09 |
+| **AG-M1-C** | Ingestion UI: dropzone, schema modal, quality summary, privacy notices (Gate G-M1C passed) | 2026-10-09 |
 | **M2-A** | Serverless proxy with security controls (Gate G-M2A passed) | 2026-10-09 |
+| **M2-B** | Client batching, provider calls, retries, pacing (Gate G-M2B passed) | 2026-10-09 |
 
 ## Upcoming Tasks
 

@@ -22,8 +22,10 @@ import {
   SchemaMappingGrid,
   DataQualityBanner,
   RowPreviewTable,
-  PreFlightNotice
+  PreFlightNotice,
+  ProgressBar
 } from './ui';
+import { runPass1BatchPipeline, BatchPipelineProgress, BatchPipelineResult } from './ai';
 
 export const App: React.FC = () => {
   // Pure ephemeral React memory state (GAP-22: strictly no localStorage/sessionStorage/IndexedDB)
@@ -35,6 +37,9 @@ export const App: React.FC = () => {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [toast, setToast] = useState<{ type: 'error' | 'warning' | 'info'; message: string } | null>(null);
   const [analysisTriggered, setAnalysisTriggered] = useState(false);
+  const [pipelineProgress, setPipelineProgress] = useState<BatchPipelineProgress | null>(null);
+  const [abortController, setAbortController] = useState<AbortController | null>(null);
+  const [, setPipelineResult] = useState<BatchPipelineResult | null>(null);
 
   // File acceptance & parsing handler
   const handleFileAccepted = async (selectedFile: File) => {
@@ -136,10 +141,16 @@ export const App: React.FC = () => {
 
   // Reset all session state in ephemeral memory
   const handleConfirmStartNew = () => {
+    if (abortController) {
+      abortController.abort();
+    }
     setFile(null);
     setIngestionResult(null);
     setActiveMapping(null);
     setAnalysisTriggered(false);
+    setPipelineProgress(null);
+    setPipelineResult(null);
+    setAbortController(null);
     setIsConfirmDialogOpen(false);
     setToast({
       type: 'info',
@@ -147,13 +158,55 @@ export const App: React.FC = () => {
     });
   };
 
-  const handleAnalyze = () => {
-    if (!isTextMapped) return;
+  const handleCancel = () => {
+    if (abortController) {
+      abortController.abort();
+      setToast({
+        type: 'warning',
+        message: 'Analysis cancellation requested. Completing active operation...'
+      });
+    }
+  };
+
+  const handleAnalyze = async () => {
+    if (!isTextMapped || processedRows.length === 0) return;
+    const controller = new AbortController();
+    setAbortController(controller);
     setAnalysisTriggered(true);
-    setToast({
-      type: 'info',
-      message: 'Pre-flight check passed. Milestone 1 ingestion and schema validation complete.'
-    });
+
+    try {
+      const result = await runPass1BatchPipeline(processedRows, {
+        signal: controller.signal,
+        onProgress: (p) => setPipelineProgress(p),
+      });
+
+      setPipelineResult(result);
+
+      if (result.isCancelled) {
+        setToast({
+          type: 'warning',
+          message: 'Analysis cancelled. Processed batches are preserved.'
+        });
+      } else if (result.hasPartialFailures) {
+        setToast({
+          type: 'warning',
+          message: `Analysis completed with partial degradation (${result.failedFeedbackIds.length} items routed to unclustered feedback).`
+        });
+      } else {
+        setToast({
+          type: 'info',
+          message: `Batch analysis completed successfully! Identified ${result.allClusters.length} problem clusters.`
+        });
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setToast({
+        type: 'error',
+        message: `Pipeline encountered an error: ${msg}`
+      });
+    } finally {
+      setAbortController(null);
+    }
   };
 
   return (
@@ -414,6 +467,15 @@ export const App: React.FC = () => {
               rows={processedRows}
               totalRowCount={ingestionResult.rowCount}
             />
+
+            {/* Batch Analysis Progress Bar */}
+            {analysisTriggered && pipelineProgress && (
+              <ProgressBar
+                progress={pipelineProgress}
+                onCancel={handleCancel}
+                isCancelling={Boolean(abortController?.signal.aborted)}
+              />
+            )}
 
             {/* Pre-Flight Notice & Action Controls */}
             <PreFlightNotice
