@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
 **Last updated:** 2026-10-09  
-**Current sprint task:** AG-ARCH-03
+**Current sprint task:** AG-ARCH-04
 
 ---
 
@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | AG-ARCH-03 |
-| **Task Name** | Minimal vertical slice architecture setup & local server |
+| **Task ID** | AG-ARCH-04 |
+| **Task Name** | Local static server & verification |
 | **Status** | PENDING |
 | **Assigned to** | Antigravity agent |
 | **Started** | — |
@@ -29,6 +29,7 @@
 | **G-PF6** | Secret scan works; .env untracked; names-only .env.example committed | PASSED |
 | **G-A1** | Stack decision proposal with sourced facts exists | PASSED |
 | **G-A2** | Approved stack decision DEC-STACK recorded in docs/DECISIONS.md | PASSED |
+| **G-A3** | Dev, test, build, scan all run green on empty skeleton | PASSED |
 
 ## Blockers
 
@@ -47,12 +48,13 @@
 | **AG-PF-06** | Secret handling setup (scripts/secret-scan, names-only .env.example) | 2026-10-09 |
 | **AG-ARCH-01** | Evaluate stack options (no code; rescored matrix & proposal) | 2026-10-09 |
 | **AG-ARCH-02** | Record approved stack decision DEC-STACK | 2026-10-09 |
+| **AG-ARCH-03** | Scaffold project and folders (G-A3 all green) | 2026-10-09 |
 
 ## Upcoming Tasks
 
 | Task ID | Description | Depends on |
 |:---|:---|:---|
-| AG-ARCH-03 | Minimal vertical slice architecture setup & local server | G-A2 |
+| AG-ARCH-04 | Local static server & verification | G-A3 |
 | AG-PF-07 | Provider verification (TS-018 smoke test) | G-PF6 |
 | AG-M1-xx | Milestone 1 — Ingestion & Schema Pipeline | TS-018 PASS |
 | AG-M2-xx | Milestone 2 — Serverless Proxy & AI Pipeline | Milestone 1 |

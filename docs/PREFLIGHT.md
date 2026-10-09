@@ -602,7 +602,70 @@ failed to install playwright: could not install driver:
 
 **Gate G-A1: PASSED (Proposal with Sourced Facts Exists)**
 
+*AG-ARCH-01 written 2026-10-09. Governed by AGENTS.md Standing Contract.*
+
 ---
 
-*AG-ARCH-01 written 2026-10-09. Governed by AGENTS.md Standing Contract.*
+## AG-ARCH-03 — Project and Folder Scaffolding
+
+**Task:** AG-ARCH-03  
+**Executed by:** Antigravity IDE agent  
+**Execution date:** 2026-10-09  
+**Gate:** G-A3  
+**Status: PASSED**
+
+---
+
+### Scaffolding Details
+
+1. **Folder Architecture Created:**
+   - Client modules: `src/ingest`, `src/identity`, `src/ai`, `src/scoring`, `src/verify`, `src/outputs`, `src/ui`, `src/types`
+   - Serverless proxy: `api/`
+   - Test suites: `tests/unit`, `tests/integration`, `tests/e2e`
+   - Fixtures: `fixtures/`
+2. **Pinned Dependencies Installed (`package.json`):**
+   - Production: `react` (18.3.1), `react-dom` (18.3.1), `papaparse` (5.4.1), `ajv` (8.17.1)
+   - Development: `typescript` (5.6.3), `vite` (5.4.10), `@vitejs/plugin-react` (4.3.3), `vitest` (2.1.4), `@types/react` (18.3.12), `@types/react-dom` (18.3.1), `@types/papaparse` (5.3.14), `@types/node` (22.8.1)
+   - Single lockfile generated: `package-lock.json`
+3. **Configuration & Core Files Created:**
+   - `tsconfig.json` (ES2022, bundler module resolution, strict typechecking)
+   - `vite.config.ts` (React plugin, port 5173)
+   - `vitest.config.ts` (node environment, test discovery)
+   - `index.html` (Vite SPA HTML entry)
+   - `src/main.tsx` & `src/App.tsx` (minimal React mount)
+   - `src/index.css` (design tokens and reset)
+   - `api/health.ts` (Cloudflare Workers serverless health endpoint)
+   - `tests/unit/smoke.test.ts` (trivial passing assertions & health endpoint test)
+4. **Environment Variables:**
+   - Updated `.env.example` with architecture comments and variable names (zero secrets).
+
+---
+
+### Command Verification Proof (Gate G-A3)
+
+| Command | Script / Target | Exit Code | Raw Output / Result | Status |
+|:---|:---|:---|:---|:---|
+| `npm run dev` | `vite` | 0 (daemon) | `VITE v5.4.10 ready in 247 ms` on `http://localhost:5173/` | ✅ GREEN |
+| `npm test` | `vitest run` | 0 | `1 passed (1)`, `2 passed (2)` in `330ms` | ✅ GREEN |
+| `npm run build` | `tsc && vite build` | 0 | `31 modules transformed`, built in `390ms` (`dist/` created) | ✅ GREEN |
+| `npm run scan:secrets` | `node scripts/secret-scan.js` | 0 | `NO MATCH: No secrets detected in working tree or git history.` | ✅ GREEN |
+| `npm run lint` | `tsc --noEmit` | 0 | TypeScript strict check passed with zero diagnostics | ✅ GREEN |
+
+---
+
+### Gate G-A3 Assessment
+
+| Criterion | Finding / Evidence | Status |
+|:---|:---|:---|
+| Project scaffolded per DEC-STACK without overwriting docs/ or AGENTS.md | Preserved all docs and rules; single lockfile `package-lock.json` kept | ✅ PASSED |
+| Required folders created | All 13 folders created (`src/*`, `api`, `tests/*`, `fixtures`) | ✅ PASSED |
+| Scripts added (`dev`, `build`, `test`, `lint`, `scan:secrets`) | Configured in `package.json` | ✅ PASSED |
+| One trivial passing test + one health route added | `tests/unit/smoke.test.ts` + `api/health.ts` | ✅ PASSED |
+| `dev`, `test`, `build`, `scan:secrets` all run green | Verified with exit code 0 on all four commands | ✅ PASSED |
+
+**Gate G-A3: PASSED (All Scripts Green on Empty Skeleton)**
+
+---
+
+*AG-ARCH-03 written 2026-10-09. Governed by AGENTS.md Standing Contract.*
 
