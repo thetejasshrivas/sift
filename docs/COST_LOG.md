@@ -30,8 +30,18 @@
 
 | Service | Free Tier Limit | Current Usage | Status |
 |:---|:---|:---|:---|
-| AI Provider (TBD — pending TS-018) | Unknown until verified | 0 | REQUIRES VERIFICATION |
-| Serverless proxy hosting (TBD — OPT-001) | Sourced facts recorded below | 0 | PENDING FOUNDER DECISION |
+| AI Provider (Google AI Studio: `rich-crowbar-463013-e0`) | Free tier; zero billing confirmed; limits pending TS-018 | 0 | AUDITED (TS-018 pending) |
+| Serverless proxy hosting (Cloudflare Workers) | 100,000 req/day; 10ms CPU/req; 128MB | 0 | APPROVED (DEC-STACK) |
+
+---
+
+## AI Provider Account GUI Audit (AG-AI-01 / Gate G-AI1)
+
+*Audited via cloud AI provider web console (e.g., Google AI Studio / GCP Console). Governed by IC-007 and IC-009 (billing state must be confirmed directly from console dashboard, never inferred).*
+
+| Provider | Project | Models Visible | Tier | Limits | Billing State | Card Required? | Date Checked | Source |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| **Google AI Studio** | `rich-crowbar-463013-e0` | None listed in console (standard studio default pool) | Free Tier | None listed in console (standard free-tier quota applies) | `free` (None / No billing linked) | **No** | 2026-10-09 | `https://aistudio.google.com/` |
 
 ---
 

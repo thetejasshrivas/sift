@@ -31,6 +31,7 @@
 | **G-A2** | Approved stack decision DEC-STACK recorded in docs/DECISIONS.md | PASSED |
 | **G-A3** | Dev, test, build, scan all run green on empty skeleton | PASSED |
 | **G-A4** | Arch skeleton verified, docs/ARCHITECTURE.md written, tagged arch-skeleton | PASSED |
+| **G-AI1** | Key exists locally; billing=none confirmed from dashboard; limits recorded | PASSED |
 
 ## Blockers
 
@@ -51,6 +52,7 @@
 | **AG-ARCH-02** | Record approved stack decision DEC-STACK | 2026-10-09 |
 | **AG-ARCH-03** | Scaffold project and folders (G-A3 all green) | 2026-10-09 |
 | **AG-ARCH-04** | Local static server & verification (Gate G-A4 passed) | 2026-10-09 |
+| **AG-AI-01** | Founder audits AI provider account (GUI; Gate G-AI1 passed) | 2026-10-09 |
 
 ## Upcoming Tasks
 
