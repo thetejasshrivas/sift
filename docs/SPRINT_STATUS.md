@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | M1-C |
-| **Task Name** | Ingestion UI: dropzone, schema modal, quality summary, privacy notices |
+| **Task ID** | M2-A |
+| **Task Name** | Serverless proxy with security controls |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
 | **Started** | 2026-10-09 |
@@ -38,6 +38,7 @@
 | **G-M1A** | Ingestion unit tests pass with evidence (REQ-001, REQ-002, TS-001, TS-010) | PASSED |
 | **G-M1B** | TS-002, TS-017, TS-024 logic tests pass with evidence | PASSED |
 | **G-M1C** | Screenshots (375/768/1280px) & network evidence saved in docs/evidence/m1/ | PASSED |
+| **G-M2A** | TS-016, TS-022, TS-023 and proxy unit tests PASS | PASSED |
 
 ## Blockers
 
@@ -65,6 +66,7 @@
 | **M1-A** | CSV ingestion & smart schema mapping (Gate G-M1A passed) | 2026-10-09 |
 | **M1-B** | UNKNOWN handling, identity model, data-quality metrics (Gate G-M1B passed) | 2026-10-09 |
 | **M1-C** | Ingestion UI: dropzone, schema modal, quality summary, privacy notices (Gate G-M1C passed) | 2026-10-09 |
+| **M2-A** | Serverless proxy with security controls (Gate G-M2A passed) | 2026-10-09 |
 
 ## Upcoming Tasks
 

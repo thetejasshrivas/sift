@@ -49,6 +49,7 @@ These decisions are **frozen** and must not be reopened without explicit founder
 | 2026-10-09 | AG-PF-03 | **DEC-PF03** (Status: APPROVED) — Founder approved Option B fallback for AG-PF-03. Browser automation tool is NOT AVAILABLE due to Playwright driver CDN HTTP 404. Approved fallback: manual founder inspection checklist for all visual QA gates (M1-C, M4). No claim of automated browser QA will be made. | Antigravity IDE browser tool fails to acquire `playwright-1.57.0-win32_x64.zip` from Microsoft/Akamai/Verizon CDNs (HTTP 404). Option B approved to avoid blocking sprint while maintaining visual QA rigor via manual founder testing. |
 | 2026-10-09 | AG-ARCH-02 | **DEC-STACK (APPROVED)** — Founder approved full technology stack proposal: Vite + React + TypeScript + Cloudflare Workers / Pages (Status: APPROVED). | Formally approved by founder following AG-ARCH-01 evaluation. Rescored matrix: Cloudflare 33/35 vs Vercel 23/35. Zero additional cost, commercial use permitted, native rate-limiting, and unbounded network wait. |
 | 2026-10-09 | AG-AI-04 | **DEC-PROVIDER (APPROVED)** — Approved AI inference provider (`Google AI Studio`) and model (`gemini-3.5-flash`). Zero billing confirmed, schema valid, capacity qualified (Gate G-AI4 passed). UI disclosure text drafted. | Live verification TS-018 passed (HTTP 200, Ajv valid on PRD §5.3 schema, 6/6 burst 0x 429). Free-tier allowances fit 300-row baseline (1% RPD) and 2,000-row maximum (5.2% RPD). Model ID read dynamically from env `AI_MODEL`. |
+| 2026-10-09 | M2-A | **DEC-PROXY (IMPLEMENTED)** — Serverless proxy security controls, rate limiting, and origin hygiene. | Implemented POST /api/cluster: method/content-type validation, PRD §9.2 request schema, PRD §5.3 response schema, 2MB payload cap (TS-016), max 50 items/batch, per-item text cap (4,000 chars), ALLOWED_ORIGIN browser hygiene (IC-010), platform-native rate limiting check at ₹0 with instance-local 10 RPM fallback, model locking (AI_MODEL), zero payload logging (TS-022), and zero secret echo (TS-023). |
 
 ---
 
@@ -119,6 +120,34 @@ To satisfy `PRD §11.3`, `DEC-007`, and `IC-011`, the following disclosure text 
 - Upstream provider-side data retention, processing, and potential model training terms are governed solely by the provider's terms of service:
   - Google AI Studio Terms of Service: [https://ai.google.dev/terms](https://ai.google.dev/terms) (Status: `UNVERIFIED` until founder reviews).
   - Google Generative AI Additional Terms of Service: [https://policies.google.com/terms](https://policies.google.com/terms).
+
+---
+
+### DEC-PROXY (IMPLEMENTED) — Serverless Proxy Security Controls, Rate Limiting & Origin Hygiene
+
+- **Decision ID:** `DEC-PROXY`
+- **Status:** IMPLEMENTED
+- **Date:** 2026-10-09
+- **Endpoint:** `POST /api/cluster`
+- **Browser-Origin Hygiene Policy (`ALLOWED_ORIGIN`):**
+  - Origin headers are checked against the `ALLOWED_ORIGIN` environment variable (defaults to `http://localhost:5173,http://127.0.0.1:5173`).
+  - Requests with unrecognized origins are rejected with `HTTP 403 Forbidden` (`ORIGIN_FORBIDDEN`).
+  - **Explicit Architectural Documentation:** This check constitutes **browser-origin hygiene only**. CORS is **NOT** authentication; non-browser scripts and cURL can freely forge request headers.
+- **Rate Limiting Architecture & Serverless Limitation (`IC-010`):**
+  - Evaluates platform-native Cloudflare Workers rate limiting binding (`env.RATE_LIMITER.limit()`) at ₹0 (included within the 100,000 req/day free tier).
+  - In environments without platform bindings (local development, vitest execution, or non-Cloudflare runtimes), the proxy enforces best-effort instance-local sliding-window throttling (default: 10 RPM / IP per `PRD §9.3`).
+  - **Explicit Operational Limitation:** Counters in the instance-local fallback are maintained in-memory per serverless instance / isolate. They are **not globally reliable or synchronized** across multiple concurrent edge execution instances.
+- **Payload & Batch Caps:**
+  - Total payload size cap: $\le 2\text{ MB}$ (`MAX_PAYLOAD_BYTES = 2097152`). Payloads exceeding 2 MB return `HTTP 413 Payload Too Large` (`TS-016`).
+  - Batch item cap: $\le 50$ items per request (`MAX_ITEMS_PER_BATCH = 50`).
+  - Per-item text cap: $\le 4,000$ characters per feedback row (`PER_ITEM_TEXT_CAP = 4000`), protecting upstream token budgets.
+- **Model Locking & Secret Protection (`TS-023`):**
+  - Model ID is read exclusively from the server environment variable `AI_MODEL` (`gemini-3.5-flash`), strictly ignoring any model parameter provided in client payloads.
+  - API key is loaded exclusively from `AI_API_KEY` on the server.
+  - The proxy strictly never echoes keys or authorization headers in response payloads or headers.
+- **Zero-Payload Logging (`IC-011` / `TS-022`):**
+  - Application code strictly logs only non-PII operational metrics: status code, `batch_index`, item count, and latency in milliseconds.
+  - Feedback text, customer identifiers, and raw payloads are never logged.
 
 ---
 

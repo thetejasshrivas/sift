@@ -23,6 +23,7 @@
 | Date | Task | Service | Action | Cost | Notes |
 |:---|:---|:---|:---|:---|:---|
 | 2026-10-09 | AG-PF-00 | None | Tracking file created | Rs. 0 | No services provisioned |
+| 2026-10-09 | M2-A | Cloudflare Workers Rate Limiting | Platform-native rate limit evaluation at ₹0 | Rs. 0 | Evaluated platform-native Rate Limiting API at ₹0 (included in 100k req/day free tier). Proxy code evaluates env.RATE_LIMITER at ₹0 and falls back to instance-local throttling (10 RPM) when unattached. |
 
 ---
 
@@ -32,6 +33,7 @@
 |:---|:---|:---|:---|
 | AI Provider (Google AI Studio: `rich-crowbar-463013-e0`) | Model: `gemini-3.5-flash`; Free tier (zero billing); ~3,083 in / 2,696 out tokens per 50-row batch | 1 batch (~13.5k tokens total) | VERIFIED LIVE (Gate G-AI2 PASSED) |
 | Serverless proxy hosting (Cloudflare Workers) | 100,000 req/day; 10ms CPU/req; 128MB | 0 | APPROVED (DEC-STACK) |
+| Cloudflare Rate Limiting Binding | Native Workers Rate Limiting API included in 100k req/day quota at ₹0 | 0 | EVALUATED & SUPPORTED (M2-A) |
 
 ---
 
