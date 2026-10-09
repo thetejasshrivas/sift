@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
 **Last updated:** 2026-10-09  
-**Current sprint task:** AG-ARCH-04
+**Current sprint task:** AG-PF-07
 
 ---
 
@@ -9,9 +9,9 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | AG-ARCH-04 |
-| **Task Name** | Local static server & verification |
-| **Status** | PENDING |
+| **Task ID** | AG-PF-07 |
+| **Task Name** | Provider verification (TS-018 smoke test) |
+| **Status** | READY |
 | **Assigned to** | Antigravity agent |
 | **Started** | — |
 | **Completed** | — |
@@ -30,6 +30,7 @@
 | **G-A1** | Stack decision proposal with sourced facts exists | PASSED |
 | **G-A2** | Approved stack decision DEC-STACK recorded in docs/DECISIONS.md | PASSED |
 | **G-A3** | Dev, test, build, scan all run green on empty skeleton | PASSED |
+| **G-A4** | Arch skeleton verified, docs/ARCHITECTURE.md written, tagged arch-skeleton | PASSED |
 
 ## Blockers
 
@@ -49,13 +50,13 @@
 | **AG-ARCH-01** | Evaluate stack options (no code; rescored matrix & proposal) | 2026-10-09 |
 | **AG-ARCH-02** | Record approved stack decision DEC-STACK | 2026-10-09 |
 | **AG-ARCH-03** | Scaffold project and folders (G-A3 all green) | 2026-10-09 |
+| **AG-ARCH-04** | Local static server & verification (Gate G-A4 passed) | 2026-10-09 |
 
 ## Upcoming Tasks
 
 | Task ID | Description | Depends on |
 |:---|:---|:---|
-| AG-ARCH-04 | Local static server & verification | G-A3 |
-| AG-PF-07 | Provider verification (TS-018 smoke test) | G-PF6 |
+| AG-PF-07 | Provider verification (TS-018 smoke test) | G-PF6, G-A4 |
 | AG-M1-xx | Milestone 1 — Ingestion & Schema Pipeline | TS-018 PASS |
 | AG-M2-xx | Milestone 2 — Serverless Proxy & AI Pipeline | Milestone 1 |
 | AG-M3-xx | Milestone 3 — Deterministic Scoring Engine | Milestone 2 |
