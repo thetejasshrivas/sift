@@ -1,0 +1,110 @@
+{
+  "timestamp": "2026-10-10T12:26:14.214Z",
+  "gate": "G-M3B",
+  "ts006": {
+    "initialState": {
+      "pImpact": "40%",
+      "pFreq": "40%",
+      "pSev": "20%",
+      "dotFn": "0.7273",
+      "dotIn": "0.7500",
+      "cards": [
+        {
+          "id": "CLUST-02",
+          "rank": "1",
+          "score": "86.7",
+          "fn": "1.0000",
+          "in": "1.0000"
+        },
+        {
+          "id": "CLUST-01",
+          "rank": "2",
+          "score": "79.1",
+          "fn": "0.7273",
+          "in": "0.7500"
+        },
+        {
+          "id": "CLUST-03",
+          "rank": "3",
+          "score": "79.1",
+          "fn": "0.7273",
+          "in": "0.7500"
+        },
+        {
+          "id": "CLUST-04",
+          "rank": "4",
+          "score": "72.4",
+          "fn": "0.7273",
+          "in": "0.7500"
+        },
+        {
+          "id": "CLUST-05",
+          "rank": "5",
+          "score": "37.9",
+          "fn": "0.3636",
+          "in": "0.4167"
+        }
+      ]
+    },
+    "postSlider100State": {
+      "pImpact": "63%",
+      "pFreq": "25%",
+      "pSev": "13%",
+      "dotFn": "0.7273",
+      "dotIn": "0.7500",
+      "cards": [
+        {
+          "id": "CLUST-02",
+          "rank": "1",
+          "score": "91.7",
+          "fn": "1.0000",
+          "in": "1.0000"
+        },
+        {
+          "id": "CLUST-01",
+          "rank": "2",
+          "score": "77.6",
+          "fn": "0.7273",
+          "in": "0.7500"
+        },
+        {
+          "id": "CLUST-03",
+          "rank": "3",
+          "score": "77.6",
+          "fn": "0.7273",
+          "in": "0.7500"
+        },
+        {
+          "id": "CLUST-04",
+          "rank": "4",
+          "score": "73.4",
+          "fn": "0.7273",
+          "in": "0.7500"
+        },
+        {
+          "id": "CLUST-05",
+          "rank": "5",
+          "score": "39.3",
+          "fn": "0.3636",
+          "in": "0.4167"
+        }
+      ]
+    },
+    "resetState": {
+      "pImpact": "40%",
+      "pFreq": "40%",
+      "pSev": "20%"
+    },
+    "coordinateStationary": true,
+    "rankingReordered": true
+  },
+  "tooltipText": "Score Formula Breakdown\nDeterministic Hybrid Priority Score (MDD §3.12)\nImpact Score / Tier-Weighted Impact:\n100 × 0.40 × 0.75 (Raw I_c: 18.0)\n+ 30.0\nFrequency Component:\n100 × 0.40 × 0.73 (8 accts, 12 rows)\n+ 29.1\nSeverity Component:\n100 × 0.20 × 1.00 (Rating: Level 3/3)\n+ 20.0\nFinal Priority Score:\n79.1 / 100\nP_c = Round_1(100 * [0.40 * 0.75 + 0.40 * 0.73 + 0.20 * 1.00]) = 79.1",
+  "consoleErrorsCount": 0,
+  "screenshots": [
+    "docs/evidence/m3/m3b_desktop_1280px.png",
+    "docs/evidence/m3/m3b_tablet_768px.png",
+    "docs/evidence/m3/m3b_mobile_375px.png",
+    "docs/evidence/m3/m3b_impact_100_1280px.png",
+    "docs/evidence/m3/m3b_tooltip_breakdown.png"
+  ]
+}

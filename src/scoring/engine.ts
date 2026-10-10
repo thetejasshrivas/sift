@@ -31,13 +31,15 @@ export const IMPACT_LABEL = 'Impact Score / Tier-Weighted Impact' as const;
  */
 export function calculateClusterRawMetrics(
   memberFeedbackIds: string[],
-  rows: ProcessedFeedbackRow[],
+  rows: ProcessedFeedbackRow[] | Map<string, ProcessedFeedbackRow>,
   severityRating: number
 ): ClusterScoringMetrics {
-  const rowMap = new Map<string, ProcessedFeedbackRow>();
-  for (const r of rows) {
-    rowMap.set(r.identity.feedbackId, r);
-  }
+  const rowMap =
+    rows instanceof Map
+      ? rows
+      : new Map<string, ProcessedFeedbackRow>(
+          rows.map((r) => [r.identity?.feedbackId, r])
+        );
 
   // Account -> array of raw tier strings
   const confirmedAccountTiers = new Map<string, string[]>();
@@ -202,6 +204,14 @@ export function scoreAndRankClusters(
   const weights = normalizeSliderWeights(sliderWeights);
   const totalRows = rows.length;
 
+  // Build rowMap once for O(1) row lookups across all clusters
+  const rowMap = new Map<string, ProcessedFeedbackRow>();
+  for (const r of rows) {
+    if (r.identity?.feedbackId) {
+      rowMap.set(r.identity.feedbackId, r);
+    }
+  }
+
   // 1. Segregate standard clusters from CLUST-UNC bucket (GAP-11)
   const standardClusters: ReconciledCluster[] = [];
   let rawUnclusteredCluster: ReconciledCluster | null = null;
@@ -218,7 +228,7 @@ export function scoreAndRankClusters(
   const standardWithRaw = standardClusters.map((cluster) => {
     const rawMetrics = calculateClusterRawMetrics(
       cluster.member_feedback_ids || [],
-      rows,
+      rowMap,
       cluster.severity_rating || 1
     );
     return { cluster, rawMetrics };
@@ -296,7 +306,7 @@ export function scoreAndRankClusters(
   if (rawUnclusteredCluster) {
     const rawMetrics = calculateClusterRawMetrics(
       rawUnclusteredCluster.member_feedback_ids || [],
-      rows,
+      rowMap,
       1
     );
     const normalized: ClusterNormalizedMetrics = {

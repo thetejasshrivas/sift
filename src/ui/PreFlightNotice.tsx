@@ -11,6 +11,7 @@ export interface PreFlightNoticeProps {
   isTextMapped: boolean;
   onAnalyze: () => void;
   onStartNew: () => void;
+  onLoadDemoClusters?: () => void;
   isAnalyzing?: boolean;
 }
 
@@ -19,6 +20,7 @@ export const PreFlightNotice: React.FC<PreFlightNoticeProps> = ({
   isTextMapped,
   onAnalyze,
   onStartNew,
+  onLoadDemoClusters,
   isAnalyzing
 }) => {
   // Capacity estimation math per PRD §5.2, §5.4, IC-008, DEC-PROVIDER
@@ -80,7 +82,29 @@ export const PreFlightNotice: React.FC<PreFlightNoticeProps> = ({
           ↺ Start New Analysis
         </button>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          {onLoadDemoClusters && (
+            <button
+              id="btn-preview-demo-clusters"
+              type="button"
+              onClick={onLoadDemoClusters}
+              disabled={isAnalyzing}
+              style={{
+                padding: '0.625rem 1.125rem',
+                backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                color: '#38BDF8',
+                border: '1px solid rgba(56, 189, 248, 0.35)',
+                borderRadius: '6px',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+              title="Instantly view clusters, calibration sliders, and 2x2 matrix without cloud AI calls"
+            >
+              ⚡ Instant Workspace Demo (Offline Preview)
+            </button>
+          )}
+
           {!isTextMapped && (
             <span style={{ fontSize: '0.8rem', color: '#FCA5A5', fontWeight: 500 }}>
               ⚠️ Raw Feedback Text must be mapped

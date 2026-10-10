@@ -24,13 +24,22 @@ import {
   RowPreviewTable,
   PreFlightNotice,
   ProgressBar,
-  ReconciliationDiagnostics
+  ReconciliationDiagnostics,
+  CalibrationBar,
+  SpatialMatrixView,
+  RankedCardList
 } from './ui';
 import {
   runTwoPassClusteringPipeline,
   BatchPipelineProgress,
-  TwoPassPipelineResult
+  TwoPassPipelineResult,
+  createBenchmarkClusters
 } from './ai';
+import {
+  scoreAndRankClusters,
+  DEFAULT_SLIDER_WEIGHTS
+} from './scoring';
+import { SliderWeights } from './types/scoring';
 
 export const App: React.FC = () => {
   // Pure ephemeral React memory state (GAP-22: strictly no localStorage/sessionStorage/IndexedDB)
@@ -45,6 +54,8 @@ export const App: React.FC = () => {
   const [pipelineProgress, setPipelineProgress] = useState<BatchPipelineProgress | null>(null);
   const [abortController, setAbortController] = useState<AbortController | null>(null);
   const [twoPassResult, setTwoPassResult] = useState<TwoPassPipelineResult | null>(null);
+  const [sliderWeights, setSliderWeights] = useState<SliderWeights>(DEFAULT_SLIDER_WEIGHTS);
+  const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
 
   // File acceptance & parsing handler
   const handleFileAccepted = async (selectedFile: File) => {
@@ -147,6 +158,14 @@ export const App: React.FC = () => {
     };
   }, [ingestionResult, activeMapping]);
 
+  // Scored dataset computation with live 60-FPS slider calibration (PRD REQ-008 & REQ-009)
+  const scoredDataset = useMemo(() => {
+    if (!twoPassResult || !twoPassResult.finalClusters.length || !processedRows.length) {
+      return null;
+    }
+    return scoreAndRankClusters(twoPassResult.finalClusters, processedRows, sliderWeights);
+  }, [twoPassResult, processedRows, sliderWeights]);
+
   // Reset all session state in ephemeral memory
   const handleConfirmStartNew = () => {
     if (abortController) {
@@ -159,10 +178,23 @@ export const App: React.FC = () => {
     setPipelineProgress(null);
     setTwoPassResult(null);
     setAbortController(null);
+    setSliderWeights(DEFAULT_SLIDER_WEIGHTS);
+    setSelectedClusterId(null);
     setIsConfirmDialogOpen(false);
     setToast({
       type: 'info',
       message: 'Session state cleared. All in-memory data purged.'
+    });
+  };
+
+  // Instant demo clusters loader for offline exploration and benchmark validation
+  const handleLoadDemoClusters = () => {
+    if (!processedRows.length) return;
+    const demoResult = createBenchmarkClusters(processedRows);
+    setTwoPassResult(demoResult);
+    setToast({
+      type: 'info',
+      message: `Loaded ${demoResult.finalClusters.length} benchmark clusters for calibration & discovery matrix preview.`,
     });
   };
 
@@ -529,8 +561,69 @@ export const App: React.FC = () => {
               isTextMapped={isTextMapped}
               onAnalyze={handleAnalyze}
               onStartNew={() => setIsConfirmDialogOpen(true)}
+              onLoadDemoClusters={handleLoadDemoClusters}
               isAnalyzing={analysisTriggered}
             />
+
+            {/* M3-B Interactive Calibration & Dual-View Workspace */}
+            {scoredDataset && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginTop: '0.5rem' }}>
+                {/* Calibration Bar (60-FPS RAF batching) */}
+                <CalibrationBar
+                  weights={sliderWeights}
+                  onWeightsChange={(newWeights) => setSliderWeights(newWeights)}
+                />
+
+                {/* Dataset Sample Size Warning Banner (GAP-02) */}
+                {scoredDataset.warningBanner && (
+                  <div
+                    id="sample-size-warning-banner"
+                    role="alert"
+                    style={{
+                      backgroundColor: 'rgba(217, 119, 6, 0.12)',
+                      border: '1px solid rgba(217, 119, 6, 0.35)',
+                      borderRadius: '8px',
+                      padding: '0.85rem 1.25rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      fontSize: '0.85rem',
+                      color: '#FBBF24',
+                    }}
+                  >
+                    <span aria-hidden="true" style={{ fontSize: '1.1rem' }}>⚠️</span>
+                    <div>
+                      <strong>Data Quality Notice:</strong> {scoredDataset.warningBanner}
+                    </div>
+                  </div>
+                )}
+
+                {/* Dual-View Discovery Workspace (2x2 Matrix + Ranked Cards) */}
+                <div
+                  id="dual-view-workspace"
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
+                    gap: '1.5rem',
+                    alignItems: 'start',
+                  }}
+                >
+                  {/* Left Column: 2x2 Spatial Matrix */}
+                  <SpatialMatrixView
+                    clusters={scoredDataset.scoredClusters}
+                    selectedClusterId={selectedClusterId}
+                    onSelectCluster={(id) => setSelectedClusterId(id)}
+                  />
+
+                  {/* Right Column: Ranked Card List */}
+                  <RankedCardList
+                    clusters={scoredDataset.scoredClusters}
+                    selectedClusterId={selectedClusterId}
+                    onSelectCluster={(id) => setSelectedClusterId(id)}
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Reconciliation Diagnostics Panel & Uncertainty Badges (M2-C / M2-D) */}
             {twoPassResult && (

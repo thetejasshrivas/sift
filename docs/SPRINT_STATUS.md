@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
 **Last updated:** 2026-10-10  
-**Current sprint task:** M3-A (DONE)
+**Current sprint task:** M3-B (DONE)
 
 ---
 
@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | M3-A |
-| **Task Name** | Deterministic scoring engine (pure functions) |
+| **Task ID** | M3-B |
+| **Task Name** | Sliders, reset, and 60-FPS re-ranking |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
 | **Started** | 2026-10-10 |
@@ -44,6 +44,7 @@
 | **G-M2D** | TS-007, TS-009, TS-013(logic), TS-037 PASS | PASSED |
 | **G-M2** | Full Milestone 2 end-to-end pipeline qualified live on 300 rows (TS-018, 15/15 calls HTTP 200, 1:1 ID integrity, ₹0 billing) | PASSED |
 | **G-M3A** | TS-003, TS-008, TS-011 + hand-calculated vector suite PASS (REQ-008, MDD §3.5) | PASSED |
+| **G-M3B** | TS-006 PASS (logic + browser coordinate evidence, stationary invariant verified) | PASSED |
 
 ## Blockers
 
@@ -77,6 +78,7 @@
 | **M2-D** | Hypotheses, placeholders, fallback and partial-analysis state (Gate G-M2D passed) | 2026-10-10 |
 | **M2-E** | Live qualification run on 300-row fixture & Gate G-M2 verification (Gate G-M2 passed) | 2026-10-10 |
 | **M3-A** | Deterministic scoring engine (pure functions) (Gate G-M3A passed) | 2026-10-10 |
+| **M3-B** | Sliders, reset, and 60-FPS re-ranking (Gate G-M3B passed) | 2026-10-10 |
 
 
 ## Upcoming Tasks

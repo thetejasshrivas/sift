@@ -9,4 +9,5 @@ export * from './batching';
 export * from './clientPipeline';
 export * from './assembly';
 export * from './reconciliation';
+export * from './mockClusters';
 
