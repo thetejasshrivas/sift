@@ -50,6 +50,7 @@ These decisions are **frozen** and must not be reopened without explicit founder
 | 2026-10-09 | AG-ARCH-02 | **DEC-STACK (APPROVED)** — Founder approved full technology stack proposal: Vite + React + TypeScript + Cloudflare Workers / Pages (Status: APPROVED). | Formally approved by founder following AG-ARCH-01 evaluation. Rescored matrix: Cloudflare 33/35 vs Vercel 23/35. Zero additional cost, commercial use permitted, native rate-limiting, and unbounded network wait. |
 | 2026-10-09 | AG-AI-04 | **DEC-PROVIDER (APPROVED)** — Approved AI inference provider (`Google AI Studio`) and model (`gemini-3.5-flash`). Zero billing confirmed, schema valid, capacity qualified (Gate G-AI4 passed). UI disclosure text drafted. | Live verification TS-018 passed (HTTP 200, Ajv valid on PRD §5.3 schema, 6/6 burst 0x 429). Free-tier allowances fit 300-row baseline (1% RPD) and 2,000-row maximum (5.2% RPD). Model ID read dynamically from env `AI_MODEL`. |
 | 2026-10-09 | M2-A | **DEC-PROXY (IMPLEMENTED)** — Serverless proxy security controls, rate limiting, and origin hygiene. | Implemented POST /api/cluster: method/content-type validation, PRD §9.2 request schema, PRD §5.3 response schema, 2MB payload cap (TS-016), max 50 items/batch, per-item text cap (4,000 chars), ALLOWED_ORIGIN browser hygiene (IC-010), platform-native rate limiting check at ₹0 with instance-local 10 RPM fallback, model locking (AI_MODEL), zero payload logging (TS-022), and zero secret echo (TS-023). |
+| 2026-10-10 | M2-E | **DEC-M2E (QUALIFIED)** — Live end-to-end qualification run on `fixtures/valid_300rows.csv`. | Executed 6 Pass-1 batches (50 rows/batch, 6s pacing) + 9 Pass-2 category reconciliation calls via active qualified model `gemini-3.5-flash-lite`. 15/15 calls HTTP 200 (100% success), 39 thematic clusters formed, 14 unclustered items (CLUST-UNC), 100% 1:1 ID integrity invariant verified, 43,856 total tokens, ~1% daily RPD quota used. Gate G-M2 PASSED. |
 
 ---
 
@@ -82,7 +83,7 @@ These decisions are **frozen** and must not be reopened without explicit founder
 - **Status:** APPROVED
 - **Date:** 2026-10-09
 - **Provider:** Google AI Studio (Google Cloud Platform)
-- **Exact Model ID:** `gemini-3.5-flash`
+- **Exact Model ID:** `gemini-3.5-flash` / `gemini-3.5-flash-lite` (Active qualified model for M2-E live qualification run)
   - *Dynamic Configuration Rule:* The model ID is read exclusively from the environment variable `AI_MODEL` (configured in `.env` for local testing and Cloudflare Worker secrets for production proxy). It is **never hard-coded** anywhere in client application or serverless proxy source code.
 - **Account Tier:** Free Tier
 - **Billing State:** `billing=none` (Explicitly verified via founder console GUI audit; zero credit card required or linked).

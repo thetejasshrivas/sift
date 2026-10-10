@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
 **Last updated:** 2026-10-10  
-**Current sprint task:** M2-D
+**Current sprint task:** M2-E (DONE)
 
 ---
 
@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | M2-D |
-| **Task Name** | Hypotheses, placeholders, fallback and partial-analysis state |
+| **Task ID** | M2-E |
+| **Task Name** | Live qualification run on synthetic 300-row fixture & Gate G-M2 verification |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
 | **Started** | 2026-10-10 |
@@ -42,6 +42,7 @@
 | **G-M2B** | TS-009, TS-012, TS-031, TS-033, TS-034 PASS (mocked) | PASSED |
 | **G-M2C** | TS-019, TS-026 and ID-integrity tests PASS | PASSED |
 | **G-M2D** | TS-007, TS-009, TS-013(logic), TS-037 PASS | PASSED |
+| **G-M2** | Full Milestone 2 end-to-end pipeline qualified live on 300 rows (TS-018, 15/15 calls HTTP 200, 1:1 ID integrity, ₹0 billing) | PASSED |
 
 ## Blockers
 
@@ -73,6 +74,7 @@
 | **M2-B** | Client batching, provider calls, retries, pacing (Gate G-M2B passed) | 2026-10-09 |
 | **M2-C** | Pass 1 assembly, ID integrity, Pass 2 reconciliation (Gate G-M2C passed) | 2026-10-10 |
 | **M2-D** | Hypotheses, placeholders, fallback and partial-analysis state (Gate G-M2D passed) | 2026-10-10 |
+| **M2-E** | Live qualification run on 300-row fixture & Gate G-M2 verification (Gate G-M2 passed) | 2026-10-10 |
 
 
 ## Upcoming Tasks

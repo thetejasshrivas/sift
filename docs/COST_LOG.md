@@ -24,6 +24,7 @@
 |:---|:---|:---|:---|:---|:---|
 | 2026-10-09 | AG-PF-00 | None | Tracking file created | Rs. 0 | No services provisioned |
 | 2026-10-09 | M2-A | Cloudflare Workers Rate Limiting | Platform-native rate limit evaluation at ₹0 | Rs. 0 | Evaluated platform-native Rate Limiting API at ₹0 (included in 100k req/day free tier). Proxy code evaluates env.RATE_LIMITER at ₹0 and falls back to instance-local throttling (10 RPM) when unattached. |
+| 2026-10-10 | M2-E | Google AI Studio (Free Tier) | 300-row live qualification run (15 API calls: 6 Pass-1 batches + 9 Pass-2 calls) | Rs. 0 | Consumed 43,856 total tokens (19,513 prompt, 24,343 candidate). 15/15 calls HTTP 200 OK via gemini-3.5-flash-lite. 1.0% of daily 1,500 RPD quota used. ₹0 billing verified. |
 
 ---
 
@@ -31,7 +32,7 @@
 
 | Service | Free Tier Limit | Current Usage | Status |
 |:---|:---|:---|:---|
-| AI Provider (Google AI Studio: `rich-crowbar-463013-e0`) | Model: `gemini-3.5-flash`; Free tier (zero billing); ~3,083 in / 2,696 out tokens per 50-row batch | 1 batch (~13.5k tokens total) | VERIFIED LIVE (Gate G-AI2 PASSED) |
+| AI Provider (Google AI Studio: `rich-crowbar-463013-e0`) | Model: `gemini-3.5-flash-lite` / `gemini-3.5-flash`; Free tier (zero billing); 1,500 RPD, 1,000,000 TPM | 16 calls total (~57k tokens total across smoke + M2-E 300-row run) | VERIFIED LIVE (Gate G-M2 PASSED) |
 | Serverless proxy hosting (Cloudflare Workers) | 100,000 req/day; 10ms CPU/req; 128MB | 0 | APPROVED (DEC-STACK) |
 | Cloudflare Rate Limiting Binding | Native Workers Rate Limiting API included in 100k req/day quota at ₹0 | 0 | EVALUATED & SUPPORTED (M2-A) |
 
@@ -140,6 +141,31 @@
 | **Cloudflare Workers + Pages** | Free Tier | **No** (none for core Workers / Pages) | **Yes** (commercial projects permitted on Free tier) | 100,000 req/day; 10ms CPU time/req (network I/O wait is unbounded & excluded from CPU limit); 128MB memory; 100 worker scripts | Native Rate Limiting API binding (`env.RATE_LIMITER.limit()`); edge DDoS mitigation; strict CORS headers | `https://developers.cloudflare.com/workers/platform/limits/`<br>`https://www.cloudflare.com/plans/developer-platform/`<br>(Audited: 2026-10-09) |
 | **Vercel** | Hobby (Free) | **No** | **No** (strictly restricted to personal, non-commercial use under Terms of Service) | 1,000,000 invocations/mo; 4 CPU-hours/mo; 360 GB-hours memory; max duration 300s (default 10s-60s) | No native free IP rate limiting without external paid/third-party add-ons (e.g. Upstash Redis) | `https://vercel.com/pricing`<br>`https://vercel.com/docs/functions/runtimes#serverless-function-limits`<br>(Audited: 2026-10-09) |
 | **Netlify** | Free | **No** | **Yes** (commercial use permitted on Free plan) | Shared pool of 300 credits/mo: 10 credits/GB-hr compute, 15 credits per production deploy (limits active testing/deploys to ~20/mo) | No native free rate-limiting; requires custom middleware or external store | `https://www.netlify.com/pricing/`<br>(Audited: 2026-10-09) |
+
+---
+
+## Live Qualification Run Results — 300 Rows (M2-E / Gate G-M2)
+
+*Audited via live execution of `scripts/live-qualification.js` on `fixtures/valid_300rows.csv` on 2026-10-10.*
+
+| Parameter | Measured Value | PRD Specification & Notes |
+|:---|:---|:---|
+| **Active Qualified Model** | `gemini-3.5-flash-lite` | Dynamically configured via `AI_MODEL` in `.env` (DEC-PROVIDER) |
+| **Dataset Tested** | `fixtures/valid_300rows.csv` | 300 rows (FB-001 to FB-300), 6 product themes |
+| **Total API Calls Dispatched** | **15 calls** | 6 Pass-1 batches (50 rows/batch) + 9 Pass-2 category reconciliation calls |
+| **Successful Calls (HTTP 200)** | **15/15 (100% success)** | Zero failures; zero retries required on active model |
+| **Sequential Pacing** | $\ge 6.0\text{s}$ spacing | Strict 10 RPM client-side throttling enforced (DEC-PROVIDER) |
+| **Thematic Clusters Formed** | **39 problem clusters** | Enriched with root-cause boundary notice (MDD §3.6) |
+| **Unclustered Items (`CLUST-UNC`)** | **14 rows** | Isolated for manual review ($S=1, P=0$, GAP-11) |
+| **1:1 ID Integrity Invariant** | **100% PASS** | 300/300 accounted for, 0 duplicate, 0 missing |
+| **Missing-Context Flags** | **15/39 clusters flagged** | `needs_investigation=true` injected where technical context is absent |
+| **Wall-Clock Duration** | **163.4s (~2.72 min)** | Well within the ~5 min target for 300-row baseline |
+| **Prompt Tokens** | 19,513 tokens | Input token consumption across 15 requests |
+| **Candidates Tokens** | 24,343 tokens | Structured JSON output token consumption |
+| **Total Tokens (Quota)** | **43,856 tokens** | Headroom: <5% of 1,000,000 TPM limit |
+| **Daily Quota Impact** | **~1.00% of 1,500 RPD** | 15 calls / 1,500 daily quota = 1.0% |
+| **Total Incurred Cost** | **₹0.00 / $0.00** | Strict ₹0 budget maintained; zero billing enabled |
+| **Gate G-M2 Status** | **PASSED** | Full Milestone 2 pipeline qualified live |
 
 ---
 
