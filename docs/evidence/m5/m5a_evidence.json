@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-10-10T14:47:08.221Z",
+  "gate": "G-M5A",
+  "browser": "Google Chrome (CDP Headless)",
+  "viewports": [
+    "1280x800",
+    "768x1024",
+    "375x812"
+  ],
+  "screenshots": {
+    "desktopDrawer": "docs/evidence/m5/m5a_drawer_desktop_1280px.png",
+    "desktopCopied": "docs/evidence/m5/m5a_copied_interaction_1280px.png",
+    "tabletDrawer": "docs/evidence/m5/m5a_drawer_tablet_768px.png",
+    "mobileDrawer": "docs/evidence/m5/m5a_drawer_mobile_375px.png"
+  },
+  "interactions": {
+    "copyResult": {
+      "found": true,
+      "toastVisible": true,
+      "toastText": "✓ Clipboard unavailable — copy from text box below",
+      "fallbackVisible": true,
+      "fallbackTextPreview": "# Strategic Trade-off Rationale: Silent API Timeout during CSV Export\n\n**Priority Score:** 79.1/100 "
+    },
+    "generatorEvaluation": {
+      "btnRationaleText": "📋 Copy Strategic Rationale",
+      "btnEngText": "⚙️ Copy Engineering Spec",
+      "toastText": "✓ Clipboard unavailable — copy from text box below",
+      "hasToastOrFallback": true
+    }
+  }
+}

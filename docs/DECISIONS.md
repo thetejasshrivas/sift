@@ -173,6 +173,23 @@ To satisfy `PRD §11.3`, `DEC-007`, and `IC-011`, the following disclosure text 
 
 ---
 
+### DEC-M5A (IMPLEMENTED) — PM Strategic Trade-Off Rationale Template & Non-ARR Compliance
+- **Decision ID:** `DEC-M5A`
+- **Status:** IMPLEMENTED
+- **Date:** 2026-10-10
+- **Governing Directives:** PRD REQ-012, §7.4; MDD §3.7, §3.9; IC-001, IC-002; GAP-07, GAP-17.
+- **Specification:**
+  - **Template Schema:** Generated deliverables strictly adhere to the five canonical sections defined in PRD §7.4: Header (Priority Score, Severity, Affected Accounts Confirmed/Estimated), Section 1 Executive Summary, Section 2 Business Impact, Section 3 Verbatim Customer Evidence, Section 4 Strategic Recommendation, Section 5 Contradictory Evidence.
+  - **Currency / ARR Labeling Safeguard (`IC-002`):** Section 2 displays `Impact Score (I_n)` and `Raw Tier Weight (I_c)`. Output strictly contains zero `$` or `ARR` labels next to proxy weights.
+  - **Account Segment Breakdown:** Segment counts across Enterprise, Mid-Market, Free/Starter, and UNKNOWN are derived deterministically using GAP-12 tier conflict resolution across unique confirmed and estimated account rows ($U_c$).
+  - **Exact Verbatim Evidence Guardrail (`IC-001`):** Only verified quotes are rendered with `[Verified Quote]`. Unverified, near-match, or missing quotes are excluded from verbatim quotes and summarized with `N additional quote(s) could not be verified and are omitted`.
+  - **Strategic Recommendation Source (`GAP-17`):** Explicitly tagged with source metadata (`Suggested (rule-based)` by default or `AI-drafted` when provided).
+  - **Contradictory Evidence Boundary (`GAP-07`):** Opposing request analysis (MDD §3.9) is recorded as not built in P0 and noted explicitly as `Contradictory Evidence analysis not built in P0 (GAP-07)`.
+  - **Clipboard API Failure Recovery:** In `DeepDiveDrawer`, clipboard write errors fall back to an accessible read-only `<textarea id="copy-fallback-textbox">` with auto-select on focus and informative toast notification.
+
+---
+
 *Governed by AGENTS.md Standing Contract. Any decision overriding a Locked entry requires founder approval and a new row in this log.*
+
 
 
