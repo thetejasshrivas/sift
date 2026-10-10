@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
 **Last updated:** 2026-10-10  
-**Current sprint task:** DEP-01 (DONE) — Gate G-D1 PASSED
+**Current sprint task:** DEP-02 (DONE) — Gate G-D2 PASSED
 
 ---
 
@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | DEP-01 |
-| **Task Name** | Host free-tier verification and selection (Part X §10.1, OPT-001, Gate G-D1) |
+| **Task ID** | DEP-02 |
+| **Task Name** | Connect the repository to GitHub & push main branch + milestone tags (Gate G-D2) |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
 | **Started** | 2026-10-10 |
@@ -53,6 +53,7 @@
 | **G-M5B** | TS-013 PASS (11/11 unit tests: 5-tier decoupling, NEEDS INVESTIGATION placeholder, safety guardrails, drawer integration) | PASSED |
 | **G-P0** | Gate G-P0 PASS: P0 complete, 208/208 tests pass, secret scan green, P1/P2 isolated (`p0-complete`) | PASSED |
 | **G-D1** | Host free-tier verification & selection: Cloudflare Workers + Pages chosen, zero card/billing (Part X §10.1, OPT-001) | PASSED |
+| **G-D2** | Repository connected to GitHub (`thetejasshrivas/sift`), main branch + 9 tags pushed, zero secrets, `.env` absent | PASSED |
 
 ## Blockers
 
@@ -95,6 +96,7 @@
 | **M5-B** | Engineering Spec generator with 5-tier safety decoupling (Gate G-M5B passed) | 2026-10-10 |
 | **M5-C** | Milestone 5 Seal & P0 Completion Gate G-P0 (`p0-complete`) | 2026-10-10 |
 | **DEP-01** | Host free-tier verification & selection (Gate G-D1 passed) | 2026-10-10 |
+| **DEP-02** | Connect repository to GitHub & push main + tags (Gate G-D2 passed) | 2026-10-10 |
 
 
 ## Upcoming Tasks
