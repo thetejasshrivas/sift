@@ -187,6 +187,19 @@ To satisfy `PRD §11.3`, `DEC-007`, and `IC-011`, the following disclosure text 
   - **Contradictory Evidence Boundary (`GAP-07`):** Opposing request analysis (MDD §3.9) is recorded as not built in P0 and noted explicitly as `Contradictory Evidence analysis not built in P0 (GAP-07)`.
   - **Clipboard API Failure Recovery:** In `DeepDiveDrawer`, clipboard write errors fall back to an accessible read-only `<textarea id="copy-fallback-textbox">` with auto-select on focus and informative toast notification.
 
+### DEC-DEP01 (VERIFIED & SELECTED) — Host Free-Tier Verification & Selection (Gate G-D1)
+- **Decision ID:** `DEC-DEP01`
+- **Status:** VERIFIED & SELECTED
+- **Date:** 2026-10-10
+- **Governing Directives:** PRD OPT-001, REQ-013; IC-010; DEC-STACK (APPROVED); manual Part X §10.1; Gate G-D1.
+- **Specification:**
+  - **Chosen Host:** Cloudflare Workers (Serverless Proxy) + Cloudflare Pages (Static SPA Frontend).
+  - **Zero Cost & No Card:** Core Workers and Pages free tiers require zero credit card and enforce hard limits with zero billing charges.
+  - **Commercial Use:** Permitted under Cloudflare terms of service without forced commercial tier upgrade (contrasting with Vercel Hobby terms which strictly prohibit commercial use).
+  - **Compute & Request Allowances:** 100,000 req/day; 10ms CPU time/req with unbounded network I/O wait (protecting AI LLM request latencies of 2–5s from execution timeout).
+  - **Rate Limiting:** Platform-native Workers Rate Limiting API binding (`env.RATE_LIMITER.limit()`) included at ₹0, satisfying the 10 RPM/IP requirement without paid third-party dependencies.
+  - **Rejected Candidates:** Vercel (Hobby prohibits commercial use; no free native IP rate limiter) and Netlify (300 credit/month unified pool penalizes deployment at 15 credits/deploy; no native IP rate limiter).
+
 ---
 
 *Governed by AGENTS.md Standing Contract. Any decision overriding a Locked entry requires founder approval and a new row in this log.*

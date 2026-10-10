@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
 **Last updated:** 2026-10-10  
-**Current sprint task:** M5-C (DONE) — Gate G-P0 SEALED
+**Current sprint task:** DEP-01 (DONE) — Gate G-D1 PASSED
 
 ---
 
@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | M5-C |
-| **Task Name** | Milestone 5 Seal & P0 Completion Gate G-P0 (REQ-013, IC-013, §M5-C) |
+| **Task ID** | DEP-01 |
+| **Task Name** | Host free-tier verification and selection (Part X §10.1, OPT-001, Gate G-D1) |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
 | **Started** | 2026-10-10 |
@@ -52,6 +52,7 @@
 | **G-M5A** | Output tests & browser evidence PASS for PM Strategic Trade-off Rationale generator (REQ-012, §7.4, IC-001, IC-002, GAP-07, GAP-17) | PASSED |
 | **G-M5B** | TS-013 PASS (11/11 unit tests: 5-tier decoupling, NEEDS INVESTIGATION placeholder, safety guardrails, drawer integration) | PASSED |
 | **G-P0** | Gate G-P0 PASS: P0 complete, 208/208 tests pass, secret scan green, P1/P2 isolated (`p0-complete`) | PASSED |
+| **G-D1** | Host free-tier verification & selection: Cloudflare Workers + Pages chosen, zero card/billing (Part X §10.1, OPT-001) | PASSED |
 
 ## Blockers
 
@@ -93,6 +94,7 @@
 | **M5-A** | Strategic Trade-off Rationale generator (PM) (Gate G-M5A passed) | 2026-10-10 |
 | **M5-B** | Engineering Spec generator with 5-tier safety decoupling (Gate G-M5B passed) | 2026-10-10 |
 | **M5-C** | Milestone 5 Seal & P0 Completion Gate G-P0 (`p0-complete`) | 2026-10-10 |
+| **DEP-01** | Host free-tier verification & selection (Gate G-D1 passed) | 2026-10-10 |
 
 
 ## Upcoming Tasks

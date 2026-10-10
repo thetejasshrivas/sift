@@ -25,6 +25,7 @@
 | 2026-10-09 | AG-PF-00 | None | Tracking file created | Rs. 0 | No services provisioned |
 | 2026-10-09 | M2-A | Cloudflare Workers Rate Limiting | Platform-native rate limit evaluation at ₹0 | Rs. 0 | Evaluated platform-native Rate Limiting API at ₹0 (included in 100k req/day free tier). Proxy code evaluates env.RATE_LIMITER at ₹0 and falls back to instance-local throttling (10 RPM) when unattached. |
 | 2026-10-10 | M2-E | Google AI Studio (Free Tier) | 300-row live qualification run (15 API calls: 6 Pass-1 batches + 9 Pass-2 calls) | Rs. 0 | Consumed 43,856 total tokens (19,513 prompt, 24,343 candidate). 15/15 calls HTTP 200 OK via gemini-3.5-flash-lite. 1.0% of daily 1,500 RPD quota used. ₹0 billing verified. |
+| 2026-10-10 | DEP-01 | Cloudflare Workers + Pages (Free Tier) | Host free-tier verification & selection (Gate G-D1 passed) | Rs. 0 | Confirmed ₹0 budget, zero credit card required, commercial use permitted, 100k req/day, native rate limiting at ₹0. Selected per DEC-STACK. |
 
 ---
 
@@ -132,15 +133,24 @@
 
 ---
 
-## Candidate Hosting Platform Verified Facts (Audited 2026-10-09)
+## Candidate Hosting Platform Verified Facts (Part X §10.1 / Task DEP-01 / Gate G-D1)
 
-*Audited via official documentation pages for task AG-ARCH-01.*
+*Audited via official documentation pages for task AG-ARCH-01 and verified on 2026-10-10 for DEP-01. Governed by PRD OPT-001, IC-010, and DEC-STACK.*
 
-| Candidate Host | Plan / Tier | Credit Card Required? | Commercial Use Permitted? | Function & Compute Limits | Rate-Limiting Features | Official URL & Citation Date |
-|:---|:---|:---|:---|:---|:---|:---|
-| **Cloudflare Workers + Pages** | Free Tier | **No** (none for core Workers / Pages) | **Yes** (commercial projects permitted on Free tier) | 100,000 req/day; 10ms CPU time/req (network I/O wait is unbounded & excluded from CPU limit); 128MB memory; 100 worker scripts | Native Rate Limiting API binding (`env.RATE_LIMITER.limit()`); edge DDoS mitigation; strict CORS headers | `https://developers.cloudflare.com/workers/platform/limits/`<br>`https://www.cloudflare.com/plans/developer-platform/`<br>(Audited: 2026-10-09) |
-| **Vercel** | Hobby (Free) | **No** | **No** (strictly restricted to personal, non-commercial use under Terms of Service) | 1,000,000 invocations/mo; 4 CPU-hours/mo; 360 GB-hours memory; max duration 300s (default 10s-60s) | No native free IP rate limiting without external paid/third-party add-ons (e.g. Upstash Redis) | `https://vercel.com/pricing`<br>`https://vercel.com/docs/functions/runtimes#serverless-function-limits`<br>(Audited: 2026-10-09) |
-| **Netlify** | Free | **No** | **Yes** (commercial use permitted on Free plan) | Shared pool of 300 credits/mo: 10 credits/GB-hr compute, 15 credits per production deploy (limits active testing/deploys to ~20/mo) | No native free rate-limiting; requires custom middleware or external store | `https://www.netlify.com/pricing/`<br>(Audited: 2026-10-09) |
+### Host Comparison Table (Part X §10.1)
+
+| Candidate Host & Tier | Card / Billing Required? | Commercial Use Permitted? | Compute & Function Limits | Static Hosting & Build Limits | Native Rate Limiting? | Verification Status | Official Source URL & Verification Date | Recommendation & Sift Fit |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| **Cloudflare Workers (Free) + Cloudflare Pages (Free)** | **No** (none for core Workers / Pages; zero credit card required to deploy) | **Yes** (commercial projects, SaaS tools, and business sites fully permitted on Free tier) | 100,000 req/day (~3M/mo); 10ms CPU time/req (**network I/O wait is unbounded and excluded from CPU limit**); 128MB memory; 100 worker projects | **Unlimited bandwidth**; 500 builds/month; 20,000 files/site (25 MiB max single file size); 100 projects | **Yes** — Native Workers Rate Limiting API binding (`env.RATE_LIMITER.limit()`) included at ₹0; edge DDoS protection; strict CORS headers | **VERIFIED** *(Note: R2 and paid add-ons require card if enabled, but core Workers + Pages strictly does not)* | `https://developers.cloudflare.com/workers/platform/limits/`<br>`https://developers.cloudflare.com/pages/platform/limits/`<br>`https://www.cloudflare.com/plans/developer-platform/`<br>(Audited: 2026-10-10) | **SELECTED (RECOMMENDED)** — 100% compliant with ₹0 target budget, commercial use allowed, native 10 RPM/IP rate limiter at ₹0, unbounded AI network wait. Approved in DEC-STACK. |
+| **Vercel Hobby (Free)** | **No** (none required to sign up or deploy) | **No** (**Strictly Prohibited** under Terms of Service & Fair Use Guidelines; commercial use requires $20/seat/mo Pro plan; non-compliant sites subject to immediate suspension) | 1,000,000 invocations/mo; 4 CPU-hours/mo active compute; 360 GB-hours memory; default duration 10s–60s (max 300s); hard pause on limit exhaustion | 100 GB Fast Data Transfer/mo; 10 GB Fast Origin Transfer/mo | **No** — Zero native free IP rate limiting without external paid/third-party add-ons (e.g. Upstash Redis, violating the ₹0 budget) | **VERIFIED** | `https://vercel.com/pricing`<br>`https://vercel.com/docs/limits/overview`<br>`https://vercel.com/docs/functions/runtimes#serverless-function-limits`<br>(Audited: 2026-10-10) | **REJECTED** — Commercial use restriction violates B2B SaaS nature of Sift; no free native IP rate limiter (requires paid external store). |
+| **Netlify (Free)** | **No** (none required to sign up or deploy) | **Yes** (commercial projects permitted on Free tier) | Shared pool of 300 credits/mo: 10 credits/GB-hr compute, 2 credits per 10k requests; hard pause on limit exhaustion | Shared pool: **15 credits per production deploy** (limits active deployments to ~20/mo max even with zero compute/bandwidth); 20 credits per GB bandwidth | **No** — Zero native free rate limiting; requires custom middleware or external store | **VERIFIED** | `https://www.netlify.com/pricing/`<br>`https://docs.netlify.com/accounts-and-billing/billing-faq/`<br>(Audited: 2026-10-10) | **REJECTED** — Deploy credit pool constraint (15 credits/deploy) heavily penalizes iterative CI/CD deployments during development; no native IP rate limiter. |
+
+### Evaluation & Gate G-D1 Conclusion
+
+1. **Host Selected:** **Cloudflare Workers (Serverless Proxy) + Cloudflare Pages (Static SPA Frontend)**.
+2. **Billing & Credit Card State:** **Zero billing / No credit card required**.
+3. **Compliance with DEC-STACK & PRD OPT-001:** Aligns 100% with `DEC-STACK (APPROVED)`, `PRD REQ-013`, and `IC-010`.
+4. **Gate G-D1 Status:** **PASSED**.
 
 ---
 
