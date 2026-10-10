@@ -157,8 +157,57 @@ function scanGitHistory(envValues) {
   return matches;
 }
 
+function scanTarget(targetPath, envValues) {
+  const matches = [];
+  const fullPath = path.resolve(ROOT_DIR, targetPath);
+  if (!fs.existsSync(fullPath)) {
+    console.error(`Target path not found: ${targetPath}`);
+    process.exit(1);
+  }
+  const stat = fs.statSync(fullPath);
+  const files = stat.isDirectory() ? getAllFiles(fullPath) : [fullPath];
+
+  for (const filePath of files) {
+    const relPath = path.relative(ROOT_DIR, filePath).replace(/\\/g, '/');
+    let content;
+    try {
+      content = fs.readFileSync(filePath, 'utf8');
+    } catch {
+      continue;
+    }
+
+    for (const secretVal of envValues) {
+      if (content.includes(secretVal)) {
+        matches.push({ type: 'ENV_SECRET_VALUE', file: relPath });
+      }
+    }
+
+    for (const pat of COMMON_PATTERNS) {
+      pat.regex.lastIndex = 0;
+      if (pat.regex.test(content)) {
+        matches.push({ type: pat.name, file: relPath });
+      }
+    }
+  }
+
+  return matches;
+}
+
 function main() {
   const envValues = readEnvValues();
+  const targetArg = process.argv[2];
+
+  if (targetArg) {
+    const targetMatches = scanTarget(targetArg, envValues);
+    if (targetMatches.length > 0) {
+      console.error(`MATCH: Secrets detected in target: ${targetArg}`);
+      process.exit(1);
+    } else {
+      console.log(`NO MATCH: No secrets detected in target: ${targetArg}`);
+      process.exit(0);
+    }
+  }
+
   const workingMatches = scanWorkingTree(envValues);
   const gitMatches = scanGitHistory(envValues);
 

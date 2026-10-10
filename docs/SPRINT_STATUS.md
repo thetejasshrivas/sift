@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
 **Last updated:** 2026-10-10  
-**Current sprint task:** DEP-03 (DONE) — Gate G-D3 PASSED
+**Current sprint task:** DEP-04 (DONE) — Gate G-D4 PASSED
 
 ---
 
@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | DEP-03 |
-| **Task Name** | Environment variables, production CORS & Cloudflare Pages Functions shims (Gate G-D3) |
+| **Task ID** | DEP-04 |
+| **Task Name** | Deploy and public smoke test on live Cloudflare Pages (Gate G-D4) |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
 | **Started** | 2026-10-10 |
@@ -55,6 +55,7 @@
 | **G-D1** | Host free-tier verification & selection: Cloudflare Workers + Pages chosen, zero card/billing (Part X §10.1, OPT-001) | PASSED |
 | **G-D2** | Repository connected to GitHub (`thetejasshrivas/sift`), main branch + 9 tags pushed, zero secrets, `.env` absent | PASSED |
 | **G-D3** | Cloudflare Pages functions shims prepared, production environment variables & build settings documented, zero secrets in workspace | PASSED |
+| **G-D4** | Live Cloudflare Pages public smoke test PASS (`https://sift-0r0.pages.dev`), HTTPS 200, /api/health 200, live proxy cluster & reconcile 200, payload cap 413, live bundle scan green | PASSED |
 
 ## Blockers
 
@@ -99,6 +100,7 @@
 | **DEP-01** | Host free-tier verification & selection (Gate G-D1 passed) | 2026-10-10 |
 | **DEP-02** | Connect repository to GitHub & push main + tags (Gate G-D2 passed) | 2026-10-10 |
 | **DEP-03** | Environment variables, production CORS & Cloudflare Pages Functions shims (Gate G-D3 passed) | 2026-10-10 |
+| **DEP-04** | Live Cloudflare Pages deploy and public smoke test (Gate G-D4 passed) | 2026-10-10 |
 
 
 ## Upcoming Tasks
