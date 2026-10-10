@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
 **Last updated:** 2026-10-10  
-**Current sprint task:** M4-D (DONE)
+**Current sprint task:** M5-B (DONE)
 
 ---
 
@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | M4-D |
-| **Task Name** | UI & Accessibility Audit (Matrix, Cards, Drawer, Sliders, Ingestion) |
+| **Task ID** | M5-A |
+| **Task Name** | Strategic Trade-off Rationale generator (PM) (REQ-012, §7.4, GAP-07, GAP-17) |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
 | **Started** | 2026-10-10 |
@@ -49,6 +49,8 @@
 | **G-M4B** | Ranked cards, badges, filters, deep-dive drawer UI evidence (REQ-010, REQ-011, REQ-012, GAP-04) | PASSED |
 | **G-M4C** | TS-005, TS-005b exact quote verification & receipts pass (REQ-011, IC-001) | PASSED |
 | **G-M4D** | TS-014, TS-015 PASS (browser evidence & WCAG AA UI audit) | PASSED |
+| **G-M5A** | Output tests & browser evidence PASS for PM Strategic Trade-off Rationale generator (REQ-012, §7.4, IC-001, IC-002, GAP-07, GAP-17) | PASSED |
+| **G-M5B** | TS-013 PASS (11/11 unit tests: 5-tier decoupling, NEEDS INVESTIGATION placeholder, safety guardrails, drawer integration) | PASSED |
 
 ## Blockers
 
@@ -87,6 +89,8 @@
 | **M4-B** | Ranked cards, badges, filters, deep-dive drawer (Gate G-M4B passed) | 2026-10-10 |
 | **M4-C** | Exact quote verification engine (Gate G-M4C passed) | 2026-10-10 |
 | **M4-D** | UI & Accessibility Audit (Matrix, Cards, Drawer, Sliders, Ingestion) | 2026-10-10 |
+| **M5-A** | Strategic Trade-off Rationale generator (PM) (Gate G-M5A passed) | 2026-10-10 |
+| **M5-B** | Engineering Spec generator with 5-tier safety decoupling (Gate G-M5B passed) | 2026-10-10 |
 
 
 ## Upcoming Tasks

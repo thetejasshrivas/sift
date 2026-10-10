@@ -14,8 +14,11 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { ScoredCluster } from '../types/scoring';
-import { ProcessedFeedbackRow } from '../types/identity';
 import { verifyQuoteAgainstRows } from '../verify';
+import {
+  generateStrategicTradeoffRationale,
+  generateEngineeringSpecification,
+} from '../outputs';
 
 interface DeepDiveDrawerProps {
   cluster: ScoredCluster | null;
@@ -33,6 +36,7 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
   const drawerRef = useRef<HTMLDivElement>(null);
   const triggerElementRef = useRef<HTMLElement | null>(null);
   const [copyToast, setCopyToast] = useState<string | null>(null);
+  const [fallbackCopyText, setFallbackCopyText] = useState<string | null>(null);
   const [revealedRawRows, setRevealedRawRows] = useState<Record<number, boolean>>({});
 
   const toggleRawRow = (idx: number) => {
@@ -141,74 +145,36 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
     : 'Low Priority';
 
   // Copy helpers
-  const handleCopyRationale = () => {
-    // Only verified quotes are presented as verbatim evidence (M4-C)
-    const verifiedQuotes = (cluster.quotes || []).filter((q) => {
-      const check = verifyQuoteAgainstRows(q.feedback_id, q.quote_snippet, allRows);
-      return check.isVerified;
-    });
-
-    const verbatimQuotesSection = verifiedQuotes.length > 0
-      ? verifiedQuotes.map((q) => `> "${q.quote_snippet}" — Feedback ID: ${q.feedback_id} [Verified Quote]`).join('\n\n')
-      : '> [No verbatim quotes verified against source records]';
-
-    const text = `# Strategic Roadmap Trade-off Rationale: ${cluster.cluster_title}
-Priority Score: ${cluster.priority_score.toFixed(1)} / 100
-Quadrant: ${quadrantName}
-Tier-Weighted Impact: ${cluster.metrics.I_c.toFixed(1)} (Accounts: ${cluster.metrics.U_c})
-Severity: Level ${cluster.severity_rating}/3 (${cluster.flags.isCriticalBlocker ? 'Critical Blocker' : 'Operational Friction'})
-
-## Synthesized Problem Observation
-${cluster.problem_summary}
-
-## Verbatim Customer Evidence
-${verbatimQuotesSection}
-
-## Root-Cause Hypothesis
-${cluster.root_cause_hypothesis}
-*Notice: AI-inferred hypothesis based on quote patterns. Verify against logs before major changes.*
-
-## Mathematical Breakdown
-${cluster.breakdown.formulaDisplay}
-Weights: Impact ${Math.round(cluster.breakdown.weights.wArr * 100)}%, Frequency ${Math.round(cluster.breakdown.weights.wVol * 100)}%, Severity ${Math.round(cluster.breakdown.weights.wSev * 100)}%
-Normalized: I_n=${cluster.normalized.I_n.toFixed(4)}, F_n=${cluster.normalized.F_n.toFixed(4)}, S_n=${cluster.normalized.S_n.toFixed(4)}`;
-
-    navigator.clipboard?.writeText?.(text);
-    setCopyToast('Strategic Rationale copied to clipboard!');
+  const handleCopyRationale = async () => {
+    const text = generateStrategicTradeoffRationale(cluster, allRows);
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        await navigator.clipboard.writeText(text);
+        setCopyToast('Strategic Rationale copied to clipboard!');
+        setFallbackCopyText(null);
+      } else {
+        throw new Error('Clipboard API unavailable');
+      }
+    } catch {
+      setFallbackCopyText(text);
+      setCopyToast('Clipboard unavailable — copy from text box below');
+    }
   };
 
-  const handleCopyEngineeringSpec = () => {
-    // Only verified quotes are presented as verbatim evidence (M4-C)
-    const verifiedQuotes = (cluster.quotes || []).filter((q) => {
-      const check = verifyQuoteAgainstRows(q.feedback_id, q.quote_snippet, allRows);
-      return check.isVerified;
-    });
-
-    const quotesBlock = verifiedQuotes.length > 0
-      ? verifiedQuotes.map((q) => `- \`${q.feedback_id}\`: "${q.quote_snippet}" [Verified]`).join('\n')
-      : '> [No verbatim quotes verified against source records]';
-
-    const text = `# Engineering Specification: ${cluster.cluster_title}
-**Cluster ID:** ${cluster.cluster_id} | **Severity Rating:** Level ${cluster.severity_rating}/3
-**Impacted Accounts:** ${cluster.metrics.U_c} (${cluster.metrics.confirmedAccountsCount} confirmed) | **Raw Complaints:** ${cluster.metrics.N_c}
-
-## 1. Problem Summary & Observation
-${cluster.problem_summary}
-
-## 2. Inferred Root Cause
-${cluster.root_cause_hypothesis}
-[VERIFY: Compare stack traces and latency metrics on production workers before deploying fix.]
-
-## 3. Evidence Receipts (Verbatim Quotes)
-${quotesBlock}
-
-## 4. Acceptance Criteria
-- [ ] Reproduce issue using failure pattern identified in quote receipts.
-- [ ] Resolve root cause in underlying worker thread without regressions.
-- [ ] Verify zero 5xx errors across affected API endpoints.`;
-
-    navigator.clipboard?.writeText?.(text);
-    setCopyToast('Engineering Spec copied to clipboard!');
+  const handleCopyEngineeringSpec = async () => {
+    const text = generateEngineeringSpecification(cluster, allRows);
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        await navigator.clipboard.writeText(text);
+        setCopyToast('Engineering Spec copied to clipboard!');
+        setFallbackCopyText(null);
+      } else {
+        throw new Error('Clipboard API unavailable');
+      }
+    } catch {
+      setFallbackCopyText(text);
+      setCopyToast('Clipboard unavailable — copy from text box below');
+    }
   };
 
   return (
@@ -726,6 +692,7 @@ ${quotesBlock}
               {cluster.breakdown.formulaDisplay}
             </div>
 
+            {cluster.breakdown?.weights && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', fontSize: '0.72rem' }}>
               <div style={{ backgroundColor: '#0F172A', padding: '0.5rem', borderRadius: '4px', border: '1px solid #334155' }}>
                 <span style={{ color: '#94A3B8' }}>Impact Weight (W_ARR):</span>
@@ -751,6 +718,7 @@ ${quotesBlock}
                 <div style={{ color: '#64748B', fontSize: '0.68rem' }}>S_n: {cluster.normalized.S_n.toFixed(4)}</div>
               </div>
             </div>
+            )}
           </div>
 
           {/* 5. Role-Tailored Action Output Generators (REQ-012: PM, Eng only in P0 per IC-013) */}
@@ -820,6 +788,67 @@ ${quotesBlock}
                 ⚙️ Copy Engineering Spec
               </button>
             </div>
+
+            {/* Copy Toast Feedback */}
+            {copyToast && (
+              <div
+                id="copy-toast"
+                role="status"
+                aria-live="polite"
+                style={{
+                  marginTop: '0.75rem',
+                  backgroundColor: '#064E3B',
+                  color: '#A7F3D0',
+                  border: '1px solid #059669',
+                  padding: '0.5rem 0.85rem',
+                  borderRadius: '6px',
+                  fontSize: '0.8rem',
+                  fontWeight: 500,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                }}
+              >
+                <span>✓</span> {copyToast}
+              </div>
+            )}
+
+            {/* Clipboard Error Fallback Text Box (REQ-012) */}
+            {fallbackCopyText && (
+              <div id="copy-fallback-container" style={{ marginTop: '0.75rem' }}>
+                <label
+                  htmlFor="copy-fallback-textbox"
+                  style={{
+                    display: 'block',
+                    fontSize: '0.75rem',
+                    color: '#94A3B8',
+                    marginBottom: '0.35rem',
+                    fontWeight: 600,
+                  }}
+                >
+                  Clipboard unavailable — select and copy text below:
+                </label>
+                <textarea
+                  id="copy-fallback-textbox"
+                  readOnly
+                  value={fallbackCopyText}
+                  onFocus={(e) => e.currentTarget.select()}
+                  rows={8}
+                  style={{
+                    width: '100%',
+                    backgroundColor: '#0F172A',
+                    color: '#F8FAFC',
+                    border: '1px solid #334155',
+                    borderRadius: '6px',
+                    padding: '0.5rem 0.65rem',
+                    fontSize: '0.75rem',
+                    fontFamily: 'monospace',
+                    lineHeight: 1.4,
+                    resize: 'vertical',
+                  }}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
