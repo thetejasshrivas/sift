@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | M4-B |
-| **Task Name** | Ranked cards, badges, filters, deep-dive drawer |
+| **Task ID** | M4-C |
+| **Task Name** | Exact quote verification engine |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
 | **Started** | 2026-10-10 |
@@ -47,6 +47,7 @@
 | **G-M3B** | TS-006 PASS (logic + browser coordinate evidence, stationary invariant verified) | PASSED |
 | **G-M4A** | 2×2 priority matrix visual evidence + string audit (REQ-010, MDD §4.2, IC-014, GAP-15) | PASSED |
 | **G-M4B** | Ranked cards, badges, filters, deep-dive drawer UI evidence (REQ-010, REQ-011, REQ-012, GAP-04) | PASSED |
+| **G-M4C** | TS-005, TS-005b exact quote verification & receipts pass (REQ-011, IC-001) | PASSED |
 
 ## Blockers
 
@@ -83,6 +84,7 @@
 | **M3-B** | Sliders, reset, and 60-FPS re-ranking (Gate G-M3B passed) | 2026-10-10 |
 | **M4-A** | 2×2 priority matrix (Gate G-M4A passed) | 2026-10-10 |
 | **M4-B** | Ranked cards, badges, filters, deep-dive drawer (Gate G-M4B passed) | 2026-10-10 |
+| **M4-C** | Exact quote verification engine (Gate G-M4C passed) | 2026-10-10 |
 
 
 ## Upcoming Tasks

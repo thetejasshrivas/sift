@@ -15,6 +15,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ScoredCluster } from '../types/scoring';
 import { ProcessedFeedbackRow } from '../types/identity';
+import { verifyQuoteAgainstRows } from '../verify';
 
 interface DeepDiveDrawerProps {
   cluster: ScoredCluster | null;
@@ -32,6 +33,14 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
   const drawerRef = useRef<HTMLDivElement>(null);
   const triggerElementRef = useRef<HTMLElement | null>(null);
   const [copyToast, setCopyToast] = useState<string | null>(null);
+  const [revealedRawRows, setRevealedRawRows] = useState<Record<number, boolean>>({});
+
+  const toggleRawRow = (idx: number) => {
+    setRevealedRawRows((prev) => ({
+      ...prev,
+      [idx]: !prev[idx],
+    }));
+  };
 
   // Capture trigger element on open and restore focus on close
   useEffect(() => {
@@ -115,23 +124,18 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
     ? 'Low Impact / High Frequency'
     : 'Low Impact / Low Frequency';
 
-  // Substring verification helper (IC-001 / REQ-011)
-  const verifyQuote = (feedbackId: string, quoteSnippet: string) => {
-    if (!allRows || allRows.length === 0) {
-      return { isVerified: true, sourceFound: false };
-    }
-    const sourceRow = allRows.find((r) => r.identity.feedbackId === feedbackId);
-    if (!sourceRow || !sourceRow.text) {
-      return { isVerified: false, sourceFound: false };
-    }
-    const cleanSnippet = quoteSnippet.trim();
-    const cleanSource = sourceRow.text.trim();
-    const isExact = cleanSource.toLowerCase().includes(cleanSnippet.toLowerCase());
-    return { isVerified: isExact, sourceFound: true };
-  };
-
   // Copy helpers
   const handleCopyRationale = () => {
+    // Only verified quotes are presented as verbatim evidence (M4-C)
+    const verifiedQuotes = (cluster.quotes || []).filter((q) => {
+      const check = verifyQuoteAgainstRows(q.feedback_id, q.quote_snippet, allRows);
+      return check.isVerified;
+    });
+
+    const verbatimQuotesSection = verifiedQuotes.length > 0
+      ? verifiedQuotes.map((q) => `> "${q.quote_snippet}" — Feedback ID: ${q.feedback_id} [Verified Quote]`).join('\n\n')
+      : '> [No verbatim quotes verified against source records]';
+
     const text = `# Strategic Roadmap Trade-off Rationale: ${cluster.cluster_title}
 Priority Score: ${cluster.priority_score.toFixed(1)} / 100
 Quadrant: ${quadrantName}
@@ -140,6 +144,9 @@ Severity: Level ${cluster.severity_rating}/3 (${cluster.flags.isCriticalBlocker 
 
 ## Synthesized Problem Observation
 ${cluster.problem_summary}
+
+## Verbatim Customer Evidence
+${verbatimQuotesSection}
 
 ## Root-Cause Hypothesis
 ${cluster.root_cause_hypothesis}
@@ -155,9 +162,15 @@ Normalized: I_n=${cluster.normalized.I_n.toFixed(4)}, F_n=${cluster.normalized.F
   };
 
   const handleCopyEngineeringSpec = () => {
-    const quotesBlock = cluster.quotes && cluster.quotes.length > 0
-      ? cluster.quotes.map((q) => `> "${q.quote_snippet}" (Source: ${q.feedback_id})`).join('\n\n')
-      : '> [No verbatim quotes available]';
+    // Only verified quotes are presented as verbatim evidence (M4-C)
+    const verifiedQuotes = (cluster.quotes || []).filter((q) => {
+      const check = verifyQuoteAgainstRows(q.feedback_id, q.quote_snippet, allRows);
+      return check.isVerified;
+    });
+
+    const quotesBlock = verifiedQuotes.length > 0
+      ? verifiedQuotes.map((q) => `- \`${q.feedback_id}\`: "${q.quote_snippet}" [Verified]`).join('\n')
+      : '> [No verbatim quotes verified against source records]';
 
     const text = `# Engineering Specification: ${cluster.cluster_title}
 **Cluster ID:** ${cluster.cluster_id} | **Severity Rating:** Level ${cluster.severity_rating}/3
@@ -455,7 +468,7 @@ ${quotesBlock}
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
                 {cluster.quotes.map((quote, idx) => {
-                  const check = verifyQuote(quote.feedback_id, quote.quote_snippet);
+                  const check = verifyQuoteAgainstRows(quote.feedback_id, quote.quote_snippet, allRows);
                   return (
                     <div
                       key={`${quote.feedback_id}-${idx}`}
@@ -470,11 +483,11 @@ ${quotesBlock}
                         gap: '0.4rem',
                       }}
                     >
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.4rem' }}>
                         <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#38BDF8' }}>
                           Feedback ID: {quote.feedback_id}
                         </span>
-                        {check.isVerified ? (
+                        {check.status === 'VERIFIED' ? (
                           <span
                             id={`quote-badge-${idx}`}
                             className="badge-verified"
@@ -483,12 +496,44 @@ ${quotesBlock}
                               fontWeight: 600,
                               backgroundColor: 'rgba(5, 150, 105, 0.15)',
                               color: '#34D399',
-                              padding: '0.15rem 0.4rem',
+                              padding: '0.15rem 0.45rem',
                               borderRadius: '4px',
                               border: '1px solid rgba(5, 150, 105, 0.3)',
                             }}
                           >
                             ✓ Verified Quote
+                          </span>
+                        ) : check.status === 'NEAR_MATCH' ? (
+                          <span
+                            id={`quote-badge-${idx}`}
+                            className="badge-near-match"
+                            style={{
+                              fontSize: '0.68rem',
+                              fontWeight: 600,
+                              backgroundColor: 'rgba(168, 85, 247, 0.15)',
+                              color: '#C084FC',
+                              padding: '0.15rem 0.45rem',
+                              borderRadius: '4px',
+                              border: '1px solid rgba(168, 85, 247, 0.4)',
+                            }}
+                          >
+                            Near Match / Normalized — Not Verbatim Verified
+                          </span>
+                        ) : check.status === 'SOURCE_NOT_FOUND' ? (
+                          <span
+                            id={`quote-badge-${idx}`}
+                            className="badge-source-not-found"
+                            style={{
+                              fontSize: '0.68rem',
+                              fontWeight: 600,
+                              backgroundColor: 'rgba(148, 163, 184, 0.15)',
+                              color: '#94A3B8',
+                              padding: '0.15rem 0.45rem',
+                              borderRadius: '4px',
+                              border: '1px solid rgba(148, 163, 184, 0.3)',
+                            }}
+                          >
+                            Source row not found
                           </span>
                         ) : (
                           <span
@@ -499,7 +544,7 @@ ${quotesBlock}
                               fontWeight: 600,
                               backgroundColor: 'rgba(217, 119, 6, 0.15)',
                               color: '#FBBF24',
-                              padding: '0.15rem 0.4rem',
+                              padding: '0.15rem 0.45rem',
                               borderRadius: '4px',
                               border: '1px solid rgba(217, 119, 6, 0.3)',
                             }}
@@ -508,6 +553,7 @@ ${quotesBlock}
                           </span>
                         )}
                       </div>
+
                       <blockquote
                         style={{
                           margin: 0,
@@ -521,6 +567,69 @@ ${quotesBlock}
                       >
                         "{quote.quote_snippet}"
                       </blockquote>
+
+                      {/* Reveal Full Raw Row Controls for non-exact rows (REQ-011 / M4-C) */}
+                      {check.status !== 'VERIFIED' && check.sourceFound && (
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.2rem' }}>
+                          <button
+                            id={`btn-reveal-raw-${idx}`}
+                            className="btn-reveal-raw-row"
+                            onClick={() => toggleRawRow(idx)}
+                            style={{
+                              backgroundColor: 'transparent',
+                              border: '1px solid #475569',
+                              color: '#94A3B8',
+                              borderRadius: '4px',
+                              padding: '0.2rem 0.5rem',
+                              fontSize: '0.7rem',
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.3rem',
+                            }}
+                          >
+                            <span>{revealedRawRows[idx] ? '▲ Hide Full Raw Row' : '▼ Reveal Full Raw Row'}</span>
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Expandable full raw row display */}
+                      {revealedRawRows[idx] && check.rawText && (
+                        <div
+                          id={`raw-row-container-${idx}`}
+                          style={{
+                            marginTop: '0.25rem',
+                            padding: '0.5rem 0.65rem',
+                            backgroundColor: '#1E293B',
+                            border: '1px dashed #64748B',
+                            borderRadius: '4px',
+                            fontSize: '0.75rem',
+                          }}
+                        >
+                          <div style={{ color: '#94A3B8', fontSize: '0.68rem', fontWeight: 600, marginBottom: '0.2rem' }}>
+                            Full Raw CSV Row ({quote.feedback_id}):
+                          </div>
+                          <div
+                            id={`raw-row-text-${idx}`}
+                            style={{
+                              color: '#F8FAFC',
+                              fontFamily: 'monospace',
+                              lineHeight: 1.4,
+                              whiteSpace: 'pre-wrap',
+                              wordBreak: 'break-word',
+                            }}
+                          >
+                            {check.rawText}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Explicit notification if source record was not found */}
+                      {check.status === 'SOURCE_NOT_FOUND' && (
+                        <div style={{ fontSize: '0.72rem', color: '#64748B', fontStyle: 'italic', marginTop: '0.15rem' }}>
+                          Source row not found
+                        </div>
+                      )}
                     </div>
                   );
                 })}

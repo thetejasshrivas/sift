@@ -347,6 +347,23 @@ describe('Task M4-A: 2×2 Priority Matrix & String Audit (REQ-010, MDD §4.2, IC
           cluster: mockClusters[0],
           isOpen: true,
           onClose: () => {},
+          allRows: [
+            {
+              text: 'Exporting invoice fails with 504 gateway timeout every time.',
+              identity: {
+                feedbackId: 'FB-001',
+                accountId: 'ACC-001',
+              },
+              tierResolution: {
+                canonicalTier: 'Enterprise',
+                weight: 3.0,
+                weightLabel: 'Tier-Weighted',
+                isUnrecognized: false,
+              },
+              rawRow: {},
+              rowIndex: 1,
+            },
+          ],
         })
       );
 

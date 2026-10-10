@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-10-10T13:59:06.552Z",
+  "gate": "G-M4C",
+  "status": "PASS",
+  "quoteBadgesAudit": {
+    "found": true,
+    "hasExactVerified": true,
+    "badge0Text": "✓ Verified Quote",
+    "hasNearMatch": true,
+    "badge1Text": "Near Match / Normalized — Not Verbatim Verified",
+    "badge1NeverVerifiedAlone": true,
+    "badge1NotGreenBadge": true,
+    "badge1Color": "rgb(192, 132, 252)",
+    "hasUnverifiedRewritten": true,
+    "badge2Text": "⚠️ Unverified / Rewritten",
+    "hasSourceNotFound": true,
+    "badge3Text": "Source row not found",
+    "hasRevealBtn1": true,
+    "hasRevealBtn2": true
+  },
+  "rawRowRevealedAudit": {
+    "clicked": true,
+    "containerVisible": true,
+    "rawTextSnippet": "When exporting our monthly analytics report to CSV the file "
+  },
+  "mobileSheetAudit": {
+    "isMobileOpen": true,
+    "quotesVisible": true,
+    "drawerWidth": 375
+  },
+  "consoleErrorsCount": 0,
+  "consoleErrors": [],
+  "screenshots": [
+    "docs/evidence/m4/m4c_desktop_1280px_drawer_quotes.png",
+    "docs/evidence/m4/m4c_desktop_raw_revealed.png",
+    "docs/evidence/m4/m4c_tablet_768px_quotes.png",
+    "docs/evidence/m4/m4c_mobile_375px_quotes.png"
+  ]
+}

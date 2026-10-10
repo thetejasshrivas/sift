@@ -26,13 +26,28 @@ export function createBenchmarkClusters(rows: ProcessedFeedbackRow[]): TwoPassPi
       root_cause_hypothesis: '504 API Gateway Timeout due to unpaginated query execution in worker thread.',
       severity_rating: 3,
       member_feedback_ids: c1Ids,
-      quotes: c1Ids.slice(0, 3).map((id) => {
-        const r = rows.find((row) => row.identity.feedbackId === id);
-        return {
-          feedback_id: id,
-          quote_snippet: r?.text ? r.text.slice(0, 60) : 'CSV export hangs indefinitely on large files',
-        };
-      }),
+      quotes: [
+        // 1. Exact verbatim snippet -> VERIFIED
+        {
+          feedback_id: c1Ids[0] || 'FB-001',
+          quote_snippet: rows.find((r) => r.identity.feedbackId === (c1Ids[0] || 'FB-001'))?.text.slice(0, 45) || 'CSV export hangs indefinitely on large files',
+        },
+        // 2. Near-match (lowercased) -> NEAR_MATCH (Diagnostic only)
+        {
+          feedback_id: c1Ids[1] || 'FB-002',
+          quote_snippet: (rows.find((r) => r.identity.feedbackId === (c1Ids[1] || 'FB-002'))?.text.slice(0, 45) || 'export hangs indefinitely on large files').toLowerCase(),
+        },
+        // 3. Rewritten / Summarized -> UNVERIFIED
+        {
+          feedback_id: c1Ids[2] || 'FB-003',
+          quote_snippet: 'Rewritten summary: user states invoice PDF export crashes with server error.',
+        },
+        // 4. Missing Feedback ID -> SOURCE_NOT_FOUND
+        {
+          feedback_id: 'FB-MISSING-999',
+          quote_snippet: 'Orphaned feedback snippet with unmapped ID.',
+        },
+      ],
       needs_investigation: false,
     },
     {

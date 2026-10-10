@@ -51,6 +51,7 @@ These decisions are **frozen** and must not be reopened without explicit founder
 | 2026-10-09 | AG-AI-04 | **DEC-PROVIDER (APPROVED)** — Approved AI inference provider (`Google AI Studio`) and model (`gemini-3.5-flash`). Zero billing confirmed, schema valid, capacity qualified (Gate G-AI4 passed). UI disclosure text drafted. | Live verification TS-018 passed (HTTP 200, Ajv valid on PRD §5.3 schema, 6/6 burst 0x 429). Free-tier allowances fit 300-row baseline (1% RPD) and 2,000-row maximum (5.2% RPD). Model ID read dynamically from env `AI_MODEL`. |
 | 2026-10-09 | M2-A | **DEC-PROXY (IMPLEMENTED)** — Serverless proxy security controls, rate limiting, and origin hygiene. | Implemented POST /api/cluster: method/content-type validation, PRD §9.2 request schema, PRD §5.3 response schema, 2MB payload cap (TS-016), max 50 items/batch, per-item text cap (4,000 chars), ALLOWED_ORIGIN browser hygiene (IC-010), platform-native rate limiting check at ₹0 with instance-local 10 RPM fallback, model locking (AI_MODEL), zero payload logging (TS-022), and zero secret echo (TS-023). |
 | 2026-10-10 | M2-E | **DEC-M2E (QUALIFIED)** — Live end-to-end qualification run on `fixtures/valid_300rows.csv`. | Executed 6 Pass-1 batches (50 rows/batch, 6s pacing) + 9 Pass-2 category reconciliation calls via active qualified model `gemini-3.5-flash-lite`. 15/15 calls HTTP 200 (100% success), 39 thematic clusters formed, 14 unclustered items (CLUST-UNC), 100% 1:1 ID integrity invariant verified, 43,856 total tokens, ~1% daily RPD quota used. Gate G-M2 PASSED. |
+| 2026-10-10 | M4-C | **DEC-VERIFY (IMPLEMENTED)** — Exact substring quote verification engine; IC-001 overrides PRD REQ-011 .trim() and case-insensitivity option. | IC-001 takes precedence over PRD REQ-011 in Source Authority Hierarchy (Section 1). Verification requires snippet.length > 0 and rawText.includes(snippet) with strictly no trimming, case-folding, or fuzzy matching. Diagnostic near-matches show "Near Match / Normalized — Not Verbatim Verified" in distinct non-green styling (never using 'Verified' alone). Missing Feedback IDs display "Source row not found". Action outputs strictly filter to verified quotes only. |
 
 ---
 
@@ -152,5 +153,26 @@ To satisfy `PRD §11.3`, `DEC-007`, and `IC-011`, the following disclosure text 
 
 ---
 
+### DEC-VERIFY (IMPLEMENTED) — Exact Substring Quote Verification Engine & Override Specification
+
+- **Decision ID:** `DEC-VERIFY`
+- **Status:** IMPLEMENTED
+- **Date:** 2026-10-10
+- **Governing Directives:** PRD REQ-011, §7.1, TS-005; MDD §3.7; IC-001; Part VII TS-005/005b.
+- **Hierarchy Override Resolution (AGENTS.md Section 1):**
+  - PRD REQ-011 contemplated `.trim()` and a case-insensitive matching option.
+  - Under Section 1 Source Authority Hierarchy, **Implementation Clarification IC-001 (Priority 3) explicitly overrides PRD REQ-011 (Priority 2)**:
+    > *"Quote text displayed in evidence panels must be exact verbatim substrings of the source CSV row — no paraphrasing, no rewording, no summarisation; any non-exact match is flagged Unverified."*
+- **Exact Verification Mathematical Definition:**
+  $$\text{Status} = \begin{cases} \text{VERIFIED} & \text{if } \text{Snippet.length} > 0 \land \text{Snippet} \subseteq \text{RawText}(\text{Feedback ID}) \\ \text{NEAR\_MATCH} & \text{if } \text{Normalize}(\text{Snippet}) \subseteq \text{Normalize}(\text{RawText}(\text{Feedback ID})) \\ \text{UNVERIFIED} & \text{otherwise} \end{cases}$$
+  - **VERIFIED Requirements:** Strictly case-sensitive, whitespace-sensitive, punctuation-sensitive exact substring inclusion. Zero `.trim()`, zero case-folding, zero punctuation stripping, zero unicode normalization.
+  - **Diagnostic Secondary Check (`NEAR_MATCH`):** If exact matching fails, an isolated diagnostic comparison evaluates `normRaw.includes(normSnippet)` (where text is lowercased, punctuation stripped, and whitespace collapsed). When matched, the UI displays `Near Match / Normalized — Not Verbatim Verified` in visually distinct non-green styling. This badge **must never use the word "Verified" alone or the green badge**.
+  - **Missing Source Row (`SOURCE_NOT_FOUND`):** If a Feedback ID cannot be matched to an ingested record, the UI displays `Source row not found`.
+  - **Raw Row Reveal Toggle:** Non-exact quotes (`NEAR_MATCH` and `UNVERIFIED`) include an interactive toggle button (`[Reveal Full Raw Row]`) allowing users to inspect the exact unmutated cell string stored at ingestion.
+  - **Action Output Decoupling:** Action output generators (PM Strategic Rationale and Dev Engineering Spec) strictly filter quote receipts so that **only VERIFIED quotes are presented as verbatim customer evidence**.
+
+---
+
 *Governed by AGENTS.md Standing Contract. Any decision overriding a Locked entry requires founder approval and a new row in this log.*
+
 

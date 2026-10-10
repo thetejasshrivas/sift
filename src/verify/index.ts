@@ -3,3 +3,4 @@
  */
 
 export * from './missingContext';
+export * from './quoteVerifier';
