@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
 **Last updated:** 2026-10-10  
-**Current sprint task:** DEP-02 (DONE) — Gate G-D2 PASSED
+**Current sprint task:** DEP-03 (DONE) — Gate G-D3 PASSED
 
 ---
 
@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | DEP-02 |
-| **Task Name** | Connect the repository to GitHub & push main branch + milestone tags (Gate G-D2) |
+| **Task ID** | DEP-03 |
+| **Task Name** | Environment variables, production CORS & Cloudflare Pages Functions shims (Gate G-D3) |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
 | **Started** | 2026-10-10 |
@@ -54,6 +54,7 @@
 | **G-P0** | Gate G-P0 PASS: P0 complete, 208/208 tests pass, secret scan green, P1/P2 isolated (`p0-complete`) | PASSED |
 | **G-D1** | Host free-tier verification & selection: Cloudflare Workers + Pages chosen, zero card/billing (Part X §10.1, OPT-001) | PASSED |
 | **G-D2** | Repository connected to GitHub (`thetejasshrivas/sift`), main branch + 9 tags pushed, zero secrets, `.env` absent | PASSED |
+| **G-D3** | Cloudflare Pages functions shims prepared, production environment variables & build settings documented, zero secrets in workspace | PASSED |
 
 ## Blockers
 
@@ -97,6 +98,7 @@
 | **M5-C** | Milestone 5 Seal & P0 Completion Gate G-P0 (`p0-complete`) | 2026-10-10 |
 | **DEP-01** | Host free-tier verification & selection (Gate G-D1 passed) | 2026-10-10 |
 | **DEP-02** | Connect repository to GitHub & push main + tags (Gate G-D2 passed) | 2026-10-10 |
+| **DEP-03** | Environment variables, production CORS & Cloudflare Pages Functions shims (Gate G-D3 passed) | 2026-10-10 |
 
 
 ## Upcoming Tasks
