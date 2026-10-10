@@ -43,8 +43,11 @@ export async function runPass1BatchPipeline(
   const batches = chunkFeedbackRows(rows, 50);
   const totalBatches = batches.length;
 
+  const retryBatchIndices = options.retryBatchIndices;
+  const existingClusters = options.existingClusters || [];
+
   const batchResults: BatchExecutionResult[] = [];
-  const allClusters: ClusterResponseItem[] = [];
+  const allClusters: ClusterResponseItem[] = [...existingClusters];
   const failedFeedbackIds: string[] = [];
   const succeededFeedbackIds: string[] = [];
 
@@ -54,6 +57,8 @@ export async function runPass1BatchPipeline(
       allClusters: [],
       failedFeedbackIds: [],
       succeededFeedbackIds: [],
+      failedBatchIndices: [],
+      isFullyFailed: false,
       isCancelled: false,
       hasPartialFailures: false,
       totalDurationMs: 0,
@@ -72,10 +77,17 @@ export async function runPass1BatchPipeline(
     phase: 'analyzing',
   });
 
+  let executedBatchesCount = 0;
+
   for (let b = 0; b < totalBatches; b++) {
     const batch = batches[b];
     const batchStartTime = Date.now();
     const batchFeedbackIds = batch.items.map((i) => i.feedback_id);
+
+    // Skip batches not included in retryBatchIndices if specified
+    if (retryBatchIndices && !retryBatchIndices.includes(batch.batchIndex)) {
+      continue;
+    }
 
     // 1. Check for pipeline cancellation before starting batch
     if (signal?.aborted) {
@@ -94,7 +106,7 @@ export async function runPass1BatchPipeline(
     }
 
     // 2. Sequential pacing delay between batches (PRD §9.3 & DEC-PROVIDER)
-    if (b > 0 && pacingMs > 0) {
+    if (executedBatchesCount > 0 && pacingMs > 0) {
       onProgress?.({
         batchIndex: b,
         totalBatches,
@@ -124,6 +136,8 @@ export async function runPass1BatchPipeline(
         continue;
       }
     }
+
+    executedBatchesCount++;
 
     // 3. Execute batch with exponential backoff retries
     let attemptsMade = 0;
@@ -288,11 +302,21 @@ export async function runPass1BatchPipeline(
     phase: isCancelled ? 'cancelled' : 'completed',
   });
 
+  const failedBatchIndices = batchResults
+    .filter((r) => r.status === 'FAILED')
+    .map((r) => r.batchIndex);
+  const successfulBatches = batchResults.filter((r) => r.status === 'SUCCESS').length;
+  const attemptedBatches = batchResults.filter((r) => r.status !== 'CANCELLED').length;
+  const isFullyFailed =
+    attemptedBatches > 0 && successfulBatches === 0 && allClusters.length === 0;
+
   return {
     batchResults,
     allClusters,
     failedFeedbackIds,
     succeededFeedbackIds,
+    failedBatchIndices,
+    isFullyFailed,
     isCancelled,
     hasPartialFailures,
     totalDurationMs: Date.now() - startTime,

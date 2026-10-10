@@ -5,9 +5,11 @@
 
 import { handleHealthCheck } from './health';
 import { handleClusterRequest } from './cluster';
+import { handleReconcileRequest } from './reconcile';
 
 export { handleHealthCheck } from './health';
 export { handleClusterRequest } from './cluster';
+export { handleReconcileRequest } from './reconcile';
 export * from './schemas';
 export * from './rateLimiter';
 export * from './logger';
@@ -22,6 +24,10 @@ export default {
 
     if (url.pathname === '/api/cluster') {
       return handleClusterRequest(request, env);
+    }
+
+    if (url.pathname === '/api/reconcile') {
+      return handleReconcileRequest(request, env);
     }
 
     return new Response(

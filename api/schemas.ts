@@ -164,3 +164,123 @@ export const GEMINI_RESPONSE_SCHEMA = {
 const ajv = new Ajv({ allErrors: true });
 export const validateClusterRequest = ajv.compile<ClusterRequestPayload>(PRD_92_REQUEST_SCHEMA);
 export const validateClusterResponse = ajv.compile<ClusterResponseBody>(PRD_53_RESPONSE_SCHEMA);
+
+// --- Pass 2 Reconciliation Schemas (PRD REQ-006, §5.4–5.6, IC-003, IC-004) ---
+
+export interface ReconcileClusterItem {
+  cluster_id: string;
+  cluster_title: string;
+  problem_summary: string;
+  root_cause_hypothesis?: string;
+  severity_rating: number;
+  member_feedback_ids?: string[];
+  quote_feedback_ids?: string[];
+}
+
+export interface ReconcileRequestPayload {
+  canonical_category: string;
+  clusters: ReconcileClusterItem[];
+}
+
+export interface ReconcileDecisionItem {
+  cluster_ids: string[];
+  action: 'MERGE' | 'KEEP_SEPARATE' | 'UNCERTAIN';
+  rationale: string;
+  merged_cluster_title?: string;
+  merged_problem_summary?: string;
+  merged_root_cause_hypothesis?: string;
+}
+
+export interface ReconcileResponseBody {
+  decisions: ReconcileDecisionItem[];
+}
+
+// Pass 2 Request Schema (Draft-07 literal URI, IC-004)
+export const RECONCILE_REQUEST_SCHEMA = {
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["canonical_category", "clusters"],
+  "properties": {
+    "canonical_category": { "type": "string" },
+    "clusters": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["cluster_id", "cluster_title", "problem_summary", "severity_rating"],
+        "properties": {
+          "cluster_id": { "type": "string" },
+          "cluster_title": { "type": "string" },
+          "problem_summary": { "type": "string" },
+          "root_cause_hypothesis": { "type": "string" },
+          "severity_rating": { "type": "integer", "minimum": 1, "maximum": 3 },
+          "member_feedback_ids": { "type": "array", "items": { "type": "string" } },
+          "quote_feedback_ids": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+} as const;
+
+// Pass 2 Response Schema (Draft-07 literal URI, IC-004, IC-003)
+export const RECONCILE_RESPONSE_SCHEMA = {
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["decisions"],
+  "properties": {
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["cluster_ids", "action", "rationale"],
+        "properties": {
+          "cluster_ids": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "action": {
+            "type": "string",
+            "enum": ["MERGE", "KEEP_SEPARATE", "UNCERTAIN"]
+          },
+          "rationale": { "type": "string" },
+          "merged_cluster_title": { "type": "string" },
+          "merged_problem_summary": { "type": "string" },
+          "merged_root_cause_hypothesis": { "type": "string" }
+        }
+      }
+    }
+  }
+} as const;
+
+// OpenAPI Schema for Gemini API responseSchema parameter
+export const GEMINI_RECONCILE_RESPONSE_SCHEMA = {
+  "type": "object",
+  "required": ["decisions"],
+  "properties": {
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["cluster_ids", "action", "rationale"],
+        "properties": {
+          "cluster_ids": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "action": {
+            "type": "string",
+            "enum": ["MERGE", "KEEP_SEPARATE", "UNCERTAIN"]
+          },
+          "rationale": { "type": "string" },
+          "merged_cluster_title": { "type": "string" },
+          "merged_problem_summary": { "type": "string" },
+          "merged_root_cause_hypothesis": { "type": "string" }
+        }
+      }
+    }
+  }
+};
+
+export const validateReconcileRequest = ajv.compile<ReconcileRequestPayload>(RECONCILE_REQUEST_SCHEMA);
+export const validateReconcileResponse = ajv.compile<ReconcileResponseBody>(RECONCILE_RESPONSE_SCHEMA);
+

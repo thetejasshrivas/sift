@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
-**Last updated:** 2026-10-09  
-**Current sprint task:** M1-B
+**Last updated:** 2026-10-10  
+**Current sprint task:** M2-D
 
 ---
 
@@ -9,12 +9,12 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | M2-B |
-| **Task Name** | Client batching, provider calls, retries, pacing |
+| **Task ID** | M2-D |
+| **Task Name** | Hypotheses, placeholders, fallback and partial-analysis state |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
-| **Started** | 2026-10-09 |
-| **Completed** | 2026-10-09 |
+| **Started** | 2026-10-10 |
+| **Completed** | 2026-10-10 |
 
 ## Gates
 
@@ -40,6 +40,8 @@
 | **G-M1C** | Screenshots (375/768/1280px) & network evidence saved in docs/evidence/m1/ | PASSED |
 | **G-M2A** | TS-016, TS-022, TS-023 and proxy unit tests PASS | PASSED |
 | **G-M2B** | TS-009, TS-012, TS-031, TS-033, TS-034 PASS (mocked) | PASSED |
+| **G-M2C** | TS-019, TS-026 and ID-integrity tests PASS | PASSED |
+| **G-M2D** | TS-007, TS-009, TS-013(logic), TS-037 PASS | PASSED |
 
 ## Blockers
 
@@ -69,6 +71,9 @@
 | **AG-M1-C** | Ingestion UI: dropzone, schema modal, quality summary, privacy notices (Gate G-M1C passed) | 2026-10-09 |
 | **M2-A** | Serverless proxy with security controls (Gate G-M2A passed) | 2026-10-09 |
 | **M2-B** | Client batching, provider calls, retries, pacing (Gate G-M2B passed) | 2026-10-09 |
+| **M2-C** | Pass 1 assembly, ID integrity, Pass 2 reconciliation (Gate G-M2C passed) | 2026-10-10 |
+| **M2-D** | Hypotheses, placeholders, fallback and partial-analysis state (Gate G-M2D passed) | 2026-10-10 |
+
 
 ## Upcoming Tasks
 

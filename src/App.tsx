@@ -23,9 +23,14 @@ import {
   DataQualityBanner,
   RowPreviewTable,
   PreFlightNotice,
-  ProgressBar
+  ProgressBar,
+  ReconciliationDiagnostics
 } from './ui';
-import { runPass1BatchPipeline, BatchPipelineProgress, BatchPipelineResult } from './ai';
+import {
+  runTwoPassClusteringPipeline,
+  BatchPipelineProgress,
+  TwoPassPipelineResult
+} from './ai';
 
 export const App: React.FC = () => {
   // Pure ephemeral React memory state (GAP-22: strictly no localStorage/sessionStorage/IndexedDB)
@@ -39,7 +44,7 @@ export const App: React.FC = () => {
   const [analysisTriggered, setAnalysisTriggered] = useState(false);
   const [pipelineProgress, setPipelineProgress] = useState<BatchPipelineProgress | null>(null);
   const [abortController, setAbortController] = useState<AbortController | null>(null);
-  const [, setPipelineResult] = useState<BatchPipelineResult | null>(null);
+  const [twoPassResult, setTwoPassResult] = useState<TwoPassPipelineResult | null>(null);
 
   // File acceptance & parsing handler
   const handleFileAccepted = async (selectedFile: File) => {
@@ -53,6 +58,7 @@ export const App: React.FC = () => {
       setIngestionResult(result);
       setActiveMapping(result.mapping);
       setAnalysisTriggered(false);
+      setTwoPassResult(null);
       setToast({
         type: 'info',
         message: `Successfully loaded "${selectedFile.name}" (${result.rowCount} rows parsed locally).`
@@ -63,6 +69,7 @@ export const App: React.FC = () => {
       setFile(null);
       setIngestionResult(null);
       setActiveMapping(null);
+      setTwoPassResult(null);
     } finally {
       setIsLoading(false);
     }
@@ -80,6 +87,7 @@ export const App: React.FC = () => {
       setIngestionResult(result);
       setActiveMapping(result.mapping);
       setAnalysisTriggered(false);
+      setTwoPassResult(null);
       setToast({
         type: 'info',
         message: `Loaded benchmark dataset "synthetic_50.csv" (${result.rowCount} rows parsed locally).`
@@ -149,7 +157,7 @@ export const App: React.FC = () => {
     setActiveMapping(null);
     setAnalysisTriggered(false);
     setPipelineProgress(null);
-    setPipelineResult(null);
+    setTwoPassResult(null);
     setAbortController(null);
     setIsConfirmDialogOpen(false);
     setToast({
@@ -175,27 +183,27 @@ export const App: React.FC = () => {
     setAnalysisTriggered(true);
 
     try {
-      const result = await runPass1BatchPipeline(processedRows, {
+      const result = await runTwoPassClusteringPipeline(processedRows, {
         signal: controller.signal,
         onProgress: (p) => setPipelineProgress(p),
       });
 
-      setPipelineResult(result);
+      setTwoPassResult(result);
 
       if (result.isCancelled) {
         setToast({
           type: 'warning',
-          message: 'Analysis cancelled. Processed batches are preserved.'
+          message: 'Analysis cancelled. Processed clusters are preserved.'
         });
-      } else if (result.hasPartialFailures) {
+      } else if (result.pass2Reconciliation.hasFailures) {
         setToast({
           type: 'warning',
-          message: `Analysis completed with partial degradation (${result.failedFeedbackIds.length} items routed to unclustered feedback).`
+          message: `Analysis completed with advisory note: ${result.advisoryBannerMessage || 'Pass 2 reconciliation degraded.'}`
         });
       } else {
         setToast({
           type: 'info',
-          message: `Batch analysis completed successfully! Identified ${result.allClusters.length} problem clusters.`
+          message: `Analysis and cross-batch reconciliation completed! Identified ${result.finalClusters.length} problem clusters.`
         });
       }
     } catch (err: unknown) {
@@ -208,6 +216,44 @@ export const App: React.FC = () => {
       setAbortController(null);
     }
   };
+
+  const handleRetryFailedBatches = async () => {
+    if (!twoPassResult || !twoPassResult.failedBatchIndices.length || processedRows.length === 0) return;
+    const controller = new AbortController();
+    setAbortController(controller);
+    setAnalysisTriggered(true);
+
+    try {
+      const result = await runTwoPassClusteringPipeline(processedRows, {
+        signal: controller.signal,
+        onProgress: (p) => setPipelineProgress(p),
+        retryBatchIndices: twoPassResult.failedBatchIndices,
+        existingClusters: twoPassResult.pass1Pipeline.allClusters,
+      });
+
+      setTwoPassResult(result);
+      if (result.isFullyFailed) {
+        setToast({
+          type: 'error',
+          message: 'Retry failed: provider errors persisted. Feedback remains in Unclustered Feedback.',
+        });
+      } else {
+        setToast({
+          type: 'info',
+          message: `Retry completed! Current cluster count: ${result.finalClusters.length}.`,
+        });
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setToast({
+        type: 'error',
+        message: `Retry encountered an error: ${msg}`,
+      });
+    } finally {
+      setAbortController(null);
+    }
+  };
+
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -485,7 +531,23 @@ export const App: React.FC = () => {
               onStartNew={() => setIsConfirmDialogOpen(true)}
               isAnalyzing={analysisTriggered}
             />
+
+            {/* Reconciliation Diagnostics Panel & Uncertainty Badges (M2-C / M2-D) */}
+            {twoPassResult && (
+              <ReconciliationDiagnostics
+                diagnostics={twoPassResult.diagnostics}
+                clusters={twoPassResult.finalClusters}
+                clustUnc={twoPassResult.clustUnc}
+                integrity={twoPassResult.pass2Reconciliation.integrity}
+                advisoryBannerMessage={twoPassResult.advisoryBannerMessage}
+                isFullyFailed={twoPassResult.isFullyFailed}
+                failedBatchIndices={twoPassResult.failedBatchIndices}
+                onRetryFailedBatches={handleRetryFailedBatches}
+                isRetrying={analysisTriggered}
+              />
+            )}
           </div>
+
         )}
       </main>
 
