@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-10-10T13:28:11.168Z",
+  "gate": "G-M4B",
+  "status": "PASS",
+  "badgesAudit": {
+    "cardCount": 6,
+    "hasGoldImpact": true,
+    "goldText": "👑 High Tier-Weighted Impact",
+    "hasBlueVolume": true,
+    "blueText": "📊 High Volume",
+    "hasRedBlocker": true,
+    "redText": "🚨 Critical Blocker",
+    "hasGraySample": true,
+    "grayText": "⚠️ Small Sample (Low Confidence)",
+    "hasUncertain": true,
+    "uncertainText": "⚠️ Uncertain Cluster — Review Recommended",
+    "hasEstimatedFreq": true,
+    "estimatedText": "ℹ️ Account IDs Unmapped — Frequency Estimated",
+    "searchInput": true,
+    "filtersToolbar": true,
+    "liveAnnouncer": true,
+    "hasDollarInImpact": false,
+    "passedExactBadges": true
+  },
+  "searchAudit": {
+    "visibleCardsCount": 1,
+    "matchedSearch": true
+  },
+  "filterAudit": {
+    "filteredCardsCount": 2,
+    "allCardsAreCriticalBlocker": true
+  },
+  "drawerAudit": {
+    "isOpen": true,
+    "width": 600,
+    "isDesktop600px": true,
+    "hasObservation": true,
+    "hasVerifiedQuote": true,
+    "hasBoundaryNotice": true,
+    "hasFormulaDisplay": true,
+    "hasScoreBreakdown": true,
+    "hasPmButton": true,
+    "hasEngButton": true,
+    "hasCsAdvisoryButtonInP0": false,
+    "hasLiveAnnouncer": true
+  },
+  "escAudit": {
+    "isClosed": true,
+    "activeElementIsCard": true
+  },
+  "tabletCardsAudit": {
+    "cardsVisible": true,
+    "cardsCount": 5,
+    "hasHorizontalScroll": false
+  },
+  "mobileDrawerAudit": {
+    "isOpen": true,
+    "width": 375,
+    "isFullScreenSheet": true
+  },
+  "consoleErrorsCount": 0,
+  "consoleErrors": [],
+  "screenshots": [
+    "docs/evidence/m4/m4b_desktop_1280px_cards.png",
+    "docs/evidence/m4/m4b_desktop_search_filter.png",
+    "docs/evidence/m4/m4b_desktop_badge_filter.png",
+    "docs/evidence/m4/m4b_desktop_drawer_open.png",
+    "docs/evidence/m4/m4b_tablet_768px_cards.png",
+    "docs/evidence/m4/m4b_mobile_375px_drawer.png"
+  ]
+}

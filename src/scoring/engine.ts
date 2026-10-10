@@ -255,6 +255,8 @@ export function scoreAndRankClusters(
 
     const breakdown = calculatePriorityScore(rawMetrics, normalized, weights);
     const flags = evaluateClusterFlags(rawMetrics.S_c, rawMetrics.U_c, false);
+    flags.isUncertain = Boolean((cluster as any).isUncertain || (cluster as any).reviewFlag);
+    flags.isFrequencyEstimated = Boolean((cluster as any).isFrequencyEstimated) || rawMetrics.estimatedAccountsCount > 0;
 
     return {
       cluster_id: cluster.cluster_id,

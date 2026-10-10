@@ -112,6 +112,7 @@ export interface ReconciledCluster {
   uncertainRationale?: string;
   needs_investigation?: boolean;
   investigation_placeholder?: string;
+  isFrequencyEstimated?: boolean;
 }
 
 

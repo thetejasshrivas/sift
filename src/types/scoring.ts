@@ -69,6 +69,8 @@ export interface ClusterScoringFlags {
   isSmallSample: boolean;           // U_c < 3
   smallSampleBadge?: string;        // 'Small Sample Size (Low Confidence)'
   isUnclusteredBucket: boolean;     // CLUST-UNC (GAP-11)
+  isUncertain?: boolean;            // Pass 2 reconciliation uncertainty flag
+  isFrequencyEstimated?: boolean;   // Frequency estimated when Account ID column is unmapped
 }
 
 /**

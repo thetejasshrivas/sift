@@ -812,6 +812,7 @@ export const App: React.FC = () => {
                       onSelectCluster={(id) => setSelectedClusterId(id)}
                       onHoverCluster={(id) => setHoveredClusterId(id)}
                       onOpenDrawer={handleOpenDrawer}
+                      isAccountIdsUnmapped={!activeMapping?.account_id || (accountCounts?.isAccountUnmappedWarning ?? false)}
                     />
                   </div>
                 </div>

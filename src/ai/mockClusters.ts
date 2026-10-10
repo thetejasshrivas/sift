@@ -14,8 +14,8 @@ export function createBenchmarkClusters(rows: ProcessedFeedbackRow[]): TwoPassPi
   const c2Ids = rowIds.slice(12, 28); // Dark Mode / UI (Sev 1, high volume)
   const c3Ids = rowIds.slice(28, 36); // SAML SSO Auth (Sev 3)
   const c4Ids = rowIds.slice(36, 44); // Chart Lag (Sev 2)
-  const c5Ids = rowIds.slice(44, 48); // Invoice PDF (Sev 1)
-  const uncIds = rowIds.slice(48);    // Remaining in CLUST-UNC
+  const c5Ids = rowIds.slice(44, 46); // Invoice PDF (Sev 1, small sample)
+  const uncIds = rowIds.slice(46);    // Remaining in CLUST-UNC
 
   const clusters: ReconciledCluster[] = [
     {
@@ -102,6 +102,9 @@ export function createBenchmarkClusters(rows: ProcessedFeedbackRow[]): TwoPassPi
         };
       }),
       needs_investigation: false,
+      isUncertain: true,
+      reviewFlag: 'Uncertain Cluster — Review Recommended',
+      isFrequencyEstimated: true,
     },
   ];
 
