@@ -14,6 +14,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { ScoredCluster } from '../types/scoring';
+import { ProcessedFeedbackRow } from '../types/identity';
 import { verifyQuoteAgainstRows } from '../verify';
 import {
   generateStrategicTradeoffRationale,
