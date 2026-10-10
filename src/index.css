@@ -98,9 +98,81 @@ button:disabled {
   padding: 1.75rem;
 }
 
-/* Responsive Viewports per PRD §3.2 */
+/* Responsive Viewports per PRD §3.2 & REQ-010 */
 @media (max-width: 767px) {
   .modal-content {
     padding: 1.25rem;
+  }
+}
+
+/* Animations for Deep-Dive Drawer and Tooltips */
+@keyframes drawerSlideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes tooltipFade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Workspace Responsive Layouts per REQ-010 (Desktop 45/55, Tablet Tabs, Mobile Summary) */
+.workspace-grid-desktop {
+  display: grid;
+  grid-template-columns: 45fr 55fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .dual-view-workspace-container {
+    display: grid;
+    grid-template-columns: 45fr 55fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .tablet-tabs-bar {
+    display: none !important;
+  }
+  .mobile-quadrant-summary-wrapper {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .dual-view-workspace-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .tablet-tabs-bar {
+    display: flex !important;
+  }
+  .mobile-quadrant-summary-wrapper {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .dual-view-workspace-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .tablet-tabs-bar {
+    display: none !important;
+  }
+  .mobile-quadrant-summary-wrapper {
+    display: block !important;
   }
 }

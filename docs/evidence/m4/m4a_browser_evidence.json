@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-10-10T12:59:30.960Z",
+  "gate": "G-M4A",
+  "status": "PASS",
+  "stringAudit": {
+    "topRight": "High Impact / High Frequency",
+    "topLeft": "High Impact / Low Frequency",
+    "botRight": "Low Impact / High Frequency",
+    "botLeft": "Low Impact / Low Frequency",
+    "legend": "ℹ️ Quadrants split at 0.5 of normalized scale (GAP-15)Click dot to open deep-dive drawer",
+    "svgExists": true,
+    "dotsCount": 5,
+    "hasUncPlotted": false,
+    "passedQuadrantStrings": true,
+    "passedLegendString": true,
+    "passedUncExcluded": true,
+    "passedAllQuadrantStrings": true,
+    "passedMidpointLegend": true,
+    "passedUncExcludedFromPlot": true
+  },
+  "tooltipAudit": {
+    "found": true,
+    "text": "#2 Silent API Timeout during CSV ExportExportScore: 79.1(F_n: 0.7273, I_n: 0.7500)Unique Accounts: 8(Confirmed: 8, Estimated: 0)Incident Count: 12raw complaintsTier-Weighted Impact: 18.0relative priority",
+    "hasTitle": true,
+    "hasAccountsConfirmed": true,
+    "hasIncidentCount": true,
+    "hasTierWeightedImpact": true,
+    "hasDollarSign": false,
+    "passedNoDollarInImpact": true
+  },
+  "drawerAudit": {
+    "isOpen": true,
+    "clusterTitle": "Silent API Timeout during CSV Export",
+    "hasBoundaryNotice": true,
+    "tierWeightedImpact": "18.0",
+    "hasDollarInImpact": false,
+    "hasCloseButton": true,
+    "passedBoundaryNotice": true,
+    "passedNoDollarInImpact": true
+  },
+  "responsiveAudit": {
+    "tablet": {
+      "tabsBarExists": true,
+      "tabsVisible": true,
+      "hasMatrixTab": true,
+      "hasCardsTab": true,
+      "activeTab": "matrix"
+    },
+    "mobile": {
+      "summaryCardExists": true,
+      "summaryVisible": true,
+      "hasHighImpactHighFreq": true,
+      "hasHighImpactLowFreq": true,
+      "hasLowImpactHighFreq": true,
+      "hasLowImpactLowFreq": true,
+      "hasMidpointLegend": true
+    }
+  },
+  "consoleErrorsCount": 0,
+  "consoleErrors": [],
+  "screenshots": [
+    "docs/evidence/m4/m4a_desktop_1280px.png",
+    "docs/evidence/m4/m4a_tooltip_hover.png",
+    "docs/evidence/m4/m4a_drawer_open.png",
+    "docs/evidence/m4/m4a_tablet_768px.png",
+    "docs/evidence/m4/m4a_mobile_375px.png"
+  ]
+}

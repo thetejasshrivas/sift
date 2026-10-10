@@ -16,4 +16,5 @@ export * from './BreakdownTooltip';
 export * from './CalibrationBar';
 export * from './SpatialMatrixView';
 export * from './RankedCardList';
+export * from './DeepDiveDrawer';
 

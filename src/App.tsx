@@ -27,7 +27,8 @@ import {
   ReconciliationDiagnostics,
   CalibrationBar,
   SpatialMatrixView,
-  RankedCardList
+  RankedCardList,
+  DeepDiveDrawer
 } from './ui';
 import {
   runTwoPassClusteringPipeline,
@@ -56,6 +57,10 @@ export const App: React.FC = () => {
   const [twoPassResult, setTwoPassResult] = useState<TwoPassPipelineResult | null>(null);
   const [sliderWeights, setSliderWeights] = useState<SliderWeights>(DEFAULT_SLIDER_WEIGHTS);
   const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
+  const [hoveredClusterId, setHoveredClusterId] = useState<string | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [tabletActiveTab, setTabletActiveTab] = useState<'matrix' | 'cards'>('matrix');
+  const [mobileScatterOpen, setMobileScatterOpen] = useState(false);
 
   // File acceptance & parsing handler
   const handleFileAccepted = async (selectedFile: File) => {
@@ -165,6 +170,39 @@ export const App: React.FC = () => {
     }
     return scoreAndRankClusters(twoPassResult.finalClusters, processedRows, sliderWeights);
   }, [twoPassResult, processedRows, sliderWeights]);
+
+  // Mobile static quadrant summary counts (REQ-010 / M4-A)
+  const mobileQuadrantCounts = useMemo(() => {
+    if (!scoredDataset) {
+      return { hiHf: 0, hiLf: 0, liHf: 0, liLf: 0 };
+    }
+    const plottable = scoredDataset.scoredClusters.filter(
+      (c) => c.cluster_id !== 'CLUST-UNC' && !c.flags.isUnclusteredBucket
+    );
+    let hiHf = 0;
+    let hiLf = 0;
+    let liHf = 0;
+    let liLf = 0;
+    for (const c of plottable) {
+      const isHi = c.normalized.I_n >= 0.5;
+      const isHf = c.normalized.F_n >= 0.5;
+      if (isHi && isHf) hiHf++;
+      else if (isHi && !isHf) hiLf++;
+      else if (!isHi && isHf) liHf++;
+      else liLf++;
+    }
+    return { hiHf, hiLf, liHf, liLf };
+  }, [scoredDataset]);
+
+  const selectedCluster = useMemo(() => {
+    if (!scoredDataset || !selectedClusterId) return null;
+    return scoredDataset.scoredClusters.find((c) => c.cluster_id === selectedClusterId) || null;
+  }, [scoredDataset, selectedClusterId]);
+
+  const handleOpenDrawer = (clusterId: string) => {
+    setSelectedClusterId(clusterId);
+    setIsDrawerOpen(true);
+  };
 
   // Reset all session state in ephemeral memory
   const handleConfirmStartNew = () => {
@@ -598,30 +636,193 @@ export const App: React.FC = () => {
                   </div>
                 )}
 
-                {/* Dual-View Discovery Workspace (2x2 Matrix + Ranked Cards) */}
+                {/* Dual-View Discovery Workspace (2x2 Matrix + Ranked Cards - PRD REQ-010) */}
+                {/* Tablet Navigation Tabs (768px - 1023px per TS-015) */}
                 <div
-                  id="dual-view-workspace"
+                  id="tablet-view-tabs"
+                  className="tablet-tabs-bar"
+                  role="tablist"
+                  aria-label="Workspace View Tabs"
                   style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
-                    gap: '1.5rem',
-                    alignItems: 'start',
+                    gap: '0.75rem',
+                    marginBottom: '0.5rem',
                   }}
                 >
-                  {/* Left Column: 2x2 Spatial Matrix */}
-                  <SpatialMatrixView
-                    clusters={scoredDataset.scoredClusters}
-                    selectedClusterId={selectedClusterId}
-                    onSelectCluster={(id) => setSelectedClusterId(id)}
-                  />
+                  <button
+                    type="button"
+                    id="tab-priority-matrix"
+                    role="tab"
+                    aria-selected={tabletActiveTab === 'matrix'}
+                    onClick={() => setTabletActiveTab('matrix')}
+                    style={{
+                      flex: 1,
+                      padding: '0.65rem 1rem',
+                      borderRadius: '8px',
+                      fontSize: '0.85rem',
+                      fontWeight: 700,
+                      backgroundColor: tabletActiveTab === 'matrix' ? '#2563EB' : '#1E293B',
+                      color: tabletActiveTab === 'matrix' ? '#FFFFFF' : '#94A3B8',
+                      border: '1px solid',
+                      borderColor: tabletActiveTab === 'matrix' ? '#3B82F6' : '#334155',
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease',
+                    }}
+                  >
+                    📊 2×2 Priority Matrix
+                  </button>
+                  <button
+                    type="button"
+                    id="tab-ranked-cards"
+                    role="tab"
+                    aria-selected={tabletActiveTab === 'cards'}
+                    onClick={() => setTabletActiveTab('cards')}
+                    style={{
+                      flex: 1,
+                      padding: '0.65rem 1rem',
+                      borderRadius: '8px',
+                      fontSize: '0.85rem',
+                      fontWeight: 700,
+                      backgroundColor: tabletActiveTab === 'cards' ? '#2563EB' : '#1E293B',
+                      color: tabletActiveTab === 'cards' ? '#FFFFFF' : '#94A3B8',
+                      border: '1px solid',
+                      borderColor: tabletActiveTab === 'cards' ? '#3B82F6' : '#334155',
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease',
+                    }}
+                  >
+                    📑 Ranked Insight Cards ({scoredDataset.scoredClusters.length})
+                  </button>
+                </div>
+
+                {/* Mobile Static Quadrant Summary Card (< 768px per M4-A) */}
+                <div id="mobile-quadrant-summary-wrapper" className="mobile-quadrant-summary-wrapper">
+                  <div
+                    id="mobile-quadrant-summary-card"
+                    style={{
+                      backgroundColor: '#1E293B',
+                      border: '1px solid #334155',
+                      borderRadius: '8px',
+                      padding: '1rem',
+                      marginBottom: '1rem',
+                      boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                      <h4 style={{ fontSize: '0.88rem', fontWeight: 700, color: '#F8FAFC', margin: 0 }}>
+                        2×2 Quadrant Summary
+                      </h4>
+                      <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>
+                        split at 0.5 of normalized scale
+                      </span>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.6rem' }}>
+                      <div style={{ backgroundColor: 'rgba(239, 68, 68, 0.12)', border: '1px solid rgba(239, 68, 68, 0.25)', borderRadius: '6px', padding: '0.6rem' }}>
+                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#EF4444' }}>
+                          High Impact / High Frequency
+                        </div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#F8FAFC', marginTop: '0.2rem' }}>
+                          {mobileQuadrantCounts.hiHf} <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>clusters</span>
+                        </div>
+                      </div>
+
+                      <div style={{ backgroundColor: 'rgba(217, 119, 6, 0.12)', border: '1px solid rgba(217, 119, 6, 0.25)', borderRadius: '6px', padding: '0.6rem' }}>
+                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#D97706' }}>
+                          High Impact / Low Frequency
+                        </div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#F8FAFC', marginTop: '0.2rem' }}>
+                          {mobileQuadrantCounts.hiLf} <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>clusters</span>
+                        </div>
+                      </div>
+
+                      <div style={{ backgroundColor: 'rgba(59, 130, 246, 0.12)', border: '1px solid rgba(59, 130, 246, 0.25)', borderRadius: '6px', padding: '0.6rem' }}>
+                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#3B82F6' }}>
+                          Low Impact / High Frequency
+                        </div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#F8FAFC', marginTop: '0.2rem' }}>
+                          {mobileQuadrantCounts.liHf} <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>clusters</span>
+                        </div>
+                      </div>
+
+                      <div style={{ backgroundColor: 'rgba(100, 116, 139, 0.12)', border: '1px solid rgba(100, 116, 139, 0.25)', borderRadius: '6px', padding: '0.6rem' }}>
+                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94A3B8' }}>
+                          Low Impact / Low Frequency
+                        </div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#F8FAFC', marginTop: '0.2rem' }}>
+                          {mobileQuadrantCounts.liLf} <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>clusters</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ marginTop: '0.75rem', textAlign: 'right' }}>
+                      <button
+                        type="button"
+                        id="btn-toggle-mobile-scatter"
+                        onClick={() => setMobileScatterOpen(!mobileScatterOpen)}
+                        style={{
+                          fontSize: '0.75rem',
+                          color: '#38BDF8',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          padding: '0.2rem 0.4rem',
+                        }}
+                      >
+                        {mobileScatterOpen ? 'Hide Scatter Plot ▲' : 'Show SVG Scatter Plot ▼'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dual-View Workspace Container (Desktop 45/55 Layout per REQ-010) */}
+                <div
+                  id="dual-view-workspace"
+                  className="dual-view-workspace-container"
+                >
+                  {/* Left Column: 2x2 Spatial Matrix (SVG Scatter) */}
+                  <div
+                    style={{
+                      display:
+                        // On tablet: show only if matrix tab active
+                        // On mobile: show only if mobileScatterOpen is true
+                        // On desktop: handled by CSS class dual-view-workspace-container
+                        tabletActiveTab === 'matrix' || mobileScatterOpen ? 'block' : 'contents',
+                    }}
+                  >
+                    <SpatialMatrixView
+                      clusters={scoredDataset.scoredClusters}
+                      selectedClusterId={selectedClusterId}
+                      hoveredClusterId={hoveredClusterId}
+                      onSelectCluster={(id) => setSelectedClusterId(id)}
+                      onHoverCluster={(id) => setHoveredClusterId(id)}
+                      onOpenDrawer={handleOpenDrawer}
+                    />
+                  </div>
 
                   {/* Right Column: Ranked Card List */}
-                  <RankedCardList
-                    clusters={scoredDataset.scoredClusters}
-                    selectedClusterId={selectedClusterId}
-                    onSelectCluster={(id) => setSelectedClusterId(id)}
-                  />
+                  <div
+                    style={{
+                      display:
+                        tabletActiveTab === 'cards' || window.innerWidth >= 1024 ? 'block' : 'contents',
+                    }}
+                  >
+                    <RankedCardList
+                      clusters={scoredDataset.scoredClusters}
+                      selectedClusterId={selectedClusterId}
+                      hoveredClusterId={hoveredClusterId}
+                      onSelectCluster={(id) => setSelectedClusterId(id)}
+                      onHoverCluster={(id) => setHoveredClusterId(id)}
+                      onOpenDrawer={handleOpenDrawer}
+                    />
+                  </div>
                 </div>
+
+                {/* Deep-Dive Drawer (600px Right-hand slide-out per REQ-010) */}
+                <DeepDiveDrawer
+                  cluster={selectedCluster}
+                  isOpen={isDrawerOpen}
+                  onClose={() => setIsDrawerOpen(false)}
+                  allRows={processedRows}
+                />
               </div>
             )}
 

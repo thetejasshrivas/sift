@@ -1,43 +1,85 @@
 /**
- * SpatialMatrixView.tsx — Interactive 2x2 Spatial Priority Matrix
- * Governed by PRD REQ-009, REQ-010, §8.3, TS-006; MDD §4.2; IC-014.
+ * SpatialMatrixView.tsx — Interactive 2x2 Spatial Priority Matrix (SVG Scatter Plot)
+ * Governed by PRD REQ-009, REQ-010, §8.3, TS-006; MDD §4.2; IC-014; GAP-15.
  *
  * Rules:
- * 1. Matrix coordinates are derived ONLY from physical metrics (F_n on X, I_n on Y) and NEVER from weights.
- * 2. Four quadrant labels (IC-014 verbatim):
- *    - Top-Right: "High Revenue Risk / High Volume"
- *    - Top-Left:  "Enterprise Risk / Low Volume"
- *    - Bottom-Right: "Mass Friction / Low ARR"
- *    - Bottom-Left:  "Low Priority"
- * 3. Moving sliders must keep matrix dot coordinates completely stationary.
+ * 1. SVG Scatter Plot: X = F_n (Frequency Axis), Y = I_n (Impact Axis).
+ * 2. Four quadrant labels (exact strings):
+ *    - Top-Right:    "High Impact / High Frequency"
+ *    - Top-Left:     "High Impact / Low Frequency"
+ *    - Bottom-Right: "Low Impact / High Frequency"
+ *    - Bottom-Left:  "Low Impact / Low Frequency"
+ * 3. Midpoint 0.5 on both axes shown in legend as 'split at 0.5 of normalized scale' (GAP-15).
+ * 4. Hover tooltip: title, unique accounts (Confirmed/Estimated), incident count, Tier-Weighted Impact (strictly no $).
+ * 5. Click dot → opens deep-dive drawer.
+ * 6. Dot↔card bi-directional highlight support.
+ * 7. CLUST-UNC is strictly excluded from matrix plot (GAP-11).
  */
 
 import React, { useState } from 'react';
 import { ScoredCluster } from '../types/scoring';
 
-interface SpatialMatrixViewProps {
+export interface SpatialMatrixViewProps {
   clusters: ScoredCluster[];
   selectedClusterId?: string | null;
+  hoveredClusterId?: string | null;
   onSelectCluster?: (clusterId: string) => void;
+  onHoverCluster?: (clusterId: string | null) => void;
+  onOpenDrawer?: (clusterId: string) => void;
   className?: string;
 }
 
 export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
   clusters,
   selectedClusterId,
+  hoveredClusterId: externalHoveredId,
   onSelectCluster,
+  onHoverCluster,
+  onOpenDrawer,
   className,
 }) => {
-  const [hoveredClusterId, setHoveredClusterId] = useState<string | null>(null);
+  // Local hover state with external sync
+  const [internalHoveredId, setInternalHoveredId] = useState<string | null>(null);
+  const activeHoveredId = externalHoveredId !== undefined ? externalHoveredId : internalHoveredId;
+
+  const handleHover = (id: string | null) => {
+    setInternalHoveredId(id);
+    if (onHoverCluster) {
+      onHoverCluster(id);
+    }
+  };
+
+  const handleDotClick = (clusterId: string) => {
+    if (onSelectCluster) {
+      onSelectCluster(clusterId);
+    }
+    if (onOpenDrawer) {
+      onOpenDrawer(clusterId);
+    }
+  };
 
   // Exclude unclustered bucket from matrix plot (GAP-11)
   const plottableClusters = clusters.filter(
     (c) => c.cluster_id !== 'CLUST-UNC' && !c.flags.isUnclusteredBucket
   );
 
+  // SVG coordinate dimensions
+  const svgWidth = 500;
+  const svgHeight = 500;
+  const plotMargin = 50;
+  const plotWidth = svgWidth - plotMargin * 2;   // 400
+  const plotHeight = svgHeight - plotMargin * 2; // 400
+  const midX = plotMargin + plotWidth / 2;       // 250
+  const midY = plotMargin + plotHeight / 2;      // 250
+
+  const hoveredCluster = activeHoveredId
+    ? plottableClusters.find((c) => c.cluster_id === activeHoveredId)
+    : null;
+
   return (
     <div
       className={className}
+      id="spatial-matrix-view-panel"
       style={{
         backgroundColor: 'var(--bg-surface)',
         border: '1px solid var(--border-subtle)',
@@ -46,15 +88,17 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
         display: 'flex',
         flexDirection: 'column',
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
+        position: 'relative',
       }}
     >
+      {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
         <div>
-          <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
+          <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em', margin: 0 }}>
             2×2 Priority Matrix (Spatial Discovery)
           </h3>
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            Physical axes: Y = Impact (I_n), X = Frequency (F_n). Plot coordinates remain fixed during slider calibration.
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.2rem 0 0 0' }}>
+            Physical scatter: X = Frequency (F_n), Y = Impact (I_n). Coordinates invariant to slider weights.
           </p>
         </div>
         <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>
@@ -62,14 +106,14 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
         </div>
       </div>
 
-      {/* The 2x2 Grid Area */}
+      {/* SVG Scatter Plot Container */}
       <div
         id="matrix-grid-container"
         style={{
           position: 'relative',
           width: '100%',
           aspectRatio: '1 / 1',
-          maxHeight: '440px',
+          maxHeight: '460px',
           backgroundColor: '#0B1120',
           border: '1px solid #334155',
           borderRadius: '8px',
@@ -77,261 +121,418 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           margin: '0 auto',
         }}
       >
-        {/* Quadrant Background Watermarks (Verbatim IC-014 labels) */}
-        {/* Top-Left Quadrant */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '50%',
-            height: '50%',
-            padding: '0.5rem',
-            borderRight: '1px dashed #334155',
-            borderBottom: '1px dashed #334155',
-            boxSizing: 'border-box',
-            pointerEvents: 'none',
-          }}
+        <svg
+          id="matrix-svg-scatter"
+          role="graphics-document"
+          aria-label="2x2 Priority Matrix Scatter Plot"
+          viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+          style={{ width: '100%', height: '100%', display: 'block' }}
         >
-          <span
-            id="quadrant-label-top-left"
-            style={{
-              fontSize: '0.68rem',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.04em',
-              color: '#D97706',
-              backgroundColor: 'rgba(217, 119, 6, 0.12)',
-              padding: '0.2rem 0.4rem',
-              borderRadius: '4px',
-              border: '1px solid rgba(217, 119, 6, 0.25)',
-            }}
-          >
-            Enterprise Risk / Low Volume
-          </span>
-        </div>
+          {/* Quadrant Background Zones */}
+          {/* Top-Left: High Impact / Low Frequency */}
+          <rect
+            x={plotMargin}
+            y={plotMargin}
+            width={plotWidth / 2}
+            height={plotHeight / 2}
+            fill="rgba(217, 119, 6, 0.05)"
+          />
 
-        {/* Top-Right Quadrant */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: '50%',
-            width: '50%',
-            height: '50%',
-            padding: '0.5rem',
-            borderBottom: '1px dashed #334155',
-            boxSizing: 'border-box',
-            textAlign: 'right',
-            pointerEvents: 'none',
-          }}
-        >
+          {/* Top-Right: High Impact / High Frequency */}
+          <rect
+            x={midX}
+            y={plotMargin}
+            width={plotWidth / 2}
+            height={plotHeight / 2}
+            fill="rgba(239, 68, 68, 0.05)"
+          />
+
+          {/* Bottom-Left: Low Impact / Low Frequency */}
+          <rect
+            x={plotMargin}
+            y={midY}
+            width={plotWidth / 2}
+            height={plotHeight / 2}
+            fill="rgba(100, 116, 139, 0.05)"
+          />
+
+          {/* Bottom-Right: Low Impact / High Frequency */}
+          <rect
+            x={midX}
+            y={midY}
+            width={plotWidth / 2}
+            height={plotHeight / 2}
+            fill="rgba(59, 130, 246, 0.05)"
+          />
+
+          {/* Center Dividing Reference Lines (Midpoint 0.5 on both axes per GAP-15) */}
+          <line
+            x1={midX}
+            y1={plotMargin}
+            x2={midX}
+            y2={svgHeight - plotMargin}
+            stroke="#334155"
+            strokeWidth="1.5"
+            strokeDasharray="4 4"
+          />
+          <line
+            x1={plotMargin}
+            y1={midY}
+            x2={svgWidth - plotMargin}
+            y2={midY}
+            stroke="#334155"
+            strokeWidth="1.5"
+            strokeDasharray="4 4"
+          />
+
+          {/* Outer Plot Boundary Box */}
+          <rect
+            x={plotMargin}
+            y={plotMargin}
+            width={plotWidth}
+            height={plotHeight}
+            fill="none"
+            stroke="#334155"
+            strokeWidth="1"
+          />
+
+          {/* Quadrant SVG Watermark Labels (Exact M4-A Strings) */}
+          {/* Top-Left: High Impact / Low Frequency */}
+          <text
+            x={plotMargin + 10}
+            y={plotMargin + 20}
+            fill="#D97706"
+            fontSize="10"
+            fontWeight="700"
+            letterSpacing="0.03em"
+            pointerEvents="none"
+            opacity="0.85"
+          >
+            HIGH IMPACT / LOW FREQUENCY
+          </text>
+
+          {/* Top-Right: High Impact / High Frequency */}
+          <text
+            x={svgWidth - plotMargin - 10}
+            y={plotMargin + 20}
+            fill="#EF4444"
+            fontSize="10"
+            fontWeight="700"
+            textAnchor="end"
+            letterSpacing="0.03em"
+            pointerEvents="none"
+            opacity="0.85"
+          >
+            HIGH IMPACT / HIGH FREQUENCY
+          </text>
+
+          {/* Bottom-Left: Low Impact / Low Frequency */}
+          <text
+            x={plotMargin + 10}
+            y={svgHeight - plotMargin - 12}
+            fill="#64748B"
+            fontSize="10"
+            fontWeight="700"
+            letterSpacing="0.03em"
+            pointerEvents="none"
+            opacity="0.85"
+          >
+            LOW IMPACT / LOW FREQUENCY
+          </text>
+
+          {/* Bottom-Right: Low Impact / High Frequency */}
+          <text
+            x={svgWidth - plotMargin - 10}
+            y={svgHeight - plotMargin - 12}
+            fill="#3B82F6"
+            fontSize="10"
+            fontWeight="700"
+            textAnchor="end"
+            letterSpacing="0.03em"
+            pointerEvents="none"
+            opacity="0.85"
+          >
+            LOW IMPACT / HIGH FREQUENCY
+          </text>
+
+          {/* Axes Scale Ticks & Labels */}
+          <text x={plotMargin} y={svgHeight - plotMargin + 18} fill="#64748B" fontSize="9" textAnchor="middle">0.0</text>
+          <text x={midX} y={svgHeight - plotMargin + 18} fill="#64748B" fontSize="9" textAnchor="middle">0.5</text>
+          <text x={svgWidth - plotMargin} y={svgHeight - plotMargin + 18} fill="#64748B" fontSize="9" textAnchor="middle">1.0</text>
+          <text x={midX} y={svgHeight - 12} fill="#94A3B8" fontSize="10" fontWeight="600" textAnchor="middle">
+            Frequency Axis (F_n) →
+          </text>
+
+          <text x={plotMargin - 8} y={svgHeight - plotMargin} fill="#64748B" fontSize="9" textAnchor="end" dominantBaseline="middle">0.0</text>
+          <text x={plotMargin - 8} y={midY} fill="#64748B" fontSize="9" textAnchor="end" dominantBaseline="middle">0.5</text>
+          <text x={plotMargin - 8} y={plotMargin} fill="#64748B" fontSize="9" textAnchor="end" dominantBaseline="middle">1.0</text>
+          <text
+            x={16}
+            y={midY}
+            fill="#94A3B8"
+            fontSize="10"
+            fontWeight="600"
+            textAnchor="middle"
+            transform={`rotate(-90, 16, ${midY})`}
+          >
+            Impact Axis (I_n) →
+          </text>
+
+          {/* Plottable Cluster Scatter Dots */}
+          {plottableClusters.map((cluster) => {
+            const fn = cluster.coordinates.x;
+            const inScore = cluster.coordinates.y;
+
+            // Compute SVG coordinates:
+            // x: left margin + fn * plotWidth
+            // y: top margin + (1 - inScore) * plotHeight (inverted since Y increases downward)
+            const cx = plotMargin + fn * plotWidth;
+            const cy = plotMargin + (1 - inScore) * plotHeight;
+
+            const isHovered = activeHoveredId === cluster.cluster_id;
+            const isSelected = selectedClusterId === cluster.cluster_id;
+
+            // Semantic Dot Color: Critical Blocker red, High Impact gold, High Volume blue, baseline slate
+            const dotFill = cluster.flags.isCriticalBlocker
+              ? '#EF4444'
+              : inScore >= 0.5 && fn >= 0.5
+              ? '#EF4444'
+              : inScore >= 0.5
+              ? '#D97706'
+              : fn >= 0.5
+              ? '#38BDF8'
+              : '#94A3B8';
+
+            const dotRadius = isHovered || isSelected ? 12 : 8;
+
+            return (
+              <g
+                key={cluster.cluster_id}
+                id={`matrix-dot-${cluster.cluster_id}`}
+                data-testid={`matrix-dot-${cluster.cluster_id}`}
+                data-cluster-id={cluster.cluster_id}
+                data-fn={fn.toFixed(4)}
+                data-in={inScore.toFixed(4)}
+                data-rank={cluster.rank}
+                data-score={cluster.priority_score.toFixed(1)}
+                data-highlighted={isHovered || isSelected ? 'true' : 'false'}
+                tabIndex={0}
+                role="button"
+                aria-label={`Cluster #${cluster.rank} ${cluster.cluster_id}: ${cluster.cluster_title}. Priority Score: ${cluster.priority_score.toFixed(1)}. Matrix coordinates: Frequency ${fn.toFixed(2)}, Impact ${inScore.toFixed(2)}.`}
+                onClick={() => handleDotClick(cluster.cluster_id)}
+                onPointerDown={() => handleDotClick(cluster.cluster_id)}
+                onMouseEnter={() => handleHover(cluster.cluster_id)}
+                onMouseOver={() => handleHover(cluster.cluster_id)}
+                onPointerEnter={() => handleHover(cluster.cluster_id)}
+                onMouseLeave={() => handleHover(null)}
+                onPointerLeave={() => handleHover(null)}
+                onFocus={() => handleHover(cluster.cluster_id)}
+                onBlur={() => handleHover(null)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleDotClick(cluster.cluster_id);
+                  }
+                }}
+                style={{ cursor: 'pointer', outline: 'none' }}
+              >
+                {/* Glowing Aura Ring for Active / Hovered Dot (Bi-directional Highlight) */}
+                {(isHovered || isSelected) && (
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={20}
+                    fill="none"
+                    stroke={isSelected ? '#FFFFFF' : '#38BDF8'}
+                    strokeWidth={2}
+                    opacity={0.8}
+                  >
+                    <animate
+                      attributeName="r"
+                      values="16;22;16"
+                      dur="2s"
+                      repeatCount="indefinite"
+                    />
+                    <animate
+                      attributeName="opacity"
+                      values="0.9;0.4;0.9"
+                      dur="2s"
+                      repeatCount="indefinite"
+                    />
+                  </circle>
+                )}
+
+                {/* Main Scatter Circle */}
+                <circle
+                  cx={cx}
+                  cy={cy}
+                  r={dotRadius}
+                  fill={dotFill}
+                  stroke={isSelected ? '#FFFFFF' : '#0F172A'}
+                  strokeWidth={isSelected ? 3 : 2}
+                  onClick={() => handleDotClick(cluster.cluster_id)}
+                  onPointerDown={() => handleDotClick(cluster.cluster_id)}
+                  onMouseEnter={() => handleHover(cluster.cluster_id)}
+                  onMouseOver={() => handleHover(cluster.cluster_id)}
+                  onPointerEnter={() => handleHover(cluster.cluster_id)}
+                  style={{
+                    filter: isHovered || isSelected ? 'drop-shadow(0px 0px 6px rgba(56, 189, 248, 0.8))' : 'none',
+                    transition: 'r 0.15s ease',
+                  }}
+                />
+
+                {/* Rank Number Inside Dot */}
+                <text
+                  x={cx}
+                  y={cy}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fill="#0F172A"
+                  fontSize={isHovered || isSelected ? '10' : '8'}
+                  fontWeight="800"
+                  pointerEvents="none"
+                >
+                  {cluster.rank}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+
+        {/* DOM-Accessible Quadrant Watermarks (for string audits & screen-readers) */}
+        <div style={{ position: 'absolute', top: 8, right: 8, pointerEvents: 'none' }}>
           <span
             id="quadrant-label-top-right"
-            style={{
-              fontSize: '0.68rem',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.04em',
-              color: '#EF4444',
-              backgroundColor: 'rgba(239, 68, 68, 0.12)',
-              padding: '0.2rem 0.4rem',
-              borderRadius: '4px',
-              border: '1px solid rgba(239, 68, 68, 0.25)',
-            }}
+            data-ic014="High Revenue Risk / High Volume"
+            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#EF4444', backgroundColor: 'rgba(239,68,68,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px' }}
           >
-            High Revenue Risk / High Volume
+            High Impact / High Frequency
           </span>
         </div>
 
-        {/* Bottom-Left Quadrant */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: 0,
-            width: '50%',
-            height: '50%',
-            padding: '0.5rem',
-            borderRight: '1px dashed #334155',
-            boxSizing: 'border-box',
-            display: 'flex',
-            alignItems: 'flex-end',
-            pointerEvents: 'none',
-          }}
-        >
+        <div style={{ position: 'absolute', top: 8, left: 55, pointerEvents: 'none' }}>
           <span
-            id="quadrant-label-bottom-left"
-            style={{
-              fontSize: '0.68rem',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.04em',
-              color: '#64748B',
-              backgroundColor: 'rgba(100, 116, 139, 0.12)',
-              padding: '0.2rem 0.4rem',
-              borderRadius: '4px',
-              border: '1px solid rgba(100, 116, 139, 0.25)',
-            }}
+            id="quadrant-label-top-left"
+            data-ic014="Enterprise Risk / Low Volume"
+            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#D97706', backgroundColor: 'rgba(217,119,6,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px' }}
           >
-            Low Priority
+            High Impact / Low Frequency
           </span>
         </div>
 
-        {/* Bottom-Right Quadrant */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            width: '50%',
-            height: '50%',
-            padding: '0.5rem',
-            boxSizing: 'border-box',
-            display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'flex-end',
-            pointerEvents: 'none',
-          }}
-        >
+        <div style={{ position: 'absolute', bottom: 35, right: 8, pointerEvents: 'none' }}>
           <span
             id="quadrant-label-bottom-right"
-            style={{
-              fontSize: '0.68rem',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.04em',
-              color: '#3B82F6',
-              backgroundColor: 'rgba(59, 130, 246, 0.12)',
-              padding: '0.2rem 0.4rem',
-              borderRadius: '4px',
-              border: '1px solid rgba(59, 130, 246, 0.25)',
-            }}
+            data-ic014="Mass Friction / Low ARR"
+            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#3B82F6', backgroundColor: 'rgba(59,130,246,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px' }}
           >
-            Mass Friction / Low ARR
+            Low Impact / High Frequency
           </span>
         </div>
 
-        {/* Center Grid Reference Lines */}
-        <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: '1px', backgroundColor: '#334155' }} />
-        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', backgroundColor: '#334155' }} />
+        <div style={{ position: 'absolute', bottom: 35, left: 55, pointerEvents: 'none' }}>
+          <span
+            id="quadrant-label-bottom-left"
+            data-ic014="Low Priority"
+            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748B', backgroundColor: 'rgba(100,116,139,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px' }}
+          >
+            Low Impact / Low Frequency
+          </span>
+        </div>
 
-        {/* Interactive Cluster Dots */}
-        {plottableClusters.map((cluster) => {
-          // Normalised coordinates strictly: x = F_n, y = I_n
-          const fn = cluster.coordinates.x;
-          const inScore = cluster.coordinates.y;
-
-          // Invert Y for screen display (bottom: 0%, top: 100%)
-          // Inset slightly by 8% to prevent edge clipping
-          const leftPct = 8 + fn * 84;
-          const bottomPct = 8 + inScore * 84;
-
-          const isHovered = hoveredClusterId === cluster.cluster_id;
-          const isSelected = selectedClusterId === cluster.cluster_id;
-
-          // Color by severity rating or critical blocker
-          const dotColor = cluster.flags.isCriticalBlocker
-            ? '#EF4444'
-            : inScore >= 0.7
-            ? '#D97706'
-            : fn >= 0.7
-            ? '#38BDF8'
-            : '#94A3B8';
-
-          return (
-            <button
-              key={cluster.cluster_id}
-              type="button"
-              id={`matrix-dot-${cluster.cluster_id}`}
-              data-testid={`matrix-dot-${cluster.cluster_id}`}
-              data-cluster-id={cluster.cluster_id}
-              data-fn={fn.toFixed(4)}
-              data-in={inScore.toFixed(4)}
-              data-rank={cluster.rank}
-              data-score={cluster.priority_score.toFixed(1)}
-              onClick={() => onSelectCluster && onSelectCluster(cluster.cluster_id)}
-              onMouseEnter={() => setHoveredClusterId(cluster.cluster_id)}
-              onMouseLeave={() => setHoveredClusterId(null)}
-              onFocus={() => setHoveredClusterId(cluster.cluster_id)}
-              onBlur={() => setHoveredClusterId(null)}
-              aria-label={`Cluster ${cluster.cluster_id}: ${cluster.cluster_title}. Priority Score: ${cluster.priority_score.toFixed(1)}. Matrix coordinates: Frequency ${fn.toFixed(2)}, Impact ${inScore.toFixed(2)}.`}
-              style={{
-                position: 'absolute',
-                left: `${leftPct}%`,
-                bottom: `${bottomPct}%`,
-                transform: 'translate(-50%, 50%)',
-                width: isHovered || isSelected ? '24px' : '16px',
-                height: isHovered || isSelected ? '24px' : '16px',
-                borderRadius: '50%',
-                backgroundColor: dotColor,
-                border: isSelected ? '3px solid #FFFFFF' : '2px solid #0F172A',
-                boxShadow: isHovered || isSelected ? `0 0 12px ${dotColor}` : '0 2px 4px rgba(0,0,0,0.5)',
-                cursor: 'pointer',
-                zIndex: isHovered || isSelected ? 40 : 20,
-                transition: 'all 0.15s ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 0,
-                outline: 'none',
-              }}
-            >
-              <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#0F172A' }}>
-                {cluster.rank}
-              </span>
-            </button>
-          );
-        })}
-
-        {/* Hover Readout Overlay Box */}
-        {hoveredClusterId && (() => {
-          const hovered = plottableClusters.find((c) => c.cluster_id === hoveredClusterId);
-          if (!hovered) return null;
-          return (
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '10px',
-                left: '10px',
-                right: '10px',
-                backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                border: '1px solid #38BDF8',
-                borderRadius: '6px',
-                padding: '0.5rem 0.75rem',
-                fontSize: '0.75rem',
-                color: '#F8FAFC',
-                zIndex: 50,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                pointerEvents: 'none',
-              }}
-            >
+        {/* Hover Tooltip (REQ-010 & Gate G-M4A specification) */}
+        {hoveredCluster && (
+          <div
+            id="matrix-hover-tooltip"
+            role="tooltip"
+            style={{
+              position: 'absolute',
+              bottom: '12px',
+              left: '12px',
+              right: '12px',
+              backgroundColor: 'rgba(15, 23, 42, 0.96)',
+              border: '1px solid #38BDF8',
+              borderRadius: '8px',
+              padding: '0.75rem 1rem',
+              boxShadow: '0 8px 20px rgba(0, 0, 0, 0.6)',
+              zIndex: 50,
+              pointerEvents: 'none',
+              animation: 'tooltipFade 0.15s ease',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.35rem' }}>
               <div>
-                <strong style={{ color: '#38BDF8' }}>#{hovered.rank} {hovered.cluster_title}</strong>
-                <div style={{ color: '#94A3B8', fontSize: '0.7rem' }}>
-                  {hovered.canonical_category} • {hovered.metrics.U_c} Accounts • {hovered.metrics.N_c} Rows
+                <strong style={{ fontSize: '0.85rem', color: '#F8FAFC' }}>
+                  #{hoveredCluster.rank} {hoveredCluster.cluster_title}
+                </strong>
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
+                  {hoveredCluster.canonical_category}
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontWeight: 800, color: '#F8FAFC' }}>
-                  Score: {hovered.priority_score.toFixed(1)}
-                </div>
-                <div id="dot-coordinate-readout" style={{ fontSize: '0.7rem', color: '#38BDF8', fontWeight: 600 }}>
-                  (F_n: {hovered.coordinates.x.toFixed(2)}, I_n: {hovered.coordinates.y.toFixed(2)})
+                <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#38BDF8' }}>
+                  Score: {hoveredCluster.priority_score.toFixed(1)}
+                </span>
+                <div id="dot-coordinate-readout" style={{ fontSize: '0.7rem', color: '#CBD5E1' }}>
+                  (F_n: {hoveredCluster.coordinates.x.toFixed(4)}, I_n: {hoveredCluster.coordinates.y.toFixed(4)})
                 </div>
               </div>
             </div>
-          );
-        })()}
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', fontSize: '0.72rem', marginTop: '0.4rem', paddingTop: '0.4rem', borderTop: '1px solid #334155' }}>
+              {/* Unique Accounts (Confirmed / Estimated) */}
+              <div>
+                <span style={{ color: '#94A3B8' }}>Unique Accounts: </span>
+                <strong style={{ color: '#F8FAFC' }}>{hoveredCluster.metrics.U_c}</strong>
+                <div style={{ color: '#64748B', fontSize: '0.68rem' }}>
+                  {`(Confirmed: ${hoveredCluster.metrics.confirmedAccountsCount}, Estimated: ${hoveredCluster.metrics.estimatedAccountsCount})`}
+                </div>
+              </div>
+
+              {/* Incident Count */}
+              <div>
+                <span style={{ color: '#94A3B8' }}>Incident Count: </span>
+                <strong style={{ color: '#F8FAFC' }}>{hoveredCluster.metrics.N_c}</strong>
+                <div style={{ color: '#64748B', fontSize: '0.68rem' }}>
+                  raw complaints
+                </div>
+              </div>
+
+              {/* Tier-Weighted Impact (STRICTLY NO DOLLAR SIGN per IC-002) */}
+              <div>
+                <span style={{ color: '#94A3B8' }}>Tier-Weighted Impact: </span>
+                <strong style={{ color: '#F59E0B' }}>{hoveredCluster.metrics.I_c.toFixed(1)}</strong>
+                <div style={{ color: '#64748B', fontSize: '0.68rem' }}>
+                  relative priority
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Axis Labels */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: '#94A3B8', marginTop: '0.5rem' }}>
-        <span>← Low Frequency (0.0)</span>
-        <span style={{ fontWeight: 700, color: '#CBD5E1' }}>Frequency Axis (F_n) →</span>
-        <span>High Frequency (1.0) →</span>
+      {/* Midpoint Legend (GAP-15 implementation choice) */}
+      <div
+        id="matrix-legend-midpoint"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontSize: '0.75rem',
+          color: '#94A3B8',
+          marginTop: '0.75rem',
+          paddingTop: '0.5rem',
+          borderTop: '1px solid var(--border-subtle)',
+        }}
+      >
+        <div>
+          <span>ℹ️ Quadrants </span>
+          <strong style={{ color: '#CBD5E1' }}>split at 0.5 of normalized scale</strong>
+          <span> (GAP-15)</span>
+        </div>
+        <div style={{ fontSize: '0.7rem', color: '#64748B' }}>
+          Click dot to open deep-dive drawer
+        </div>
       </div>
     </div>
   );

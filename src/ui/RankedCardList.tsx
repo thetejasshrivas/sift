@@ -7,28 +7,46 @@
  * 2. Displays rank badge (#1, #2, ...), title, category, and verbatim metrics.
  * 3. Incorporates BreakdownTooltip for math explainability (MDD §3.12).
  * 4. Displays physical matrix coordinates (F_n, I_n) to prove coordinate stability.
+ * 5. Bi-directional dot↔card hover and selection highlighting.
+ * 6. Clicking card opens deep-dive drawer.
  */
 
 import React from 'react';
 import { ScoredCluster } from '../types/scoring';
 import { BreakdownTooltip } from './BreakdownTooltip';
 
-interface RankedCardListProps {
+export interface RankedCardListProps {
   clusters: ScoredCluster[];
   selectedClusterId?: string | null;
+  hoveredClusterId?: string | null;
   onSelectCluster?: (clusterId: string) => void;
+  onHoverCluster?: (clusterId: string | null) => void;
+  onOpenDrawer?: (clusterId: string) => void;
   className?: string;
 }
 
 export const RankedCardList: React.FC<RankedCardListProps> = ({
   clusters,
   selectedClusterId,
+  hoveredClusterId,
   onSelectCluster,
+  onHoverCluster,
+  onOpenDrawer,
   className,
 }) => {
+  const handleCardClick = (clusterId: string) => {
+    if (onSelectCluster) {
+      onSelectCluster(clusterId);
+    }
+    if (onOpenDrawer) {
+      onOpenDrawer(clusterId);
+    }
+  };
+
   return (
     <div
       className={className}
+      id="ranked-card-list-panel"
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -36,7 +54,7 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
+        <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em', margin: 0 }}>
           Ranked Insight Cards ({clusters.length})
         </h3>
         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
@@ -57,7 +75,19 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
       >
         {clusters.map((cluster) => {
           const isSelected = selectedClusterId === cluster.cluster_id;
+          const isHovered = hoveredClusterId === cluster.cluster_id;
           const isUnclustered = cluster.cluster_id === 'CLUST-UNC' || cluster.flags.isUnclusteredBucket;
+
+          // Determine quadrant name
+          const isHighImpact = cluster.normalized.I_n >= 0.5;
+          const isHighFreq = cluster.normalized.F_n >= 0.5;
+          const quadrantName = isHighImpact && isHighFreq
+            ? 'High Impact / High Frequency'
+            : isHighImpact && !isHighFreq
+            ? 'High Impact / Low Frequency'
+            : !isHighImpact && isHighFreq
+            ? 'Low Impact / High Frequency'
+            : 'Low Impact / Low Frequency';
 
           return (
             <div
@@ -69,19 +99,33 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
               data-score={cluster.priority_score.toFixed(1)}
               data-fn={cluster.coordinates.x.toFixed(4)}
               data-in={cluster.coordinates.y.toFixed(4)}
-              onClick={() => onSelectCluster && onSelectCluster(cluster.cluster_id)}
+              data-highlighted={isHovered || isSelected ? 'true' : 'false'}
+              onClick={() => handleCardClick(cluster.cluster_id)}
+              onMouseEnter={() => onHoverCluster && onHoverCluster(cluster.cluster_id)}
+              onMouseLeave={() => onHoverCluster && onHoverCluster(null)}
               style={{
-                backgroundColor: isSelected ? 'var(--bg-card)' : 'var(--bg-surface)',
+                backgroundColor: isSelected
+                  ? 'var(--bg-card)'
+                  : isHovered
+                  ? 'rgba(30, 41, 59, 0.95)'
+                  : 'var(--bg-surface)',
                 border: isSelected
                   ? '2px solid #38BDF8'
+                  : isHovered
+                  ? '2px solid rgba(56, 189, 248, 0.6)'
                   : isUnclustered
                   ? '1px dashed var(--border-subtle)'
                   : '1px solid var(--border-subtle)',
                 borderRadius: '8px',
                 padding: '1rem',
-                boxShadow: isSelected ? '0 0 15px rgba(56, 189, 248, 0.2)' : '0 1px 3px rgba(0,0,0,0.2)',
+                boxShadow: isSelected
+                  ? '0 0 15px rgba(56, 189, 248, 0.25)'
+                  : isHovered
+                  ? '0 0 12px rgba(56, 189, 248, 0.15)'
+                  : '0 1px 3px rgba(0,0,0,0.2)',
                 transition: 'all 0.15s ease',
                 cursor: 'pointer',
+                transform: isHovered ? 'translateY(-1px)' : 'none',
               }}
             >
               {/* Card Header: Rank, Title, Score Tooltip */}
@@ -114,9 +158,24 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                     >
                       {cluster.cluster_title}
                     </h4>
-                    <span style={{ fontSize: '0.75rem', color: '#94A3B8' }}>
-                      {cluster.canonical_category}
-                    </span>
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginTop: '0.15rem' }}>
+                      <span style={{ fontSize: '0.75rem', color: '#94A3B8' }}>
+                        {cluster.canonical_category}
+                      </span>
+                      {!isUnclustered && (
+                        <span
+                          style={{
+                            fontSize: '0.68rem',
+                            color: isHighImpact ? '#F87171' : '#64748B',
+                            backgroundColor: 'rgba(255,255,255,0.05)',
+                            padding: '0.1rem 0.35rem',
+                            borderRadius: '3px',
+                          }}
+                        >
+                          {quadrantName}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -213,7 +272,7 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                 {cluster.problem_summary}
               </p>
 
-              {/* Metrics Footer */}
+              {/* Metrics Footer & Expand Prompt */}
               <div
                 style={{
                   display: 'flex',
@@ -233,11 +292,11 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                   <span> • Incidents: </span>
                   <strong style={{ color: '#E2E8F0' }}>{cluster.metrics.N_c}</strong>
                 </div>
-                <div>
-                  <span>Severity: </span>
-                  <strong style={{ color: cluster.severity_rating === 3 ? '#EF4444' : '#E2E8F0' }}>
-                    Level {cluster.severity_rating}/3
-                  </strong>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ color: '#38BDF8', fontSize: '0.7rem', fontWeight: 600 }}>
+                    Deep Dive →
+                  </span>
                 </div>
               </div>
             </div>
