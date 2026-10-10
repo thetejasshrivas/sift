@@ -718,8 +718,9 @@ export const App: React.FC = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.6rem' }}>
                       <div style={{ backgroundColor: 'rgba(239, 68, 68, 0.12)', border: '1px solid rgba(239, 68, 68, 0.25)', borderRadius: '6px', padding: '0.6rem' }}>
-                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#EF4444' }}>
+                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#F87171' }}>
                           High Impact / High Frequency
+                          <span style={{ display: 'block', fontSize: '0.6rem', color: '#FCA5A5', opacity: 0.9 }}>High Revenue Risk / High Volume</span>
                         </div>
                         <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#F8FAFC', marginTop: '0.2rem' }}>
                           {mobileQuadrantCounts.hiHf} <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>clusters</span>
@@ -727,8 +728,9 @@ export const App: React.FC = () => {
                       </div>
 
                       <div style={{ backgroundColor: 'rgba(217, 119, 6, 0.12)', border: '1px solid rgba(217, 119, 6, 0.25)', borderRadius: '6px', padding: '0.6rem' }}>
-                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#D97706' }}>
+                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#F59E0B' }}>
                           High Impact / Low Frequency
+                          <span style={{ display: 'block', fontSize: '0.6rem', color: '#FCD34D', opacity: 0.9 }}>Enterprise Risk / Low Volume</span>
                         </div>
                         <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#F8FAFC', marginTop: '0.2rem' }}>
                           {mobileQuadrantCounts.hiLf} <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>clusters</span>
@@ -736,8 +738,9 @@ export const App: React.FC = () => {
                       </div>
 
                       <div style={{ backgroundColor: 'rgba(59, 130, 246, 0.12)', border: '1px solid rgba(59, 130, 246, 0.25)', borderRadius: '6px', padding: '0.6rem' }}>
-                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#3B82F6' }}>
+                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#38BDF8' }}>
                           Low Impact / High Frequency
+                          <span style={{ display: 'block', fontSize: '0.6rem', color: '#7DD3FC', opacity: 0.9 }}>Mass Friction / Low ARR</span>
                         </div>
                         <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#F8FAFC', marginTop: '0.2rem' }}>
                           {mobileQuadrantCounts.liHf} <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>clusters</span>
@@ -747,6 +750,7 @@ export const App: React.FC = () => {
                       <div style={{ backgroundColor: 'rgba(100, 116, 139, 0.12)', border: '1px solid rgba(100, 116, 139, 0.25)', borderRadius: '6px', padding: '0.6rem' }}>
                         <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94A3B8' }}>
                           Low Impact / Low Frequency
+                          <span style={{ display: 'block', fontSize: '0.6rem', color: '#CBD5E1', opacity: 0.9 }}>Low Priority</span>
                         </div>
                         <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#F8FAFC', marginTop: '0.2rem' }}>
                           {mobileQuadrantCounts.liLf} <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>clusters</span>
@@ -780,13 +784,7 @@ export const App: React.FC = () => {
                 >
                   {/* Left Column: 2x2 Spatial Matrix (SVG Scatter) */}
                   <div
-                    style={{
-                      display:
-                        // On tablet: show only if matrix tab active
-                        // On mobile: show only if mobileScatterOpen is true
-                        // On desktop: handled by CSS class dual-view-workspace-container
-                        tabletActiveTab === 'matrix' || mobileScatterOpen ? 'block' : 'contents',
-                    }}
+                    className={`workspace-matrix-col ${tabletActiveTab !== 'matrix' ? 'tablet-hidden' : ''} ${!mobileScatterOpen ? 'mobile-hidden' : ''}`}
                   >
                     <SpatialMatrixView
                       clusters={scoredDataset.scoredClusters}
@@ -800,10 +798,7 @@ export const App: React.FC = () => {
 
                   {/* Right Column: Ranked Card List */}
                   <div
-                    style={{
-                      display:
-                        tabletActiveTab === 'cards' || window.innerWidth >= 1024 ? 'block' : 'contents',
-                    }}
+                    className={`workspace-cards-col ${tabletActiveTab !== 'cards' ? 'tablet-hidden' : ''}`}
                   >
                     <RankedCardList
                       clusters={scoredDataset.scoredClusters}

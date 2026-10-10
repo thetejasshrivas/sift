@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
 **Last updated:** 2026-10-10  
-**Current sprint task:** M4-B (DONE)
+**Current sprint task:** M4-D (DONE)
 
 ---
 
@@ -9,8 +9,8 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | M4-C |
-| **Task Name** | Exact quote verification engine |
+| **Task ID** | M4-D |
+| **Task Name** | UI & Accessibility Audit (Matrix, Cards, Drawer, Sliders, Ingestion) |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
 | **Started** | 2026-10-10 |
@@ -48,6 +48,7 @@
 | **G-M4A** | 2×2 priority matrix visual evidence + string audit (REQ-010, MDD §4.2, IC-014, GAP-15) | PASSED |
 | **G-M4B** | Ranked cards, badges, filters, deep-dive drawer UI evidence (REQ-010, REQ-011, REQ-012, GAP-04) | PASSED |
 | **G-M4C** | TS-005, TS-005b exact quote verification & receipts pass (REQ-011, IC-001) | PASSED |
+| **G-M4D** | TS-014, TS-015 PASS (browser evidence & WCAG AA UI audit) | PASSED |
 
 ## Blockers
 
@@ -85,6 +86,7 @@
 | **M4-A** | 2×2 priority matrix (Gate G-M4A passed) | 2026-10-10 |
 | **M4-B** | Ranked cards, badges, filters, deep-dive drawer (Gate G-M4B passed) | 2026-10-10 |
 | **M4-C** | Exact quote verification engine (Gate G-M4C passed) | 2026-10-10 |
+| **M4-D** | UI & Accessibility Audit (Matrix, Cards, Drawer, Sliders, Ingestion) | 2026-10-10 |
 
 
 ## Upcoming Tasks

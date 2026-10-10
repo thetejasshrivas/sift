@@ -1,0 +1,309 @@
+{
+  "viewports": [
+    {
+      "name": "Mobile",
+      "width": 375,
+      "innerWidth": 375,
+      "docScrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "hasHorizontalScroll": false,
+      "scrollDelta": 0,
+      "pass": true
+    },
+    {
+      "name": "Tablet (Portrait 768px)",
+      "width": 768,
+      "innerWidth": 768,
+      "docScrollWidth": 753,
+      "bodyScrollWidth": 753,
+      "hasHorizontalScroll": false,
+      "scrollDelta": -15,
+      "pass": true
+    },
+    {
+      "name": "Tablet (TS-015 800px)",
+      "width": 800,
+      "innerWidth": 800,
+      "docScrollWidth": 785,
+      "bodyScrollWidth": 785,
+      "hasHorizontalScroll": false,
+      "scrollDelta": -15,
+      "pass": true
+    },
+    {
+      "name": "Desktop (Dual-View 1280px)",
+      "width": 1280,
+      "innerWidth": 1280,
+      "docScrollWidth": 1265,
+      "bodyScrollWidth": 1265,
+      "hasHorizontalScroll": false,
+      "scrollDelta": -15,
+      "pass": true
+    }
+  ],
+  "contrast": [
+    {
+      "role": "Primary Body Text on Dark App Background",
+      "text": "#F8FAFC",
+      "bg": "#0F172A",
+      "minRequired": 4.5,
+      "computedRatio": "17.06",
+      "pass": true
+    },
+    {
+      "role": "Primary Body Text on Card Surface",
+      "text": "#F8FAFC",
+      "bg": "#1E293B",
+      "minRequired": 4.5,
+      "computedRatio": "13.98",
+      "pass": true
+    },
+    {
+      "role": "Secondary Text on Dark App Background",
+      "text": "#CBD5E1",
+      "bg": "#0F172A",
+      "minRequired": 4.5,
+      "computedRatio": "12.02",
+      "pass": true
+    },
+    {
+      "role": "Secondary Text on Card Surface",
+      "text": "#CBD5E1",
+      "bg": "#1E293B",
+      "minRequired": 4.5,
+      "computedRatio": "9.85",
+      "pass": true
+    },
+    {
+      "role": "Muted Secondary Text on Card Surface",
+      "text": "#94A3B8",
+      "bg": "#1E293B",
+      "minRequired": 4.5,
+      "computedRatio": "5.71",
+      "pass": true
+    },
+    {
+      "role": "Interactive Sky Accent on Dark App Background",
+      "text": "#38BDF8",
+      "bg": "#0F172A",
+      "minRequired": 4.5,
+      "computedRatio": "8.33",
+      "pass": true
+    },
+    {
+      "role": "Interactive Sky Accent on Card Surface",
+      "text": "#38BDF8",
+      "bg": "#1E293B",
+      "minRequired": 4.5,
+      "computedRatio": "6.83",
+      "pass": true
+    },
+    {
+      "role": "Gold Badge Text on Card Surface",
+      "text": "#F59E0B",
+      "bg": "#1E293B",
+      "minRequired": 4.5,
+      "computedRatio": "6.81",
+      "pass": true
+    },
+    {
+      "role": "Blue Badge Text on Card Surface",
+      "text": "#38BDF8",
+      "bg": "#1E293B",
+      "minRequired": 4.5,
+      "computedRatio": "6.83",
+      "pass": true
+    },
+    {
+      "role": "Red Blocker Text on Card Surface (Upgraded WCAG AA Token)",
+      "text": "#F87171",
+      "bg": "#1E293B",
+      "minRequired": 4.5,
+      "computedRatio": "5.29",
+      "pass": true
+    },
+    {
+      "role": "Green Verified Badge Text on Card Surface",
+      "text": "#34D399",
+      "bg": "#1E293B",
+      "minRequired": 4.5,
+      "computedRatio": "7.61",
+      "pass": true
+    },
+    {
+      "role": "Data Quality Banner Text on Amber Surface",
+      "text": "#FEF3C7",
+      "bg": "#451A03",
+      "minRequired": 4.5,
+      "computedRatio": "13.45",
+      "pass": true
+    }
+  ],
+  "keyboard": {
+    "tabStopsCount": 32,
+    "sampleStops": [
+      {
+        "id": "",
+        "tag": "button",
+        "role": "",
+        "tabIndex": 0,
+        "ariaLabel": "Dismiss notification"
+      },
+      {
+        "id": "",
+        "tag": "button",
+        "role": "",
+        "tabIndex": 0,
+        "ariaLabel": "↺ Start New Analysis"
+      },
+      {
+        "id": "",
+        "tag": "button",
+        "role": "",
+        "tabIndex": 0,
+        "ariaLabel": "View Data Privacy and Security specifications"
+      },
+      {
+        "id": "select-text",
+        "tag": "select",
+        "role": "",
+        "tabIndex": 0,
+        "ariaLabel": "feedback_id\ntext\ntier\naccount_"
+      },
+      {
+        "id": "select-tier",
+        "tag": "select",
+        "role": "",
+        "tabIndex": 0,
+        "ariaLabel": "-- Not Mapped --\nfeedback_id\nt"
+      },
+      {
+        "id": "select-feedback_id",
+        "tag": "select",
+        "role": "",
+        "tabIndex": 0,
+        "ariaLabel": "-- Not Mapped --\nfeedback_id\nt"
+      },
+      {
+        "id": "select-user_id",
+        "tag": "select",
+        "role": "",
+        "tabIndex": 0,
+        "ariaLabel": "-- Not Mapped --\nfeedback_id\nt"
+      },
+      {
+        "id": "select-account_id",
+        "tag": "select",
+        "role": "",
+        "tabIndex": 0,
+        "ariaLabel": "-- Not Mapped --\nfeedback_id\nt"
+      },
+      {
+        "id": "",
+        "tag": "button",
+        "role": "",
+        "tabIndex": 0,
+        "ariaLabel": "↺ Start New Analysis"
+      },
+      {
+        "id": "btn-preview-demo-clusters",
+        "tag": "button",
+        "role": "",
+        "tabIndex": 0,
+        "ariaLabel": "⚡ Instant Workspace Demo (Offl"
+      }
+    ]
+  },
+  "focusTrap": {},
+  "ariaLive": [
+    {
+      "id": "",
+      "ariaLive": "assertive",
+      "ariaAtomic": null,
+      "text": "ℹ️\nLoaded 5 benchmark clusters for calibration & discovery matrix preview.\n×"
+    },
+    {
+      "id": "cards-live-announcer",
+      "ariaLive": "polite",
+      "ariaAtomic": "true",
+      "text": "Filtered to 5 clusters. Top ranked: #1 Dark Mode Alignment Inconsistencies."
+    }
+  ],
+  "stringAudit": {
+    "violationsCount": 0,
+    "violations": []
+  },
+  "quadrantLabels": {
+    "topRight": {
+      "text": "High Impact / High Frequency\nHigh Revenue Risk / High Volume",
+      "dataIc014": "High Revenue Risk / High Volume"
+    },
+    "topLeft": {
+      "text": "High Impact / Low Frequency\nEnterprise Risk / Low Volume",
+      "dataIc014": "Enterprise Risk / Low Volume"
+    },
+    "bottomRight": {
+      "text": "Low Impact / High Frequency\nMass Friction / Low ARR",
+      "dataIc014": "Mass Friction / Low ARR"
+    },
+    "bottomLeft": {
+      "text": "Low Impact / Low Frequency\nLow Priority",
+      "dataIc014": "Low Priority"
+    }
+  },
+  "badgeTextAudit": {
+    "totalBadges": 13,
+    "iconOnlyCount": 0,
+    "iconOnlyBadges": [],
+    "sampleBadges": [
+      {
+        "id": "badge-high-impact-CLUST-02",
+        "className": "badge-gold-impact",
+        "text": "👑 High Tier-Weighted Impact",
+        "hasText": true
+      },
+      {
+        "id": "badge-high-volume-CLUST-02",
+        "className": "badge-blue-volume",
+        "text": "📊 High Volume",
+        "hasText": true
+      },
+      {
+        "id": "badge-high-impact-CLUST-01",
+        "className": "badge-gold-impact",
+        "text": "👑 High Tier-Weighted Impact",
+        "hasText": true
+      },
+      {
+        "id": "badge-high-volume-CLUST-01",
+        "className": "badge-blue-volume",
+        "text": "📊 High Volume",
+        "hasText": true
+      },
+      {
+        "id": "badge-critical-blocker-CLUST-01",
+        "className": "badge-red-blocker",
+        "text": "🚨 Critical Blocker",
+        "hasText": true
+      },
+      {
+        "id": "badge-high-impact-CLUST-03",
+        "className": "badge-gold-impact",
+        "text": "👑 High Tier-Weighted Impact",
+        "hasText": true
+      },
+      {
+        "id": "badge-high-volume-CLUST-03",
+        "className": "badge-blue-volume",
+        "text": "📊 High Volume",
+        "hasText": true
+      },
+      {
+        "id": "badge-critical-blocker-CLUST-03",
+        "className": "badge-red-blocker",
+        "text": "🚨 Critical Blocker",
+        "hasText": true
+      }
+    ]
+  }
+}

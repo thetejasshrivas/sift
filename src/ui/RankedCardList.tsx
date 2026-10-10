@@ -271,7 +271,7 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
               padding: '0.2rem 0.55rem',
               borderRadius: '4px',
               backgroundColor: activeBadgeFilter === 'CRITICAL_BLOCKER' ? '#DC2626' : 'rgba(239, 68, 68, 0.12)',
-              color: activeBadgeFilter === 'CRITICAL_BLOCKER' ? '#FFFFFF' : '#EF4444',
+              color: activeBadgeFilter === 'CRITICAL_BLOCKER' ? '#FFFFFF' : '#F87171',
               border: '1px solid rgba(239, 68, 68, 0.3)',
               cursor: 'pointer',
             }}
@@ -548,7 +548,7 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                         padding: '0.15rem 0.45rem',
                         borderRadius: '4px',
                         backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                        color: '#EF4444',
+                        color: '#F87171',
                         border: '1px solid rgba(239, 68, 68, 0.3)',
                       }}
                     >

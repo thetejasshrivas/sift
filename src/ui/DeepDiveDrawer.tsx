@@ -45,7 +45,10 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
   // Capture trigger element on open and restore focus on close
   useEffect(() => {
     if (isOpen) {
-      triggerElementRef.current = document.activeElement as HTMLElement;
+      const active = document.activeElement as HTMLElement | null;
+      triggerElementRef.current = (active && active !== document.body)
+        ? active
+        : (cluster ? document.querySelector<HTMLElement>(`#btn-card-details-${cluster.cluster_id}, #ranked-card-${cluster.cluster_id}`) : null);
       // Focus close button or first interactive element inside drawer
       const timer = setTimeout(() => {
         const closeBtn = drawerRef.current?.querySelector<HTMLElement>('#btn-close-drawer');
@@ -58,9 +61,14 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
       if (triggerElementRef.current && typeof triggerElementRef.current.focus === 'function') {
         triggerElementRef.current.focus();
         triggerElementRef.current = null;
+      } else if (cluster) {
+        const fallbackTarget = document.querySelector<HTMLElement>(`#btn-card-details-${cluster.cluster_id}, #ranked-card-${cluster.cluster_id}`);
+        if (fallbackTarget && typeof fallbackTarget.focus === 'function') {
+          fallbackTarget.focus();
+        }
       }
     }
-  }, [isOpen]);
+  }, [isOpen, cluster]);
 
   // Focus trap & Escape key listener
   useEffect(() => {
@@ -123,6 +131,14 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
     : !isHighImpact && isHighFreq
     ? 'Low Impact / High Frequency'
     : 'Low Impact / Low Frequency';
+
+  const ic014Label = isHighImpact && isHighFreq
+    ? 'High Revenue Risk / High Volume'
+    : isHighImpact && !isHighFreq
+    ? 'Enterprise Risk / Low Volume'
+    : !isHighImpact && isHighFreq
+    ? 'Mass Friction / Low ARR'
+    : 'Low Priority';
 
   // Copy helpers
   const handleCopyRationale = () => {
@@ -298,6 +314,7 @@ ${quotesBlock}
               </span>
               <span
                 id="drawer-quadrant-badge"
+                data-ic014={ic014Label}
                 style={{
                   fontSize: '0.75rem',
                   fontWeight: 600,
@@ -307,7 +324,7 @@ ${quotesBlock}
                   borderRadius: '4px',
                 }}
               >
-                {quadrantName}
+                {quadrantName} ({ic014Label})
               </span>
             </div>
             <h2
@@ -412,7 +429,7 @@ ${quotesBlock}
               <div id="drawer-incident-volume" style={{ fontSize: '1.1rem', fontWeight: 700, color: '#F8FAFC' }}>
                 {cluster.metrics.N_c} rows
               </div>
-              <span style={{ fontSize: '0.7rem', color: cluster.severity_rating === 3 ? '#EF4444' : '#94A3B8' }}>
+              <span style={{ fontSize: '0.7rem', color: cluster.severity_rating === 3 ? '#F87171' : '#94A3B8' }}>
                 Level {cluster.severity_rating}/3 {cluster.flags.isCriticalBlocker ? '(Critical Blocker)' : ''}
               </span>
             </div>
@@ -728,7 +745,7 @@ ${quotesBlock}
 
               <div style={{ backgroundColor: '#0F172A', padding: '0.5rem', borderRadius: '4px', border: '1px solid #334155' }}>
                 <span style={{ color: '#94A3B8' }}>Severity Weight (W_Sev):</span>
-                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#EF4444' }}>
+                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#F87171' }}>
                   {Math.round(cluster.breakdown.weights.wSev * 100)}%
                 </div>
                 <div style={{ color: '#64748B', fontSize: '0.68rem' }}>S_n: {cluster.normalized.S_n.toFixed(4)}</div>

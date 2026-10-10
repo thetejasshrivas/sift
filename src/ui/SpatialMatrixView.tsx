@@ -201,7 +201,7 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <text
             x={plotMargin + 10}
             y={plotMargin + 20}
-            fill="#D97706"
+            fill="#F59E0B"
             fontSize="10"
             fontWeight="700"
             letterSpacing="0.03em"
@@ -215,7 +215,7 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <text
             x={svgWidth - plotMargin - 10}
             y={plotMargin + 20}
-            fill="#EF4444"
+            fill="#F87171"
             fontSize="10"
             fontWeight="700"
             textAnchor="end"
@@ -230,7 +230,7 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <text
             x={plotMargin + 10}
             y={svgHeight - plotMargin - 12}
-            fill="#64748B"
+            fill="#94A3B8"
             fontSize="10"
             fontWeight="700"
             letterSpacing="0.03em"
@@ -244,7 +244,7 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <text
             x={svgWidth - plotMargin - 10}
             y={svgHeight - plotMargin - 12}
-            fill="#3B82F6"
+            fill="#38BDF8"
             fontSize="10"
             fontWeight="700"
             textAnchor="end"
@@ -256,16 +256,16 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           </text>
 
           {/* Axes Scale Ticks & Labels */}
-          <text x={plotMargin} y={svgHeight - plotMargin + 18} fill="#64748B" fontSize="9" textAnchor="middle">0.0</text>
-          <text x={midX} y={svgHeight - plotMargin + 18} fill="#64748B" fontSize="9" textAnchor="middle">0.5</text>
-          <text x={svgWidth - plotMargin} y={svgHeight - plotMargin + 18} fill="#64748B" fontSize="9" textAnchor="middle">1.0</text>
+          <text x={plotMargin} y={svgHeight - plotMargin + 18} fill="#94A3B8" fontSize="9" textAnchor="middle">0.0</text>
+          <text x={midX} y={svgHeight - plotMargin + 18} fill="#94A3B8" fontSize="9" textAnchor="middle">0.5</text>
+          <text x={svgWidth - plotMargin} y={svgHeight - plotMargin + 18} fill="#94A3B8" fontSize="9" textAnchor="middle">1.0</text>
           <text x={midX} y={svgHeight - 12} fill="#94A3B8" fontSize="10" fontWeight="600" textAnchor="middle">
             Frequency Axis (F_n) →
           </text>
 
-          <text x={plotMargin - 8} y={svgHeight - plotMargin} fill="#64748B" fontSize="9" textAnchor="end" dominantBaseline="middle">0.0</text>
-          <text x={plotMargin - 8} y={midY} fill="#64748B" fontSize="9" textAnchor="end" dominantBaseline="middle">0.5</text>
-          <text x={plotMargin - 8} y={plotMargin} fill="#64748B" fontSize="9" textAnchor="end" dominantBaseline="middle">1.0</text>
+          <text x={plotMargin - 8} y={svgHeight - plotMargin} fill="#94A3B8" fontSize="9" textAnchor="end" dominantBaseline="middle">0.0</text>
+          <text x={plotMargin - 8} y={midY} fill="#94A3B8" fontSize="9" textAnchor="end" dominantBaseline="middle">0.5</text>
+          <text x={plotMargin - 8} y={plotMargin} fill="#94A3B8" fontSize="9" textAnchor="end" dominantBaseline="middle">1.0</text>
           <text
             x={16}
             y={midY}
@@ -400,13 +400,14 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
         </svg>
 
         {/* DOM-Accessible Quadrant Watermarks (for string audits & screen-readers) */}
-        <div style={{ position: 'absolute', top: 8, right: 8, pointerEvents: 'none' }}>
+        <div style={{ position: 'absolute', top: 8, right: 8, pointerEvents: 'none', textAlign: 'right' }}>
           <span
             id="quadrant-label-top-right"
             data-ic014="High Revenue Risk / High Volume"
-            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#EF4444', backgroundColor: 'rgba(239,68,68,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px' }}
+            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#F87171', backgroundColor: 'rgba(239,68,68,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px', display: 'inline-block' }}
           >
             High Impact / High Frequency
+            <span style={{ display: 'block', fontSize: '0.6rem', color: '#FCA5A5', opacity: 0.9 }}>High Revenue Risk / High Volume</span>
           </span>
         </div>
 
@@ -414,19 +415,21 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <span
             id="quadrant-label-top-left"
             data-ic014="Enterprise Risk / Low Volume"
-            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#D97706', backgroundColor: 'rgba(217,119,6,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px' }}
+            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#F59E0B', backgroundColor: 'rgba(217,119,6,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px', display: 'inline-block' }}
           >
             High Impact / Low Frequency
+            <span style={{ display: 'block', fontSize: '0.6rem', color: '#FCD34D', opacity: 0.9 }}>Enterprise Risk / Low Volume</span>
           </span>
         </div>
 
-        <div style={{ position: 'absolute', bottom: 35, right: 8, pointerEvents: 'none' }}>
+        <div style={{ position: 'absolute', bottom: 35, right: 8, pointerEvents: 'none', textAlign: 'right' }}>
           <span
             id="quadrant-label-bottom-right"
             data-ic014="Mass Friction / Low ARR"
-            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#3B82F6', backgroundColor: 'rgba(59,130,246,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px' }}
+            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#38BDF8', backgroundColor: 'rgba(59,130,246,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px', display: 'inline-block' }}
           >
             Low Impact / High Frequency
+            <span style={{ display: 'block', fontSize: '0.6rem', color: '#7DD3FC', opacity: 0.9 }}>Mass Friction / Low ARR</span>
           </span>
         </div>
 
@@ -434,9 +437,10 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <span
             id="quadrant-label-bottom-left"
             data-ic014="Low Priority"
-            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748B', backgroundColor: 'rgba(100,116,139,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px' }}
+            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94A3B8', backgroundColor: 'rgba(100,116,139,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px', display: 'inline-block' }}
           >
             Low Impact / Low Frequency
+            <span style={{ display: 'block', fontSize: '0.6rem', color: '#CBD5E1', opacity: 0.9 }}>Low Priority</span>
           </span>
         </div>
 
