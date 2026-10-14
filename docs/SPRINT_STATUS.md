@@ -1,7 +1,7 @@
 # SPRINT STATUS — SIFT
 
-**Last updated:** 2026-10-10  
-**Current sprint task:** DEP-05 (DONE) — Gate G-D5 (FINAL) PASSED
+**Last updated:** 2026-10-14  
+**Current sprint task:** HANDOFF (DONE) — Release 1 Handoff Sealed (`docs/handoffs/final-release-1.md`)
 
 ---
 
@@ -9,12 +9,12 @@
 
 | Field | Value |
 |:---|:---|
-| **Task ID** | DEP-05 |
-| **Task Name** | Final demo run and evidence pack (README, evidence index, tag release-1) |
+| **Task ID** | HANDOFF |
+| **Task Name** | Safe Chat Exit & Final Release-1 Handoff |
 | **Status** | DONE |
 | **Assigned to** | Antigravity agent |
-| **Started** | 2026-10-10 |
-| **Completed** | 2026-10-10 |
+| **Started** | 2026-10-14 |
+| **Completed** | 2026-10-14 |
 
 ## Gates
 
@@ -103,6 +103,7 @@
 | **DEP-03** | Environment variables, production CORS & Cloudflare Pages Functions shims (Gate G-D3 passed) | 2026-10-10 |
 | **DEP-04** | Live Cloudflare Pages deploy and public smoke test (Gate G-D4 passed) | 2026-10-10 |
 | **DEP-05** | Final demo run, evidence pack, comprehensive README & tag `release-1` (Gate G-D5 passed) | 2026-10-10 |
+| **HANDOFF** | Safe chat exit handoff created (`docs/handoffs/final-release-1.md`), Part XII Final Integrity Checklist complete | 2026-10-14 |
 
 
 ## Upcoming Tasks
