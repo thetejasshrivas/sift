@@ -83,26 +83,29 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
       style={{
         backgroundColor: 'var(--bg-surface)',
         border: '1px solid var(--border-subtle)',
-        borderRadius: '10px',
-        padding: '1.25rem',
+        borderRadius: '4px',
+        padding: '1.5rem',
         display: 'flex',
         flexDirection: 'column',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
+        boxShadow: '0 2px 8px rgba(28, 25, 23, 0.03)',
         position: 'relative',
       }}
     >
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '1rem', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.75rem' }}>
         <div>
-          <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em', margin: 0 }}>
-            2×2 Priority Matrix (Spatial Discovery)
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: '2px' }}>
+            STRATEGIC SYNTHESIS
+          </span>
+          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.015em', margin: 0 }}>
+            2×2 Priority Matrix
           </h3>
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.2rem 0 0 0' }}>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', margin: '0.2rem 0 0 0' }}>
             Physical scatter: X = Frequency (F_n), Y = Impact (I_n). Coordinates invariant to slider weights.
           </p>
         </div>
-        <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>
-          Plotted: <strong style={{ color: '#38BDF8' }}>{plottableClusters.length}</strong> clusters
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+          Plotted: <strong style={{ color: 'var(--text-primary)' }}>{plottableClusters.length}</strong> clusters
         </div>
       </div>
 
@@ -114,9 +117,9 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           width: '100%',
           aspectRatio: '1 / 1',
           maxHeight: '460px',
-          backgroundColor: '#0B1120',
-          border: '1px solid #334155',
-          borderRadius: '8px',
+          backgroundColor: '#FAF8F5',
+          border: '1px solid var(--border-strong)',
+          borderRadius: '2px',
           overflow: 'hidden',
           margin: '0 auto',
         }}
@@ -171,8 +174,8 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
             y1={plotMargin}
             x2={midX}
             y2={svgHeight - plotMargin}
-            stroke="#334155"
-            strokeWidth="1.5"
+            stroke="#A8A29E"
+            strokeWidth="1"
             strokeDasharray="4 4"
           />
           <line
@@ -180,8 +183,8 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
             y1={midY}
             x2={svgWidth - plotMargin}
             y2={midY}
-            stroke="#334155"
-            strokeWidth="1.5"
+            stroke="#A8A29E"
+            strokeWidth="1"
             strokeDasharray="4 4"
           />
 
@@ -192,8 +195,34 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
             width={plotWidth}
             height={plotHeight}
             fill="none"
-            stroke="#334155"
+            stroke="#292524"
             strokeWidth="1"
+          />
+
+          {/* Cartographic Corner Registers (Swiss Surveying Accents) */}
+          <path
+            d={`M${plotMargin - 4} ${plotMargin + 8} L${plotMargin - 4} ${plotMargin - 4} L${plotMargin + 8} ${plotMargin - 4}`}
+            stroke="#292524"
+            strokeWidth="1.25"
+            fill="none"
+          />
+          <path
+            d={`M${plotMargin + plotWidth + 4} ${plotMargin + 8} L${plotMargin + plotWidth + 4} ${plotMargin - 4} L${plotMargin + plotWidth - 8} ${plotMargin - 4}`}
+            stroke="#292524"
+            strokeWidth="1.25"
+            fill="none"
+          />
+          <path
+            d={`M${plotMargin - 4} ${plotMargin + plotHeight - 8} L${plotMargin - 4} ${plotMargin + plotHeight + 4} L${plotMargin + 8} ${plotMargin + plotHeight + 4}`}
+            stroke="#292524"
+            strokeWidth="1.25"
+            fill="none"
+          />
+          <path
+            d={`M${plotMargin + plotWidth + 4} ${plotMargin + plotHeight - 8} L${plotMargin + plotWidth + 4} ${plotMargin + plotHeight + 4} L${plotMargin + plotWidth - 8} ${plotMargin + plotHeight + 4}`}
+            stroke="#292524"
+            strokeWidth="1.25"
+            fill="none"
           />
 
           {/* Quadrant SVG Watermark Labels (Exact M4-A Strings) */}
@@ -201,10 +230,11 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <text
             x={plotMargin + 10}
             y={plotMargin + 20}
-            fill="#F59E0B"
-            fontSize="10"
+            fill="#B45309"
+            fontSize="9.5"
+            fontFamily="var(--font-mono)"
             fontWeight="700"
-            letterSpacing="0.03em"
+            letterSpacing="0.04em"
             pointerEvents="none"
             opacity="0.85"
           >
@@ -215,11 +245,12 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <text
             x={svgWidth - plotMargin - 10}
             y={plotMargin + 20}
-            fill="#F87171"
-            fontSize="10"
+            fill="#991B1B"
+            fontSize="9.5"
+            fontFamily="var(--font-mono)"
             fontWeight="700"
             textAnchor="end"
-            letterSpacing="0.03em"
+            letterSpacing="0.04em"
             pointerEvents="none"
             opacity="0.85"
           >
@@ -230,10 +261,11 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <text
             x={plotMargin + 10}
             y={svgHeight - plotMargin - 12}
-            fill="#94A3B8"
-            fontSize="10"
+            fill="#78716C"
+            fontSize="9.5"
+            fontFamily="var(--font-mono)"
             fontWeight="700"
-            letterSpacing="0.03em"
+            letterSpacing="0.04em"
             pointerEvents="none"
             opacity="0.85"
           >
@@ -244,11 +276,12 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <text
             x={svgWidth - plotMargin - 10}
             y={svgHeight - plotMargin - 12}
-            fill="#38BDF8"
-            fontSize="10"
+            fill="#475569"
+            fontSize="9.5"
+            fontFamily="var(--font-mono)"
             fontWeight="700"
             textAnchor="end"
-            letterSpacing="0.03em"
+            letterSpacing="0.04em"
             pointerEvents="none"
             opacity="0.85"
           >
@@ -256,21 +289,22 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           </text>
 
           {/* Axes Scale Ticks & Labels */}
-          <text x={plotMargin} y={svgHeight - plotMargin + 18} fill="#94A3B8" fontSize="9" textAnchor="middle">0.0</text>
-          <text x={midX} y={svgHeight - plotMargin + 18} fill="#94A3B8" fontSize="9" textAnchor="middle">0.5</text>
-          <text x={svgWidth - plotMargin} y={svgHeight - plotMargin + 18} fill="#94A3B8" fontSize="9" textAnchor="middle">1.0</text>
-          <text x={midX} y={svgHeight - 12} fill="#94A3B8" fontSize="10" fontWeight="600" textAnchor="middle">
+          <text x={plotMargin} y={svgHeight - plotMargin + 18} fill="#78716C" fontFamily="var(--font-mono)" fontSize="9" textAnchor="middle">0.0</text>
+          <text x={midX} y={svgHeight - plotMargin + 18} fill="#78716C" fontFamily="var(--font-mono)" fontSize="9" textAnchor="middle">0.5</text>
+          <text x={svgWidth - plotMargin} y={svgHeight - plotMargin + 18} fill="#78716C" fontFamily="var(--font-mono)" fontSize="9" textAnchor="middle">1.0</text>
+          <text x={midX} y={svgHeight - 12} fill="#57534E" fontFamily="var(--font-mono)" fontSize="9.5" fontWeight="600" textAnchor="middle">
             Frequency Axis (F_n) →
           </text>
 
-          <text x={plotMargin - 8} y={svgHeight - plotMargin} fill="#94A3B8" fontSize="9" textAnchor="end" dominantBaseline="middle">0.0</text>
-          <text x={plotMargin - 8} y={midY} fill="#94A3B8" fontSize="9" textAnchor="end" dominantBaseline="middle">0.5</text>
-          <text x={plotMargin - 8} y={plotMargin} fill="#94A3B8" fontSize="9" textAnchor="end" dominantBaseline="middle">1.0</text>
+          <text x={plotMargin - 8} y={svgHeight - plotMargin} fill="#78716C" fontFamily="var(--font-mono)" fontSize="9" textAnchor="end" dominantBaseline="middle">0.0</text>
+          <text x={plotMargin - 8} y={midY} fill="#78716C" fontFamily="var(--font-mono)" fontSize="9" textAnchor="end" dominantBaseline="middle">0.5</text>
+          <text x={plotMargin - 8} y={plotMargin} fill="#78716C" fontFamily="var(--font-mono)" fontSize="9" textAnchor="end" dominantBaseline="middle">1.0</text>
           <text
             x={16}
             y={midY}
-            fill="#94A3B8"
-            fontSize="10"
+            fill="#57534E"
+            fontFamily="var(--font-mono)"
+            fontSize="9.5"
             fontWeight="600"
             textAnchor="middle"
             transform={`rotate(-90, 16, ${midY})`}
@@ -283,25 +317,22 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
             const fn = cluster.coordinates.x;
             const inScore = cluster.coordinates.y;
 
-            // Compute SVG coordinates:
-            // x: left margin + fn * plotWidth
-            // y: top margin + (1 - inScore) * plotHeight (inverted since Y increases downward)
             const cx = plotMargin + fn * plotWidth;
             const cy = plotMargin + (1 - inScore) * plotHeight;
 
             const isHovered = activeHoveredId === cluster.cluster_id;
             const isSelected = selectedClusterId === cluster.cluster_id;
 
-            // Semantic Dot Color: Critical Blocker red, High Impact gold, High Volume blue, baseline slate
+            // Concept C Editorial Dot Fill
             const dotFill = cluster.flags.isCriticalBlocker
-              ? '#EF4444'
+              ? '#991B1B'
               : inScore >= 0.5 && fn >= 0.5
-              ? '#EF4444'
+              ? '#991B1B'
               : inScore >= 0.5
-              ? '#D97706'
+              ? '#B45309'
               : fn >= 0.5
-              ? '#38BDF8'
-              : '#94A3B8';
+              ? '#475569'
+              : '#1C1917';
 
             const dotRadius = isHovered || isSelected ? 12 : 8;
 
@@ -336,16 +367,17 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
                 }}
                 style={{ cursor: 'pointer', outline: 'none' }}
               >
-                {/* Glowing Aura Ring for Active / Hovered Dot (Bi-directional Highlight) */}
+                {/* Glowing Aura Ring for Active / Hovered Dot */}
                 {(isHovered || isSelected) && (
                   <circle
                     cx={cx}
                     cy={cy}
                     r={20}
                     fill="none"
-                    stroke={isSelected ? '#FFFFFF' : '#38BDF8'}
-                    strokeWidth={2}
-                    opacity={0.8}
+                    stroke={isSelected ? '#1C1917' : '#991B1B'}
+                    strokeWidth={1.5}
+                    strokeDasharray={isSelected ? 'none' : '3 3'}
+                    opacity={0.85}
                   >
                     <animate
                       attributeName="r"
@@ -368,7 +400,7 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
                   cy={cy}
                   r={dotRadius}
                   fill={dotFill}
-                  stroke={isSelected ? '#FFFFFF' : '#0F172A'}
+                  stroke="#FFFFFF"
                   strokeWidth={isSelected ? 3 : 2}
                   onClick={() => handleDotClick(cluster.cluster_id)}
                   onPointerDown={() => handleDotClick(cluster.cluster_id)}
@@ -376,7 +408,7 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
                   onMouseOver={() => handleHover(cluster.cluster_id)}
                   onPointerEnter={() => handleHover(cluster.cluster_id)}
                   style={{
-                    filter: isHovered || isSelected ? 'drop-shadow(0px 0px 6px rgba(56, 189, 248, 0.8))' : 'none',
+                    filter: isHovered || isSelected ? 'drop-shadow(0px 2px 4px rgba(28, 25, 23, 0.25))' : 'none',
                     transition: 'r 0.15s ease',
                   }}
                 />
@@ -387,9 +419,10 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
                   y={cy}
                   textAnchor="middle"
                   dominantBaseline="central"
-                  fill="#0F172A"
+                  fill="#FFFFFF"
                   fontSize={isHovered || isSelected ? '10' : '8'}
-                  fontWeight="800"
+                  fontWeight="700"
+                  fontFamily="var(--font-mono)"
                   pointerEvents="none"
                 >
                   {cluster.rank}
@@ -404,10 +437,10 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <span
             id="quadrant-label-top-right"
             data-ic014="High Revenue Risk / High Volume"
-            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#F87171', backgroundColor: 'rgba(239,68,68,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px', display: 'inline-block' }}
+            style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, color: '#991B1B', backgroundColor: '#FEF2F2', border: '1px solid #FECACA', padding: '0.2rem 0.5rem', borderRadius: '2px', display: 'inline-block' }}
           >
             High Impact / High Frequency
-            <span style={{ display: 'block', fontSize: '0.6rem', color: '#FCA5A5', opacity: 0.9 }}>High Revenue Risk / High Volume</span>
+            <span style={{ display: 'block', fontSize: '0.6rem', color: '#B91C1C', opacity: 0.9 }}>High Revenue Risk / High Volume</span>
           </span>
         </div>
 
@@ -415,10 +448,10 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <span
             id="quadrant-label-top-left"
             data-ic014="Enterprise Risk / Low Volume"
-            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#F59E0B', backgroundColor: 'rgba(217,119,6,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px', display: 'inline-block' }}
+            style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, color: '#B45309', backgroundColor: '#FFFBEB', border: '1px solid #FDE68A', padding: '0.2rem 0.5rem', borderRadius: '2px', display: 'inline-block' }}
           >
             High Impact / Low Frequency
-            <span style={{ display: 'block', fontSize: '0.6rem', color: '#FCD34D', opacity: 0.9 }}>Enterprise Risk / Low Volume</span>
+            <span style={{ display: 'block', fontSize: '0.6rem', color: '#92400E', opacity: 0.9 }}>Enterprise Risk / Low Volume</span>
           </span>
         </div>
 
@@ -426,10 +459,10 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <span
             id="quadrant-label-bottom-right"
             data-ic014="Mass Friction / Low ARR"
-            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#38BDF8', backgroundColor: 'rgba(59,130,246,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px', display: 'inline-block' }}
+            style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, color: '#475569', backgroundColor: '#F1F5F9', border: '1px solid #CBD5E1', padding: '0.2rem 0.5rem', borderRadius: '2px', display: 'inline-block' }}
           >
             Low Impact / High Frequency
-            <span style={{ display: 'block', fontSize: '0.6rem', color: '#7DD3FC', opacity: 0.9 }}>Mass Friction / Low ARR</span>
+            <span style={{ display: 'block', fontSize: '0.6rem', color: '#334155', opacity: 0.9 }}>Mass Friction / Low ARR</span>
           </span>
         </div>
 
@@ -437,10 +470,10 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           <span
             id="quadrant-label-bottom-left"
             data-ic014="Low Priority"
-            style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94A3B8', backgroundColor: 'rgba(100,116,139,0.1)', padding: '0.15rem 0.4rem', borderRadius: '4px', display: 'inline-block' }}
+            style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, color: '#78716C', backgroundColor: '#F5F2EB', border: '1px solid #E5DFD5', padding: '0.2rem 0.5rem', borderRadius: '2px', display: 'inline-block' }}
           >
             Low Impact / Low Frequency
-            <span style={{ display: 'block', fontSize: '0.6rem', color: '#CBD5E1', opacity: 0.9 }}>Low Priority</span>
+            <span style={{ display: 'block', fontSize: '0.6rem', color: '#57534E', opacity: 0.9 }}>Low Priority</span>
           </span>
         </div>
 
@@ -454,59 +487,59 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
               bottom: '12px',
               left: '12px',
               right: '12px',
-              backgroundColor: 'rgba(15, 23, 42, 0.96)',
-              border: '1px solid #38BDF8',
-              borderRadius: '8px',
-              padding: '0.75rem 1rem',
-              boxShadow: '0 8px 20px rgba(0, 0, 0, 0.6)',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #292524',
+              borderRadius: '2px',
+              padding: '0.85rem 1.15rem',
+              boxShadow: '0 8px 24px rgba(28, 25, 23, 0.12)',
               zIndex: 50,
               pointerEvents: 'none',
               animation: 'tooltipFade 0.15s ease',
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.35rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.45rem' }}>
               <div>
-                <strong style={{ fontSize: '0.85rem', color: '#F8FAFC' }}>
+                <strong style={{ fontFamily: 'var(--font-serif)', fontSize: '0.95rem', fontWeight: 600, color: '#1C1917' }}>
                   #{hoveredCluster.rank} {hoveredCluster.cluster_title}
                 </strong>
-                <div style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#78716C', marginTop: '2px' }}>
                   {hoveredCluster.canonical_category}
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#38BDF8' }}>
+                <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', fontWeight: 600, color: '#1C1917' }}>
                   Score: {hoveredCluster.priority_score.toFixed(1)}
                 </span>
-                <div id="dot-coordinate-readout" style={{ fontSize: '0.7rem', color: '#CBD5E1' }}>
+                <div id="dot-coordinate-readout" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#78716C' }}>
                   (F_n: {hoveredCluster.coordinates.x.toFixed(4)}, I_n: {hoveredCluster.coordinates.y.toFixed(4)})
                 </div>
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', fontSize: '0.72rem', marginTop: '0.4rem', paddingTop: '0.4rem', borderTop: '1px solid #334155' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', fontSize: '0.75rem', marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid #E5DFD5' }}>
               {/* Unique Accounts (Confirmed / Estimated) */}
               <div>
-                <span style={{ color: '#94A3B8' }}>Unique Accounts: </span>
-                <strong style={{ color: '#F8FAFC' }}>{hoveredCluster.metrics.U_c}</strong>
-                <div style={{ color: '#64748B', fontSize: '0.68rem' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', color: '#78716C', fontSize: '0.68rem', textTransform: 'uppercase' }}>Unique Accounts: </span>
+                <strong style={{ color: '#1C1917', display: 'block', fontSize: '0.85rem' }}>{hoveredCluster.metrics.U_c}</strong>
+                <div style={{ color: '#57534E', fontSize: '0.68rem' }}>
                   {`(Confirmed: ${hoveredCluster.metrics.confirmedAccountsCount}, Estimated: ${hoveredCluster.metrics.estimatedAccountsCount})`}
                 </div>
               </div>
 
               {/* Incident Count */}
               <div>
-                <span style={{ color: '#94A3B8' }}>Incident Count: </span>
-                <strong style={{ color: '#F8FAFC' }}>{hoveredCluster.metrics.N_c}</strong>
-                <div style={{ color: '#64748B', fontSize: '0.68rem' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', color: '#78716C', fontSize: '0.68rem', textTransform: 'uppercase' }}>Incident Count: </span>
+                <strong style={{ color: '#1C1917', display: 'block', fontSize: '0.85rem' }}>{hoveredCluster.metrics.N_c}</strong>
+                <div style={{ color: '#57534E', fontSize: '0.68rem' }}>
                   raw complaints
                 </div>
               </div>
 
               {/* Tier-Weighted Impact (STRICTLY NO DOLLAR SIGN per IC-002) */}
               <div>
-                <span style={{ color: '#94A3B8' }}>Tier-Weighted Impact: </span>
-                <strong style={{ color: '#F59E0B' }}>{hoveredCluster.metrics.I_c.toFixed(1)}</strong>
-                <div style={{ color: '#64748B', fontSize: '0.68rem' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', color: '#78716C', fontSize: '0.68rem', textTransform: 'uppercase' }}>Tier-Weighted Impact: </span>
+                <strong style={{ color: '#B45309', display: 'block', fontSize: '0.85rem' }}>{hoveredCluster.metrics.I_c.toFixed(1)}</strong>
+                <div style={{ color: '#57534E', fontSize: '0.68rem' }}>
                   relative priority
                 </div>
               </div>
@@ -522,8 +555,9 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          fontSize: '0.75rem',
-          color: '#94A3B8',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.72rem',
+          color: 'var(--text-muted)',
           marginTop: '0.75rem',
           paddingTop: '0.5rem',
           borderTop: '1px solid var(--border-subtle)',
@@ -531,10 +565,10 @@ export const SpatialMatrixView: React.FC<SpatialMatrixViewProps> = ({
       >
         <div>
           <span>ℹ️ Quadrants </span>
-          <strong style={{ color: '#CBD5E1' }}>split at 0.5 of normalized scale</strong>
+          <strong style={{ color: 'var(--text-primary)' }}>split at 0.5 of normalized scale</strong>
           <span> (GAP-15)</span>
         </div>
-        <div style={{ fontSize: '0.7rem', color: '#64748B' }}>
+        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
           Click dot to open deep-dive drawer
         </div>
       </div>

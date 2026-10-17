@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIFT — Concept A: Precision Minimalism</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* --- CONCEPT A: PRECISION MINIMALISM ---
+       Inspired by Linear, Raycast, Apple Workspaces
+       Enforced by skills: minimalist-ui, redesign-existing-projects, impeccable
+    */
+    :root {
+      --bg-canvas: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F1F5F9;
+      --border-subtle: #E2E8F0;
+      --border-strong: #CBD5E1;
+      --border-focus: #0F172A;
+      
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+
+      --accent-primary: #2563EB;
+      --accent-subtle: #EFF6FF;
+      --accent-border: rgba(37, 99, 235, 0.25);
+
+      --badge-blocker: #DC2626;
+      --badge-blocker-bg: #FEF2F2;
+      --badge-blocker-border: rgba(220, 38, 38, 0.2);
+
+      --badge-major: #D97706;
+      --badge-major-bg: #FFFBEB;
+      --badge-major-border: rgba(217, 119, 6, 0.2);
+
+      --badge-minor: #2563EB;
+      --badge-minor-bg: #EFF6FF;
+      --badge-minor-border: rgba(37, 99, 235, 0.2);
+
+      --badge-verified: #059669;
+      --badge-verified-bg: #ECFDF5;
+      --badge-verified-border: rgba(5, 150, 105, 0.25);
+
+      --badge-nearmatch: #D97706;
+      --badge-nearmatch-bg: #FFFBEB;
+      --badge-nearmatch-border: rgba(217, 119, 6, 0.25);
+
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding: 1.5rem;
+      min-width: 1200px;
+    }
+
+    /* Concept Header Banner */
+    .concept-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.25rem 0.75rem;
+      background: #0F172A;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+
+    /* Top App Navigation */
+    .top-nav {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .brand-logo {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: -0.04em;
+      background: #0F172A;
+      color: #FFFFFF;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+    }
+    .brand-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .brand-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      border-left: 1px solid var(--border-subtle);
+      padding-left: 0.75rem;
+    }
+    .nav-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .file-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      padding: 0.35rem 0.7rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* Calibration Sliders Bar */
+    .calibration-bar {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+    .calib-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .calib-title h3 {
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+    }
+    .calib-title span {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+    .sliders-group {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .slider-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .slider-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      width: 70px;
+    }
+    .slider-track {
+      position: relative;
+      width: 120px;
+      height: 4px;
+      background: var(--border-subtle);
+      border-radius: 2px;
+    }
+    .slider-fill {
+      height: 100%;
+      background: #0F172A;
+      border-radius: 2px;
+    }
+    .slider-knob {
+      position: absolute;
+      top: -4px;
+      width: 12px;
+      height: 12px;
+      background: #FFFFFF;
+      border: 2px solid #0F172A;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .slider-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-primary);
+      width: 36px;
+      text-align: right;
+    }
+    .btn-reset {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-reset:hover {
+      background: #E2E8F0;
+      color: var(--text-primary);
+    }
+
+    /* Dual-View Workspace (Desktop 45% / 55%) */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 46% 54%;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    /* 2x2 Spatial Priority Matrix */
+    .matrix-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+    .matrix-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .matrix-header h4 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .matrix-invariant-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    /* SVG Matrix View */
+    .matrix-canvas-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #FAFAFA;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .quadrant-bg {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      padding: 0.75rem;
+      pointer-events: none;
+    }
+    .q-top-left { top: 0; left: 0; border-right: 1px dashed var(--border-strong); border-bottom: 1px dashed var(--border-strong); }
+    .q-top-right { top: 0; right: 0; border-bottom: 1px dashed var(--border-strong); background: rgba(220, 38, 38, 0.02); }
+    .q-bottom-left { bottom: 0; left: 0; border-right: 1px dashed var(--border-strong); }
+    .q-bottom-right { bottom: 0; right: 0; background: rgba(217, 119, 6, 0.02); }
+    .q-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--text-muted);
+    }
+    .q-top-right .q-title { color: #DC2626; font-weight: 800; }
+    .q-top-left .q-title { color: #D97706; }
+    .q-bottom-right .q-title { color: #2563EB; }
+    
+    /* Scatter Dots */
+    .matrix-dot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      transform: translate(-50%, 50%);
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
+    }
+    .matrix-dot:hover {
+      transform: translate(-50%, 50%) scale(1.4);
+      z-index: 10;
+    }
+    .dot-blocker {
+      background: #DC2626;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 1px 4px rgba(220, 38, 38, 0.4);
+    }
+    .dot-major {
+      background: #D97706;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 1px 4px rgba(217, 119, 6, 0.4);
+    }
+    .dot-minor {
+      background: #2563EB;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 1px 4px rgba(37, 99, 235, 0.4);
+    }
+    .dot-low {
+      background: #94A3B8;
+      border: 2px solid #FFFFFF;
+    }
+
+    /* Ranked Cards Column */
+    .cards-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+    .cards-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .search-box {
+      position: relative;
+      width: 240px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 0.45rem 0.75rem 0.45rem 2rem;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      font-size: 12.5px;
+      color: var(--text-primary);
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: #0F172A;
+      background: #FFFFFF;
+    }
+    .search-icon {
+      position: absolute;
+      left: 0.65rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+    .filter-tags {
+      display: flex;
+      gap: 0.4rem;
+    }
+    .chip {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .chip.active {
+      background: #0F172A;
+      color: #FFFFFF;
+    }
+
+    /* Ranked Card Item */
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .insight-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 1rem 1.15rem;
+      position: relative;
+      transition: all 0.15s ease-out;
+      cursor: pointer;
+    }
+    .insight-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+      transform: translateY(-1px);
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5rem;
+    }
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .card-rank {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .card-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .score-badge {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-weight: 800;
+      padding: 0.25rem 0.55rem;
+      border-radius: 4px;
+      background: #0F172A;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+    }
+    .card-metrics {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      margin-bottom: 0.65rem;
+    }
+    .metric-val {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .badges-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.65rem;
+    }
+    .status-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+    }
+    .badge-blocker-style { background: var(--badge-blocker-bg); color: var(--badge-blocker); border: 1px solid var(--badge-blocker-border); }
+    .badge-minor-style { background: var(--badge-minor-bg); color: var(--badge-minor); border: 1px solid var(--badge-minor-border); }
+    
+    .quote-preview {
+      background: var(--bg-subtle);
+      border-left: 2.5px solid var(--badge-verified);
+      padding: 0.5rem 0.75rem;
+      border-radius: 0 4px 4px 0;
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      font-style: italic;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .verified-pill {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      font-style: normal;
+      background: var(--badge-verified-bg);
+      color: var(--badge-verified);
+      border: 1px solid var(--badge-verified-border);
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Concept Banner -->
+  <div class="concept-tag">Direction A — Precision Minimalism (Light-First / Utilitarian)</div>
+
+  <!-- Top Navigation -->
+  <header class="top-nav">
+    <div class="brand">
+      <div class="brand-logo">SIFT</div>
+      <div>
+        <div class="brand-title">Analytical Discovery Workspace</div>
+      </div>
+      <div class="brand-desc">Ephemeral Client-Side Decision Support</div>
+    </div>
+    <div class="nav-meta">
+      <div class="file-badge">
+        <span>📄</span>
+        <span>synthetic_50.csv (50 rows)</span>
+      </div>
+      <button class="btn-reset">Settings</button>
+    </div>
+  </header>
+
+  <!-- Interactive Calibration Sliders -->
+  <section class="calibration-bar">
+    <div class="calib-title">
+      <h3>Priority Weight Calibration</h3>
+      <span>Stationary Coordinate Invariant (DEC-010)</span>
+    </div>
+
+    <div class="sliders-group">
+      <div class="slider-item">
+        <span class="slider-label">Impact</span>
+        <div class="slider-track"><div class="slider-fill" style="width: 40%;"></div><div class="slider-knob" style="left: 40%;"></div></div>
+        <span class="slider-val">40%</span>
+      </div>
+      <div class="slider-item">
+        <span class="slider-label">Frequency</span>
+        <div class="slider-track"><div class="slider-fill" style="width: 40%;"></div><div class="slider-knob" style="left: 40%;"></div></div>
+        <span class="slider-val">40%</span>
+      </div>
+      <div class="slider-item">
+        <span class="slider-label">Severity</span>
+        <div class="slider-track"><div class="slider-fill" style="width: 20%;"></div><div class="slider-knob" style="left: 20%;"></div></div>
+        <span class="slider-val">20%</span>
+      </div>
+    </div>
+
+    <button class="btn-reset">Reset (40/40/20)</button>
+  </section>
+
+  <!-- Dual-View Workspace -->
+  <main class="workspace-grid">
+    
+    <!-- Left: 2x2 Spatial Matrix -->
+    <div class="matrix-card">
+      <div class="matrix-header">
+        <h4>2×2 Strategic Priority Matrix</h4>
+        <span class="matrix-invariant-pill">Plot Fixed at Physical Coords</span>
+      </div>
+
+      <div class="matrix-canvas-wrapper">
+        <!-- 4 Quadrants -->
+        <div class="quadrant-bg q-top-left">
+          <div class="q-title">Enterprise Risk / Low Volume</div>
+        </div>
+        <div class="quadrant-bg q-top-right">
+          <div class="q-title">High Revenue Risk / High Volume</div>
+        </div>
+        <div class="quadrant-bg q-bottom-left">
+          <div class="q-title">Low Priority</div>
+        </div>
+        <div class="quadrant-bg q-bottom-right">
+          <div class="q-title">Mass Friction / Low ARR</div>
+        </div>
+
+        <!-- Scatter Plot Dots -->
+        <!-- CLUST-01: F_n=0.82, I_n=0.88 -->
+        <div class="matrix-dot dot-blocker" style="left: 82%; bottom: 88%;" title="CLUST-01: CSV Export Timeout (Score 91.2)"></div>
+        <!-- CLUST-02: F_n=0.35, I_n=0.92 -->
+        <div class="matrix-dot dot-blocker" style="left: 35%; bottom: 92%;" title="CLUST-02: SSO SAML Token Expiration Loop (Score 86.4)"></div>
+        <!-- CLUST-03: F_n=0.85, I_n=0.31 -->
+        <div class="matrix-dot dot-minor" style="left: 85%; bottom: 31%;" title="CLUST-03: Dark Mode Contrast (Score 58.7)"></div>
+        <!-- CLUST-04: F_n=0.28, I_n=0.25 -->
+        <div class="matrix-dot dot-low" style="left: 28%; bottom: 25%;" title="CLUST-04: Missing Column Sort (Score 28.5)"></div>
+      </div>
+    </div>
+
+    <!-- Right: Ranked Cards -->
+    <div class="cards-card">
+      <div class="cards-controls">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" placeholder="Search clusters...">
+        </div>
+        <div class="filter-tags">
+          <button class="chip active">All (4)</button>
+          <button class="chip">High Rev Risk</button>
+          <button class="chip">Enterprise</button>
+        </div>
+      </div>
+
+      <div class="card-list">
+        
+        <!-- Card 1 -->
+        <div class="insight-card">
+          <div class="card-top">
+            <div class="card-title-group">
+              <span class="card-rank">#1</span>
+              <span class="card-title">CSV Export Timeout on Large Datasets</span>
+            </div>
+            <div class="score-badge">91.2</div>
+          </div>
+          <div class="badges-row">
+            <span class="status-badge badge-blocker-style">Blocker</span>
+            <span class="status-badge" style="background:#F1F5F9; color:#475569;">High Revenue Risk / High Volume</span>
+          </div>
+          <div class="card-metrics">
+            <span>Accounts: <span class="metric-val">8 Confirmed / 14 Est.</span></span>
+            <span>Volume: <span class="metric-val">24 rows</span></span>
+            <span>Impact (I_n): <span class="metric-val">0.88</span></span>
+          </div>
+          <div class="quote-preview">
+            <span>"Exporting report to CSV times out after 60 seconds with 504 Gateway Timeout..."</span>
+            <span class="verified-pill">✓ Verified [FB-001]</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="insight-card">
+          <div class="card-top">
+            <div class="card-title-group">
+              <span class="card-rank">#2</span>
+              <span class="card-title">SSO SAML Token Expiration Loop</span>
+            </div>
+            <div class="score-badge">86.4</div>
+          </div>
+          <div class="badges-row">
+            <span class="status-badge badge-blocker-style">Blocker</span>
+            <span class="status-badge" style="background:#F1F5F9; color:#475569;">Enterprise Risk / Low Volume</span>
+          </div>
+          <div class="card-metrics">
+            <span>Accounts: <span class="metric-val">3 Enterprise</span></span>
+            <span>Volume: <span class="metric-val">7 rows</span></span>
+            <span>Impact (I_n): <span class="metric-val">0.92</span></span>
+          </div>
+          <div class="quote-preview">
+            <span>"Users stuck in infinite login loop after Okta session rollover at midnight..."</span>
+            <span class="verified-pill">✓ Verified [FB-014]</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="insight-card">
+          <div class="card-top">
+            <div class="card-title-group">
+              <span class="card-rank">#3</span>
+              <span class="card-title">Dark Mode Table Contrast Papercuts</span>
+            </div>
+            <div class="score-badge" style="background:#475569;">58.7</div>
+          </div>
+          <div class="badges-row">
+            <span class="status-badge badge-minor-style">Minor</span>
+            <span class="status-badge" style="background:#F1F5F9; color:#475569;">Mass Friction / Low ARR</span>
+          </div>
+          <div class="card-metrics">
+            <span>Accounts: <span class="metric-val">22 Confirmed / 35 Est.</span></span>
+            <span>Volume: <span class="metric-val">42 rows</span></span>
+            <span>Impact (I_n): <span class="metric-val">0.31</span></span>
+          </div>
+          <div class="quote-preview" style="border-left-color: #D97706;">
+            <span>"Selected row text in dark theme is unreadable gray on charcoal..."</span>
+            <span class="verified-pill" style="background:#FFFBEB; color:#D97706; border-color:rgba(217,119,6,0.3);">Near Match [FB-029]</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>

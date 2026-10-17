@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIFT — Brand Identity & Graphic Language Exploration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@300..800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-app: #FBF9F5;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F5F2EB;
+      --bg-tertiary: #EFECE6;
+      --text-primary: #1C1917;
+      --text-secondary: #44403C;
+      --text-muted: #78716C;
+      --border-main: #E5DFD5;
+      --border-subtle: #EDE8DF;
+      --border-strong: #292524;
+      --accent-terracotta: #B45309;
+      --accent-ink: #1C1917;
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-app);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      padding: 2.5rem 3rem 6rem;
+    }
+
+    .container {
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    /* Broadside Masthead */
+    .masthead-doc {
+      border-bottom: 2px solid var(--border-strong);
+      padding-bottom: 2rem;
+      margin-bottom: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .masthead-doc .title-group h1 {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .masthead-doc .title-group p {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .masthead-doc .doc-metadata {
+      text-align: right;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Section Styling */
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      max-width: 800px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    @media (max-width: 1024px) {
+      .card-grid { grid-template-columns: 1fr; }
+      body { padding: 1.5rem; }
+    }
+
+    .concept-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-main);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .concept-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+    }
+
+    .concept-card.active-selection {
+      border: 2px solid var(--border-strong);
+    }
+
+    .concept-card-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--bg-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .concept-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .concept-badge {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+    }
+
+    .concept-hero-display {
+      padding: 3rem 2rem;
+      background: #FAF8F5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border-subtle);
+      position: relative;
+    }
+
+    .hero-lockup {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-lockup .brand-wordmark {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .hero-lockup .brand-descriptor {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .scale-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      background: var(--bg-surface);
+      padding: 0.75rem 1.25rem;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .scale-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .scale-label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--text-muted);
+    }
+
+    .concept-body {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .concept-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .concept-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .property-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed var(--border-main);
+      font-size: 0.75rem;
+    }
+
+    .property-item .prop-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    .property-item .prop-value {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* Live Masthead Simulation Bar */
+    .interactive-simulator {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-main);
+      border-radius: 4px;
+      padding: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .simulator-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn-toggle-group {
+      display: flex;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-main);
+      border-radius: 4px;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .btn-toggle {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.4rem 0.85rem;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-toggle.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .simulated-header-frame {
+      border: 2px solid var(--border-strong);
+      background: var(--bg-surface);
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 2px;
+    }
+
+    /* Graphic Motifs Section */
+    .motifs-section {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-main);
+      border-radius: 4px;
+      padding: 2.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .motifs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .motifs-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .motifs-grid { grid-template-columns: 1fr; }
+    }
+
+    .motif-box {
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 1.5rem;
+      background: #FAF8F5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+    }
+
+    .motif-illustration {
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .motif-name {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .motif-placement {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* UI Placement Matrix */
+    .touchpoints-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    .touchpoints-table th {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-align: left;
+      padding: 0.85rem 1rem;
+      background: var(--bg-subtle);
+      border-bottom: 2px solid var(--border-strong);
+      color: var(--text-muted);
+    }
+
+    .touchpoints-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-main);
+      color: var(--text-secondary);
+      vertical-align: top;
+    }
+
+    .touchpoints-table tr:hover td {
+      background: rgba(245, 242, 235, 0.4);
+    }
+
+    .touchpoint-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 2px;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .status-pill-safe {
+      color: #065F46;
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="masthead-doc">
+      <div class="title-group">
+        <h1>Brand Identity &amp; Graphic Language Exploration</h1>
+        <p>SIFT Executive Intelligence &amp; Priority Synthesis &bull; Phase 2A Brandkit Specification</p>
+      </div>
+      <div class="doc-metadata">
+        <div><strong>Status:</strong> Awaiting Founder Selection</div>
+        <div><strong>Skills Enforced:</strong> brandkit, impeccable, high-end-visual-design, redesign-existing-projects</div>
+        <div><strong>Palettes:</strong> Warm Alabaster (#FBF9F5) &amp; Deep Ink (#1C1917)</div>
+      </div>
+    </header>
+
+    <!-- SECTION 1: Three Original Logo Concepts -->
+    <section>
+      <h2 class="section-title">1. Three Original Non-Letter Brand Marks</h2>
+      <p class="section-subtitle">
+        Moving away from the generic letter "S" in a rounded square. Each mark embodies SIFT's core algorithm: transforming chaotic, unstructured customer qualitative feedback into sharp, mathematical, executive priority synthesis.
+      </p>
+
+      <div class="card-grid">
+        <!-- CONCEPT 1 -->
+        <div class="concept-card" id="card-concept-1">
+          <div class="concept-card-header">
+            <span class="concept-tag">Mark Concept 01</span>
+            <span class="concept-badge">The Focal Prism</span>
+          </div>
+          <div class="concept-hero-display">
+            <div class="hero-lockup">
+              <!-- SVG 1: The Focal Prism -->
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Hairline intake channels (unstructured qualitative input) -->
+                <path d="M4 14H16L22 22L16 30H4" stroke="#1C1917" stroke-width="1.25" stroke-dasharray="2 2" stroke-linecap="round"/>
+                <path d="M4 22H18" stroke="#1C1917" stroke-width="1.25" stroke-linecap="round"/>
+                <!-- Central vertical datum collimator -->
+                <line x1="22" y1="8" x2="22" y2="36" stroke="#1C1917" stroke-width="1.5" stroke-linecap="round"/>
+                <!-- Convergent focal rays -->
+                <path d="M22 12L32 22L22 32" stroke="#1C1917" stroke-width="1.25" stroke-linecap="round"/>
+                <!-- Solid executive priority diamond (the synthesized insight) -->
+                <polygon points="32,22 38,16 44,22 38,28" fill="#1C1917"/>
+              </svg>
+              <div>
+                <div class="brand-wordmark">SIFT</div>
+                <div class="brand-descriptor">EXECUTIVE INTELLIGENCE &amp; PRIORITY SYNTHESIS</div>
+              </div>
+            </div>
+
+            <!-- Scales -->
+            <div class="scale-row">
+              <div class="scale-item">
+                <!-- 16px -->
+                <svg width="16" height="16" viewBox="0 0 44 44" fill="none">
+                  <path d="M4 14H16L22 22L16 30H4" stroke="#1C1917" stroke-width="3"/>
+                  <line x1="22" y1="6" x2="22" y2="38" stroke="#1C1917" stroke-width="4"/>
+                  <polygon points="30,22 37,15 44,22 37,29" fill="#1C1917"/>
+                </svg>
+                <span class="scale-label">16px Favicon</span>
+              </div>
+              <div class="scale-item">
+                <!-- 24px -->
+                <svg width="24" height="24" viewBox="0 0 44 44" fill="none">
+                  <path d="M4 14H16L22 22L16 30H4" stroke="#1C1917" stroke-width="2"/>
+                  <line x1="22" y1="6" x2="22" y2="38" stroke="#1C1917" stroke-width="2.5"/>
+                  <polygon points="30,22 37,15 44,22 37,29" fill="#1C1917"/>
+                </svg>
+                <span class="scale-label">24px Rail</span>
+              </div>
+              <div class="scale-item">
+                <!-- 32px -->
+                <svg width="32" height="32" viewBox="0 0 44 44" fill="none">
+                  <path d="M4 14H16L22 22L16 30H4" stroke="#1C1917" stroke-width="1.5" stroke-dasharray="2 2"/>
+                  <path d="M4 22H18" stroke="#1C1917" stroke-width="1.5"/>
+                  <line x1="22" y1="8" x2="22" y2="36" stroke="#1C1917" stroke-width="1.75"/>
+                  <polygon points="32,22 38,16 44,22 38,28" fill="#1C1917"/>
+                </svg>
+                <span class="scale-label">32px Header</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="concept-body">
+            <h3 class="concept-title">The Focal Prism (Collimator)</h3>
+            <p class="concept-desc">
+              Inspired by optical refraction instruments and astronomical collimators. Fragmented, diffuse feedback streams on the left enter a calibration aperture and converge into an acute, solid diamond glyph—representing synthesized executive certainty.
+            </p>
+            <div class="property-grid">
+              <div class="property-item">
+                <span class="prop-label">Metaphor</span>
+                <span class="prop-value">Optical Collimation</span>
+              </div>
+              <div class="property-item">
+                <span class="prop-label">Visual Weight</span>
+                <span class="prop-value">Light &bull; Dynamic Focus</span>
+              </div>
+              <div class="property-item">
+                <span class="prop-label">Pairing Harmony</span>
+                <span class="prop-value">Counterbalances bold serif</span>
+              </div>
+              <div class="property-item">
+                <span class="prop-label">Distinctiveness</span>
+                <span class="prop-value">High &bull; Non-derivative</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONCEPT 2 -->
+        <div class="concept-card active-selection" id="card-concept-2">
+          <div class="concept-card-header">
+            <span class="concept-tag">Mark Concept 02 (Recommended)</span>
+            <span class="concept-badge">The Cartesian Sieve</span>
+          </div>
+          <div class="concept-hero-display">
+            <div class="hero-lockup">
+              <!-- SVG 2: The Cartesian Sieve -->
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Precision Outer Circular Boundary -->
+                <circle cx="22" cy="22" r="19" stroke="#1C1917" stroke-width="1.5"/>
+                <!-- Cartesian Crosshair Axes -->
+                <line x1="22" y1="3" x2="22" y2="41" stroke="#1C1917" stroke-width="1.5"/>
+                <line x1="3" y1="22" x2="41" y2="22" stroke="#1C1917" stroke-width="1.5"/>
+                <!-- Quadrant I (Top-Right: High Revenue Risk / High Volume) - Solid Ink Wedge -->
+                <path d="M22 22L22 3.5C32.2173 3.5 40.5 11.7827 40.5 22L22 22Z" fill="#1C1917"/>
+                <!-- Quadrant II (Top-Left: Enterprise Risk) - Calibrated Concentric Arc -->
+                <path d="M12 22C12 16.4772 16.4772 12 22 12" stroke="#1C1917" stroke-width="1.5" stroke-dasharray="2 2"/>
+                <!-- Quadrant IV (Bottom-Right: Mass Friction) - Precision Coordinate Dot -->
+                <circle cx="31" cy="31" r="2.25" fill="#1C1917"/>
+              </svg>
+              <div>
+                <div class="brand-wordmark">SIFT</div>
+                <div class="brand-descriptor">EXECUTIVE INTELLIGENCE &amp; PRIORITY SYNTHESIS</div>
+              </div>
+            </div>
+
+            <!-- Scales -->
+            <div class="scale-row">
+              <div class="scale-item">
+                <!-- 16px -->
+                <svg width="16" height="16" viewBox="0 0 44 44" fill="none">
+                  <circle cx="22" cy="22" r="18" stroke="#1C1917" stroke-width="3"/>
+                  <line x1="22" y1="4" x2="22" y2="40" stroke="#1C1917" stroke-width="3"/>
+                  <line x1="4" y1="22" x2="40" y2="22" stroke="#1C1917" stroke-width="3"/>
+                  <path d="M22 22L22 4C31.9411 4 40 12.0589 40 22L22 22Z" fill="#1C1917"/>
+                </svg>
+                <span class="scale-label">16px Favicon</span>
+              </div>
+              <div class="scale-item">
+                <!-- 24px -->
+                <svg width="24" height="24" viewBox="0 0 44 44" fill="none">
+                  <circle cx="22" cy="22" r="18" stroke="#1C1917" stroke-width="2"/>
+                  <line x1="22" y1="4" x2="22" y2="40" stroke="#1C1917" stroke-width="2"/>
+                  <line x1="4" y1="22" x2="40" y2="22" stroke="#1C1917" stroke-width="2"/>
+                  <path d="M22 22L22 4C31.9411 4 40 12.0589 40 22L22 22Z" fill="#1C1917"/>
+                  <circle cx="31" cy="31" r="2.5" fill="#1C1917"/>
+                </svg>
+                <span class="scale-label">24px Rail</span>
+              </div>
+              <div class="scale-item">
+                <!-- 32px -->
+                <svg width="32" height="32" viewBox="0 0 44 44" fill="none">
+                  <circle cx="22" cy="22" r="19" stroke="#1C1917" stroke-width="1.75"/>
+                  <line x1="22" y1="3" x2="22" y2="41" stroke="#1C1917" stroke-width="1.75"/>
+                  <line x1="3" y1="22" x2="41" y2="22" stroke="#1C1917" stroke-width="1.75"/>
+                  <path d="M22 22L22 3.5C32.2173 3.5 40.5 11.7827 40.5 22L22 22Z" fill="#1C1917"/>
+                  <circle cx="31" cy="31" r="2.5" fill="#1C1917"/>
+                </svg>
+                <span class="scale-label">32px Header</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="concept-body">
+            <h3 class="concept-title">The Cartesian Sieve (Quadrant Matrix)</h3>
+            <p class="concept-desc">
+              Directly mirrors SIFT's fundamental product mechanic: the 2×2 priority matrix. The circular reticle is partitioned into 4 calibrated quadrants, with the top-right high-leverage quadrant ("High Revenue Risk / High Volume") rendered as a solid ink sector.
+            </p>
+            <div class="property-grid">
+              <div class="property-item">
+                <span class="prop-label">Metaphor</span>
+                <span class="prop-value">2×2 Decision Matrix</span>
+              </div>
+              <div class="property-item">
+                <span class="prop-label">Visual Weight</span>
+                <span class="prop-value">Balanced &bull; Architectural</span>
+              </div>
+              <div class="property-item">
+                <span class="prop-label">Product Link</span>
+                <span class="prop-value">1:1 with analytical core</span>
+              </div>
+              <div class="property-item">
+                <span class="prop-label">Recognizability</span>
+                <span class="prop-value">Instantly iconic at 16px</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONCEPT 3 -->
+        <div class="concept-card" id="card-concept-3">
+          <div class="concept-card-header">
+            <span class="concept-tag">Mark Concept 03</span>
+            <span class="concept-badge">The Strata Monolith</span>
+          </div>
+          <div class="concept-hero-display">
+            <div class="hero-lockup">
+              <!-- SVG 3: The Strata Monolith -->
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Top Strata: Wide, Hairline (Broad Narrative Feedback) -->
+                <rect x="4" y="8" width="36" height="3" rx="1" fill="#1C1917" opacity="0.4"/>
+                <!-- Middle Strata: Medium Width & Weight (Clustered Themes) -->
+                <rect x="9" y="16" width="26" height="5" rx="1.5" fill="#1C1917" opacity="0.75"/>
+                <!-- Lower Strata: Heavy, Solid Anchor (Executive Actionable Core) -->
+                <rect x="14" y="26" width="16" height="9" rx="2" fill="#1C1917"/>
+                <!-- Classical Vertical Plumb Axis -->
+                <line x1="22" y1="5" x2="22" y2="39" stroke="#1C1917" stroke-width="1" stroke-dasharray="2 2"/>
+              </svg>
+              <div>
+                <div class="brand-wordmark">SIFT</div>
+                <div class="brand-descriptor">EXECUTIVE INTELLIGENCE &amp; PRIORITY SYNTHESIS</div>
+              </div>
+            </div>
+
+            <!-- Scales -->
+            <div class="scale-row">
+              <div class="scale-item">
+                <!-- 16px -->
+                <svg width="16" height="16" viewBox="0 0 44 44" fill="none">
+                  <rect x="4" y="6" width="36" height="5" rx="1" fill="#1C1917"/>
+                  <rect x="9" y="16" width="26" height="7" rx="1" fill="#1C1917"/>
+                  <rect x="14" y="27" width="16" height="11" rx="2" fill="#1C1917"/>
+                </svg>
+                <span class="scale-label">16px Favicon</span>
+              </div>
+              <div class="scale-item">
+                <!-- 24px -->
+                <svg width="24" height="24" viewBox="0 0 44 44" fill="none">
+                  <rect x="4" y="7" width="36" height="4" rx="1" fill="#1C1917" opacity="0.5"/>
+                  <rect x="9" y="16" width="26" height="6" rx="1.5" fill="#1C1917" opacity="0.8"/>
+                  <rect x="14" y="26" width="16" height="10" rx="2" fill="#1C1917"/>
+                </svg>
+                <span class="scale-label">24px Rail</span>
+              </div>
+              <div class="scale-item">
+                <!-- 32px -->
+                <svg width="32" height="32" viewBox="0 0 44 44" fill="none">
+                  <rect x="4" y="8" width="36" height="3.5" rx="1" fill="#1C1917" opacity="0.4"/>
+                  <rect x="9" y="16" width="26" height="5.5" rx="1.5" fill="#1C1917" opacity="0.75"/>
+                  <rect x="14" y="26" width="16" height="9" rx="2" fill="#1C1917"/>
+                  <line x1="22" y1="5" x2="22" y2="39" stroke="#1C1917" stroke-width="1.2" stroke-dasharray="2 2"/>
+                </svg>
+                <span class="scale-label">32px Header</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="concept-body">
+            <h3 class="concept-title">The Strata Monolith (Sediment to Core)</h3>
+            <p class="concept-desc">
+              Evokes the geological metaphor of sifting and core extraction: wide, light sediment at the surface filtered down through structured layers into an unyielding monolithic anchor. Echoes Swiss architectural purity and institutional authority.
+            </p>
+            <div class="property-grid">
+              <div class="property-item">
+                <span class="prop-label">Metaphor</span>
+                <span class="prop-value">Excavation &bull; Sifting</span>
+              </div>
+              <div class="property-item">
+                <span class="prop-label">Visual Weight</span>
+                <span class="prop-value">Substantial &bull; Grounded</span>
+              </div>
+              <div class="property-item">
+                <span class="prop-label">Tone</span>
+                <span class="prop-value">Institutional &bull; Classic</span>
+              </div>
+              <div class="property-item">
+                <span class="prop-label">Geometry</span>
+                <span class="prop-value">Pure horizontal rhythm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Interactive Header Masthead Simulator -->
+    <section class="interactive-simulator">
+      <div class="simulator-controls">
+        <div>
+          <h3 style="font-family: var(--font-serif); font-size: 1.25rem; font-weight: 600;">2. Interactive Application Masthead Simulator</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted);">Toggle between the three marks to see how each anchors the live SIFT masthead alongside the Fraunces wordmark and system badges.</p>
+        </div>
+        <div class="btn-toggle-group">
+          <button class="btn-toggle" onclick="switchHeaderMark(1)">Mark 01: Focal Prism</button>
+          <button class="btn-toggle active" onclick="switchHeaderMark(2)">Mark 02: Cartesian Sieve</button>
+          <button class="btn-toggle" onclick="switchHeaderMark(3)">Mark 03: Strata Monolith</button>
+        </div>
+      </div>
+
+      <div class="simulated-header-frame">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <!-- Dynamic Mark Container -->
+          <div id="simulated-mark-slot" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px;">
+            <!-- Default Mark 2 -->
+            <svg width="34" height="34" viewBox="0 0 44 44" fill="none">
+              <circle cx="22" cy="22" r="19" stroke="#1C1917" stroke-width="1.75"/>
+              <line x1="22" y1="3" x2="22" y2="41" stroke="#1C1917" stroke-width="1.75"/>
+              <line x1="3" y1="22" x2="41" y2="22" stroke="#1C1917" stroke-width="1.75"/>
+              <path d="M22 22L22 3.5C32.2173 3.5 40.5 11.7827 40.5 22L22 22Z" fill="#1C1917"/>
+              <circle cx="31" cy="31" r="2.5" fill="#1C1917"/>
+            </svg>
+          </div>
+          <div>
+            <div style="font-family: var(--font-serif); font-size: 1.7rem; font-weight: 600; color: var(--text-primary); line-height: 1; letter-spacing: -0.02em;">
+              SIFT
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); margin-top: 3px;">
+              EXECUTIVE INTELLIGENCE &amp; PRIORITY SYNTHESIS
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span style="font-family: var(--font-mono); font-size: 0.72rem; color: #065F46; background: #ECFDF5; border: 1px solid #A7F3D0; padding: 0.3rem 0.65rem; border-radius: 2px;">
+            &#128274; Zero Payload Logging (TS-022)
+          </span>
+          <span style="font-family: var(--font-mono); font-size: 0.72rem; color: #57534E; background: #FAF8F5; border: 1px solid var(--border-main); padding: 0.3rem 0.65rem; border-radius: 2px;">
+            50 Rows Loaded &bull; Synthetic Benchmark
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Complementary Graphic Language & Motifs -->
+    <section class="motifs-section">
+      <h2 class="section-title">3. Complementary Graphic Language &amp; Motifs</h2>
+      <p class="section-subtitle">
+        Addressing the founder's feedback that the workspace feels "too empty and visually plain" — without violating the PRD requirement to keep analytical data dense, legible, and uncluttered.
+      </p>
+
+      <div class="motifs-grid">
+        <!-- Motif 1 -->
+        <div class="motif-box">
+          <div class="motif-illustration">
+            <!-- Custom Line Art: Collimating Aperture (Upload State) -->
+            <svg width="100" height="70" viewBox="0 0 100 70" fill="none">
+              <!-- Raw chaotic CSV lines entering left -->
+              <path d="M5 20H25M5 35H30M5 50H20" stroke="#78716C" stroke-width="1" stroke-dasharray="3 3"/>
+              <!-- Sifting lattice / filter aperture -->
+              <rect x="35" y="10" width="10" height="50" rx="1" fill="#FAF8F5" stroke="#1C1917" stroke-width="1.25"/>
+              <line x1="35" y1="22" x2="45" y2="22" stroke="#1C1917" stroke-width="1"/>
+              <line x1="35" y1="35" x2="45" y2="35" stroke="#1C1917" stroke-width="1"/>
+              <line x1="35" y1="48" x2="45" y2="48" stroke="#1C1917" stroke-width="1"/>
+              <!-- Ordered synthesis cards emerging right -->
+              <rect x="55" y="14" width="38" height="12" rx="1" fill="#FFFFFF" stroke="#1C1917" stroke-width="1"/>
+              <rect x="55" y="30" width="38" height="12" rx="1" fill="#FFFFFF" stroke="#1C1917" stroke-width="1"/>
+              <rect x="55" y="46" width="38" height="12" rx="1" fill="#FFFFFF" stroke="#1C1917" stroke-width="1"/>
+              <!-- Accent dots -->
+              <circle cx="85" cy="20" r="1.5" fill="#B45309"/>
+              <circle cx="85" cy="36" r="1.5" fill="#1C1917"/>
+            </svg>
+          </div>
+          <div>
+            <div class="motif-name">The Collimating Aperture</div>
+            <div class="motif-placement">Upload Hero &amp; Ingestion Dropzone &bull; Visualizes qualitative noise becoming prioritized cards.</div>
+          </div>
+        </div>
+
+        <!-- Motif 2 -->
+        <div class="motif-box">
+          <div class="motif-illustration">
+            <!-- Cartographic Coordinate Crosshairs -->
+            <svg width="80" height="70" viewBox="0 0 80 70" fill="none">
+              <circle cx="40" cy="35" r="24" stroke="#D6CEBE" stroke-width="1" stroke-dasharray="2 2"/>
+              <line x1="40" y1="5" x2="40" y2="65" stroke="#78716C" stroke-width="1"/>
+              <line x1="10" y1="35" x2="70" y2="35" stroke="#78716C" stroke-width="1"/>
+              <!-- Corner tick registers -->
+              <path d="M22 17L17 17L17 22" stroke="#1C1917" stroke-width="1.25"/>
+              <path d="M58 17L63 17L63 22" stroke="#1C1917" stroke-width="1.25"/>
+              <path d="M17 48L17 53L22 53" stroke="#1C1917" stroke-width="1.25"/>
+              <path d="M63 48L63 53L58 53" stroke="#1C1917" stroke-width="1.25"/>
+              <circle cx="40" cy="35" r="2" fill="#1C1917"/>
+            </svg>
+          </div>
+          <div>
+            <div class="motif-name">Cartographic Registers</div>
+            <div class="motif-placement">2×2 Matrix Corners &bull; Subtly frames the coordinate scatter plot like a Swiss geographic survey.</div>
+          </div>
+        </div>
+
+        <!-- Motif 3 -->
+        <div class="motif-box">
+          <div class="motif-illustration">
+            <!-- Verbatim Verification Seal -->
+            <svg width="80" height="70" viewBox="0 0 80 70" fill="none">
+              <rect x="18" y="12" width="44" height="46" rx="2" fill="#FFFFFF" stroke="#1C1917" stroke-width="1.25"/>
+              <!-- Quote marks -->
+              <path d="M26 24C26 21 28 20 30 20V23C29 23 28 23.5 28 25H30V29H26V24Z" fill="#1C1917"/>
+              <path d="M33 24C33 21 35 20 37 20V23C36 23 35 23.5 35 25H37V29H33V24Z" fill="#1C1917"/>
+              <!-- Substring verification check seal -->
+              <circle cx="46" cy="44" r="8" fill="#ECFDF5" stroke="#059669" stroke-width="1.25"/>
+              <path d="M43 44L45 46L49 42" stroke="#059669" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="motif-name">Verbatim Proof Stamp</div>
+            <div class="motif-placement">Deep-Dive Drawer &bull; Embossed receipt stamp validating zero-hallucination CSV quote integrity (IC-001).</div>
+          </div>
+        </div>
+
+        <!-- Motif 4 -->
+        <div class="motif-box">
+          <div class="motif-illustration">
+            <!-- Zero-State Open Lens -->
+            <svg width="80" height="70" viewBox="0 0 80 70" fill="none">
+              <!-- Open reticle with empty intersection -->
+              <circle cx="36" cy="35" r="18" stroke="#A8A29E" stroke-width="1.25" stroke-dasharray="3 3"/>
+              <line x1="36" y1="20" x2="36" y2="50" stroke="#D6CEBE" stroke-width="1"/>
+              <line x1="21" y1="35" x2="51" y2="35" stroke="#D6CEBE" stroke-width="1"/>
+              <!-- Magnifying handle -->
+              <line x1="49" y1="48" x2="62" y2="61" stroke="#1C1917" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="36" cy="35" r="3" fill="#D6CEBE"/>
+            </svg>
+          </div>
+          <div>
+            <div class="motif-name">The Open Reticle</div>
+            <div class="motif-placement">Search &amp; Filter Empty States &bull; Elegant minimal indicator when a query yields zero cluster matches.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: Application Touchpoints Placement Recommendations -->
+    <section class="interactive-simulator" style="margin-bottom: 2rem;">
+      <h2 class="section-title">4. Recommended Placements for Visual Enrichment</h2>
+      <p class="section-subtitle">
+        How graphical language and motifs elevate SIFT's workspace without distracting from analytical precision or dense data comprehension.
+      </p>
+
+      <table class="touchpoints-table">
+        <thead>
+          <tr>
+            <th style="width: 22%;">Touchpoint &amp; State</th>
+            <th style="width: 38%;">Proposed Graphic Treatment</th>
+            <th style="width: 25%;">Analytical Impact &amp; Purpose</th>
+            <th style="width: 15%;">Noise Risk</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>Landing &amp; Dropzone State</strong><br>
+              <span class="touchpoint-badge">Pre-Ingestion</span>
+            </td>
+            <td>
+              Engrave <em>The Collimating Aperture</em> hero line art directly above the upload dropzone, flanked by subtle coordinate tick marks.
+            </td>
+            <td>
+              Transforms the initial empty dropzone from a sterile file box into an intentional, high-end executive intelligence terminal.
+            </td>
+            <td><span class="status-pill-safe">Zero Risk (Idle)</span></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Schema Column Mapping</strong><br>
+              <span class="touchpoint-badge">Ingestion Review</span>
+            </td>
+            <td>
+              Add micro-connectors (fine dashed lines with directional chevrons) linking raw CSV column headers to the validated SIFT data model.
+            </td>
+            <td>
+              Provides visual guidance on identity resolution (Account ID, Tier, Text) without adding clutter to the column select dropdowns.
+            </td>
+            <td><span class="status-pill-safe">Zero Risk (Modal)</span></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>2×2 Priority Matrix</strong><br>
+              <span class="touchpoint-badge">Analytical Workspace</span>
+            </td>
+            <td>
+              Place ultra-fine <em>Cartographic Registers</em> (`⌜ ⌝ ⌞ ⌟`) at the outer canvas corners and hairline degree ticks on the axes.
+            </td>
+            <td>
+              Reinforces the matrix as a precision instrument rather than a casual chart. Keeps the interior scatter field completely clear.
+            </td>
+            <td><span class="status-pill-safe">Zero Interference</span></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Ranked Dossier Cards</strong><br>
+              <span class="touchpoint-badge">Analytical Workspace</span>
+            </td>
+            <td>
+              Use an engraved numeral ornament (`#1`, `#2`) in italic Fraunces serif, accompanied by a hairline vertical datum line separating metrics.
+            </td>
+            <td>
+              Gives each theme card the weight of an editorial intelligence dossier. Enhances vertical scanning across clusters.
+            </td>
+            <td><span class="status-pill-safe">Zero Interference</span></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Deep-Dive Drawer Quotes</strong><br>
+              <span class="touchpoint-badge">Evidence Receipts</span>
+            </td>
+            <td>
+              Subtle watermarked <em>Verbatim Proof Stamp</em> behind the quote container with exact substring match indicator.
+            </td>
+            <td>
+              Celebrates SIFT's core guarantee: verbatim, non-hallucinated evidence receipts (IC-001) that executives can trust.
+            </td>
+            <td><span class="status-pill-safe">Zero Interference</span></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Search / Filter Empty State</strong><br>
+              <span class="touchpoint-badge">Zero Results</span>
+            </td>
+            <td>
+              Clean <em>Open Reticle</em> line illustration with text: "Zero priority themes match filter criteria" and an immediate "Reset Filters" action.
+            </td>
+            <td>
+              Eliminates jarring dead-ends; turns a blank space into a refined editorial feedback loop.
+            </td>
+            <td><span class="status-pill-safe">High Value</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECTION 5: Small-Size Recognizability & Originality Guarantee -->
+    <section class="motifs-section" style="margin-bottom: 0;">
+      <h2 class="section-title">5. Scalability &amp; Licensing Verification</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem;">
+        <div>
+          <h3 style="font-family: var(--font-serif); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Small-Size Recognizability (16px &bull; 24px &bull; 32px)</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+            Non-letter marks can suffer when reduced to 16×16px if they rely on fine line density. To guarantee optical clarity:
+          </p>
+          <ul style="margin: 0.75rem 0 0 1.25rem; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6;">
+            <li><strong>Dynamic Stroke Weight:</strong> Scaled up from 1.25px (at 44px) to 2.5px–3px (at 16px) to avoid raster vanishing.</li>
+            <li><strong>Silhouette Dominance:</strong> In Concept 2 (The Cartesian Sieve), the solid top-right quadrant provides an unmistakable asymmetrical silhouette that is legible even when peripheral vision glances at a browser tab.</li>
+            <li><strong>High Optical Contrast:</strong> 100% deep ink (#1C1917) against pure white/alabaster achieves a 16.4:1 contrast ratio, surpassing WCAG AAA standards.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 style="font-family: var(--font-serif); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Originality &amp; Licensing Audit</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+            Per standing contract and founder directives:
+          </p>
+          <ul style="margin: 0.75rem 0 0 1.25rem; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6;">
+            <li><strong>100% Bespoke Code:</strong> All marks and motifs are pure geometric SVG coordinate vectors authored from scratch. No third-party vector stock, no icon font libraries, and no paid service assets.</li>
+            <li><strong>Typography Licensing:</strong> <code>Fraunces</code> and <code>Inter</code> are published under the open SIL Open Font License (OFL), allowing unrestricted commercial and digital distribution with zero licensing exposure.</li>
+            <li><strong>Zero Trademark Conflicts:</strong> The proposed geometric marks are abstract mathematical compositions tied directly to SIFT's 2×2 coordinate logic, steering entirely clear of saturated corporate lettermark trademarks.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const marks = {
+      1: `<svg width="34" height="34" viewBox="0 0 44 44" fill="none">
+            <path d="M4 14H16L22 22L16 30H4" stroke="#1C1917" stroke-width="1.5" stroke-dasharray="2 2"/>
+            <path d="M4 22H18" stroke="#1C1917" stroke-width="1.5"/>
+            <line x1="22" y1="8" x2="22" y2="36" stroke="#1C1917" stroke-width="1.75"/>
+            <polygon points="32,22 38,16 44,22 38,28" fill="#1C1917"/>
+          </svg>`,
+      2: `<svg width="34" height="34" viewBox="0 0 44 44" fill="none">
+            <circle cx="22" cy="22" r="19" stroke="#1C1917" stroke-width="1.75"/>
+            <line x1="22" y1="3" x2="22" y2="41" stroke="#1C1917" stroke-width="1.75"/>
+            <line x1="3" y1="22" x2="41" y2="22" stroke="#1C1917" stroke-width="1.75"/>
+            <path d="M22 22L22 3.5C32.2173 3.5 40.5 11.7827 40.5 22L22 22Z" fill="#1C1917"/>
+            <circle cx="31" cy="31" r="2.5" fill="#1C1917"/>
+          </svg>`,
+      3: `<svg width="34" height="34" viewBox="0 0 44 44" fill="none">
+            <rect x="4" y="8" width="36" height="3.5" rx="1" fill="#1C1917" opacity="0.4"/>
+            <rect x="9" y="16" width="26" height="5.5" rx="1.5" fill="#1C1917" opacity="0.75"/>
+            <rect x="14" y="26" width="16" height="9" rx="2" fill="#1C1917"/>
+            <line x1="22" y1="5" x2="22" y2="39" stroke="#1C1917" stroke-width="1.2" stroke-dasharray="2 2"/>
+          </svg>`
+    };
+
+    function switchHeaderMark(conceptId) {
+      document.getElementById('simulated-mark-slot').innerHTML = marks[conceptId];
+      const buttons = document.querySelectorAll('.btn-toggle');
+      buttons.forEach((btn, idx) => {
+        if (idx === conceptId - 1) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      document.querySelectorAll('.concept-card').forEach((card, idx) => {
+        if (idx === conceptId - 1) {
+          card.classList.add('active-selection');
+        } else {
+          card.classList.remove('active-selection');
+        }
+      });
+    }
+  </script>
+</body>
+</html>

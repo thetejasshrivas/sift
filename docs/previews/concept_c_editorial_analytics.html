@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIFT — Concept C: Editorial Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #FBF9F5;
+      --bg-subtle: #F4F1EA;
+      --bg-surface: #FFFFFF;
+      --border-main: #E5DFD5;
+      --border-dark: #292524;
+      --text-primary: #1C1917;
+      --text-secondary: #57534E;
+      --text-tertiary: #A8A29E;
+      --accent-ink: #0F172A;
+      --accent-crimson: #991B1B;
+      --accent-crimson-bg: #FEF2F2;
+      --accent-amber: #B45309;
+      --accent-amber-bg: #FFFBEB;
+      --accent-slate: #475569;
+      --accent-slate-bg: #F1F5F9;
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .concept-header-banner {
+      background: #1C1917;
+      color: #FBF9F5;
+      padding: 10px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+    }
+    .concept-badge {
+      font-family: var(--font-mono);
+      background: #292524;
+      color: #F59E0B;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background: var(--bg-surface);
+      border-bottom: 2px solid var(--border-dark);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand-group {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .brand-title {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+    .brand-issue-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      border-left: 1px solid var(--border-main);
+      padding-left: 12px;
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .dataset-spec {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-main);
+      padding: 5px 10px;
+    }
+
+    /* Weight Calibration Bar */
+    .weight-bar {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-main);
+      padding: 12px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .weight-title {
+      font-family: var(--font-serif);
+      font-size: 13px;
+      font-weight: 600;
+      font-style: italic;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+    .slider-group {
+      display: flex;
+      gap: 32px;
+      flex: 1;
+      max-width: 820px;
+    }
+    .slider-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+    .slider-item label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .slider-item input[type="range"] {
+      flex: 1;
+      accent-color: var(--border-dark);
+      cursor: pointer;
+    }
+    .slider-item .val {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-primary);
+      min-width: 32px;
+      text-align: right;
+    }
+
+    /* Main Workspace Layout (45% Matrix / 55% Ranked Cards) */
+    .workspace {
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      min-height: calc(100vh - 130px);
+    }
+
+    /* Left Panel: Priority Matrix */
+    .matrix-panel {
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-main);
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .section-headline {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .matrix-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #FAF8F5;
+      border: 1px solid var(--border-dark);
+      margin-top: 10px;
+    }
+    /* Grid axis lines */
+    .matrix-axis-x {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--border-main);
+      border-top: 1px dashed #A8A29E;
+    }
+    .matrix-axis-y {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--border-main);
+      border-left: 1px dashed #A8A29E;
+    }
+    /* Quadrant labels strictly adhering to IC-014 */
+    .quadrant-label {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #78716C;
+      max-width: 160px;
+      line-height: 1.3;
+      padding: 8px;
+    }
+    .q-top-right { top: 4px; right: 4px; text-align: right; color: var(--accent-crimson); }
+    .q-top-left { top: 4px; left: 4px; text-align: left; }
+    .q-bottom-right { bottom: 4px; right: 4px; text-align: right; }
+    .q-bottom-left { bottom: 4px; left: 4px; text-align: left; color: #A8A29E; }
+
+    /* Cluster points in matrix */
+    .cluster-pin {
+      position: absolute;
+      transform: translate(-50%, 50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+    .pin-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #1C1917;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 0 0 1px #1C1917;
+    }
+    .pin-dot.critical {
+      background: var(--accent-crimson);
+      box-shadow: 0 0 0 1px var(--accent-crimson);
+    }
+    .pin-label {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 600;
+      color: #1C1917;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--border-main);
+      padding: 1px 4px;
+      margin-top: 3px;
+      white-space: nowrap;
+    }
+
+    .matrix-axis-guide {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-tertiary);
+      padding-top: 6px;
+    }
+
+    /* Right Panel: Ranked Insights */
+    .insights-panel {
+      padding: 24px 32px;
+      background: var(--bg-base);
+    }
+    .insights-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--border-dark);
+      margin-bottom: 20px;
+    }
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+    }
+    .filter-pill {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      padding: 5px 12px;
+      border: 1px solid var(--border-main);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    .filter-pill.active {
+      background: var(--border-dark);
+      color: #FFFFFF;
+      border-color: var(--border-dark);
+      font-weight: 600;
+    }
+
+    .cards-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Ranked Card: Editorial Broadside / Dossier Style */
+    .ranked-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-main);
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 80px 1fr 110px;
+      gap: 20px;
+      align-items: start;
+      transition: all 0.15s ease-in-out;
+      position: relative;
+    }
+    .ranked-card:hover {
+      border-color: var(--border-dark);
+      box-shadow: 0 4px 12px rgba(28, 25, 23, 0.04);
+    }
+    .card-rank-col {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border-main);
+      padding-right: 16px;
+    }
+    .card-rank-number {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      line-height: 1;
+    }
+    .card-cluster-id {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }
+    .card-content-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card-title-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+    .severity-tag {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      letter-spacing: 0.04em;
+    }
+    .sev-blocker {
+      background: var(--accent-crimson-bg);
+      color: var(--accent-crimson);
+      border: 1px solid #FECACA;
+    }
+    .sev-minor {
+      background: var(--accent-slate-bg);
+      color: var(--accent-slate);
+      border: 1px solid #CBD5E1;
+    }
+
+    .card-meta-line {
+      display: flex;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+    .card-meta-line span strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .card-quote-box {
+      background: var(--bg-subtle);
+      border-left: 2px solid var(--border-dark);
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-top: 4px;
+    }
+    .quote-badge {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-style: normal;
+      font-weight: 600;
+      color: #15803D;
+      display: inline-block;
+      margin-right: 6px;
+      text-transform: uppercase;
+    }
+    .quote-badge.near {
+      color: #B45309;
+    }
+
+    .card-score-col {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-end;
+    }
+    .score-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+    }
+    .score-value {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+    .score-sub {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-secondary);
+    }
+
+    .view-drawer-btn {
+      margin-top: 10px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      background: transparent;
+      border: 1px solid var(--border-main);
+      padding: 4px 10px;
+      cursor: pointer;
+      color: var(--text-primary);
+      transition: all 0.15s;
+    }
+    .view-drawer-btn:hover {
+      background: var(--border-dark);
+      color: #FFFFFF;
+      border-color: var(--border-dark);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Concept Direction Indicator -->
+  <div class="concept-header-banner">
+    <div>
+      <strong>CONCEPT C — EDITORIAL ANALYTICS</strong> &nbsp;|&nbsp; Warm Alabaster, Fraunces Serif Headings &amp; Swiss Broadsheet Structure
+    </div>
+    <div class="concept-badge">1280px REFERENCE PREVIEW</div>
+  </div>
+
+  <!-- Top Application Bar -->
+  <header class="top-nav">
+    <div class="brand-group">
+      <h1 class="brand-title">SIFT</h1>
+      <span class="brand-issue-tag">EXECUTIVE INTELLIGENCE DOSSIER</span>
+    </div>
+    <div class="nav-actions">
+      <div class="dataset-spec">DATASET: synthetic_50.csv (50 ROWS)</div>
+      <div class="dataset-spec">PROVIDER: FREE TIER PROXY (REQUIRES VERIFICATION)</div>
+    </div>
+  </header>
+
+  <!-- Priority Weight Formulation Sliders -->
+  <section class="weight-bar">
+    <span class="weight-title">Priority Weight Calibration</span>
+    <div class="slider-group">
+      <div class="slider-item">
+        <label for="w-arr">ARR Impact</label>
+        <input type="range" id="w-arr" min="0" max="100" value="40">
+        <span class="val">40%</span>
+      </div>
+      <div class="slider-item">
+        <label for="w-vol">Frequency</label>
+        <input type="range" id="w-vol" min="0" max="100" value="40">
+        <span class="val">40%</span>
+      </div>
+      <div class="slider-item">
+        <label for="w-sev">Severity</label>
+        <input type="range" id="w-sev" min="0" max="100" value="20">
+        <span class="val">20%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Analytical Workspace -->
+  <main class="workspace">
+    <!-- Left Column: 2x2 Priority Matrix (45%) -->
+    <section class="matrix-panel">
+      <div>
+        <span class="section-eyebrow">Strategic Synthesis</span>
+        <h2 class="section-headline">2×2 Priority Matrix</h2>
+      </div>
+
+      <div class="matrix-container" id="matrixContainer">
+        <!-- Axes -->
+        <div class="matrix-axis-x"></div>
+        <div class="matrix-axis-y"></div>
+
+        <!-- Strict IC-014 Quadrant Labels -->
+        <div class="quadrant-label q-top-right">High Revenue Risk /<br>High Volume</div>
+        <div class="quadrant-label q-top-left">Enterprise Risk /<br>Low Volume</div>
+        <div class="quadrant-label q-bottom-right">Mass Friction /<br>Low ARR</div>
+        <div class="quadrant-label q-bottom-left">Low Priority</div>
+
+        <!-- Cluster Pins Plotted by (Fn, In) -->
+        <!-- CLUST-01: Fn=82%, In=88% -> Top: 100-88=12%, Left: 82% -->
+        <div class="cluster-pin" style="top: 12%; left: 82%;">
+          <div class="pin-dot critical"></div>
+          <div class="pin-label">CLUST-01 (91.2)</div>
+        </div>
+
+        <!-- CLUST-02: Fn=35%, In=92% -> Top: 100-92=8%, Left: 35% -->
+        <div class="cluster-pin" style="top: 8%; left: 35%;">
+          <div class="pin-dot critical"></div>
+          <div class="pin-label">CLUST-02 (86.4)</div>
+        </div>
+
+        <!-- CLUST-03: Fn=85%, In=31% -> Top: 100-31=69%, Left: 85% -->
+        <div class="cluster-pin" style="top: 69%; left: 85%;">
+          <div class="pin-dot"></div>
+          <div class="pin-label">CLUST-03 (58.7)</div>
+        </div>
+
+        <!-- CLUST-04: Fn=28%, In=25% -> Top: 100-25=75%, Left: 28% -->
+        <div class="cluster-pin" style="top: 75%; left: 28%;">
+          <div class="pin-dot"></div>
+          <div class="pin-label">CLUST-04 (28.5)</div>
+        </div>
+      </div>
+
+      <div class="matrix-axis-guide">
+        <span>&larr; LOWER FREQUENCY (Fn)</span>
+        <span>HIGHER FREQUENCY (Fn) &rarr;</span>
+      </div>
+      <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); text-align: center;">
+        VERTICAL AXIS: IMPACT / ARR PROXY (In)
+      </div>
+    </section>
+
+    <!-- Right Column: Ranked Insight Cards (55%) -->
+    <section class="insights-panel">
+      <div class="insights-toolbar">
+        <div>
+          <span class="section-eyebrow">Ranked Synthesis</span>
+          <h2 class="section-headline">Identified Feedback Clusters</h2>
+        </div>
+        <div class="filter-pills">
+          <button class="filter-pill active">All Clusters (4)</button>
+          <button class="filter-pill">Blockers Only (2)</button>
+          <button class="filter-pill">Enterprise (1)</button>
+        </div>
+      </div>
+
+      <div class="cards-stack">
+        <!-- Card 1: CLUST-01 -->
+        <article class="ranked-card">
+          <div class="card-rank-col">
+            <span class="card-rank-number">01</span>
+            <span class="card-cluster-id">CLUST-01</span>
+          </div>
+          <div class="card-content-col">
+            <div class="card-title-row">
+              <h3 class="card-title">CSV Export Timeout on Large Datasets</h3>
+              <span class="severity-tag sev-blocker">BLOCKER</span>
+            </div>
+            <div class="card-meta-line">
+              <span><strong>8</strong> Confirmed Accounts</span>
+              <span><strong>14</strong> Estimated Incidents</span>
+              <span>Tier Weight: <strong>Enterprise 3.0</strong></span>
+            </div>
+            <div class="card-quote-box">
+              <span class="quote-badge">[Verified Quote]</span>
+              "When exporting 250k rows to CSV the browser tab crashes with an out of memory error in Chrome."
+            </div>
+          </div>
+          <div class="card-score-col">
+            <span class="score-label">Priority Score</span>
+            <span class="score-value">91.2</span>
+            <span class="score-sub">Top Decile</span>
+            <button class="view-drawer-btn">Inspect &rarr;</button>
+          </div>
+        </article>
+
+        <!-- Card 2: CLUST-02 -->
+        <article class="ranked-card">
+          <div class="card-rank-col">
+            <span class="card-rank-number">02</span>
+            <span class="card-cluster-id">CLUST-02</span>
+          </div>
+          <div class="card-content-col">
+            <div class="card-title-row">
+              <h3 class="card-title">SSO SAML Token Expiration Loop</h3>
+              <span class="severity-tag sev-blocker">BLOCKER</span>
+            </div>
+            <div class="card-meta-line">
+              <span><strong>3</strong> Confirmed Accounts</span>
+              <span><strong>5</strong> Estimated Incidents</span>
+              <span>Tier Weight: <strong>Enterprise 3.0</strong></span>
+            </div>
+            <div class="card-quote-box">
+              <span class="quote-badge">[Verified Quote]</span>
+              "Okta SAML token expires after exactly 60 minutes and drops users back to the root login loop."
+            </div>
+          </div>
+          <div class="card-score-col">
+            <span class="score-label">Priority Score</span>
+            <span class="score-value">86.4</span>
+            <span class="score-sub">Enterprise Risk</span>
+            <button class="view-drawer-btn">Inspect &rarr;</button>
+          </div>
+        </article>
+
+        <!-- Card 3: CLUST-03 -->
+        <article class="ranked-card">
+          <div class="card-rank-col">
+            <span class="card-rank-number">03</span>
+            <span class="card-cluster-id">CLUST-03</span>
+          </div>
+          <div class="card-content-col">
+            <div class="card-title-row">
+              <h3 class="card-title">Dark Mode Table Contrast Papercuts</h3>
+              <span class="severity-tag sev-minor">MINOR</span>
+            </div>
+            <div class="card-meta-line">
+              <span><strong>22</strong> Confirmed Accounts</span>
+              <span><strong>35</strong> Estimated Incidents</span>
+              <span>Tier Weight: <strong>Pro 2.0</strong></span>
+            </div>
+            <div class="card-quote-box">
+              <span class="quote-badge near">[Near Match]</span>
+              "In dark mode the secondary table header borders are almost invisible on calibrated displays."
+            </div>
+          </div>
+          <div class="card-score-col">
+            <span class="score-label">Priority Score</span>
+            <span class="score-value">58.7</span>
+            <span class="score-sub">Mass Friction</span>
+            <button class="view-drawer-btn">Inspect &rarr;</button>
+          </div>
+        </article>
+
+        <!-- Card 4: CLUST-04 -->
+        <article class="ranked-card">
+          <div class="card-rank-col">
+            <span class="card-rank-number">04</span>
+            <span class="card-cluster-id">CLUST-04</span>
+          </div>
+          <div class="card-content-col">
+            <div class="card-title-row">
+              <h3 class="card-title">Missing Column Sort in Audit Log</h3>
+              <span class="severity-tag sev-minor">MINOR</span>
+            </div>
+            <div class="card-meta-line">
+              <span><strong>4</strong> Confirmed Accounts</span>
+              <span><strong>6</strong> Estimated Incidents</span>
+              <span>Tier Weight: <strong>Free 1.0</strong></span>
+            </div>
+            <div class="card-quote-box">
+              <span class="quote-badge">[Verified Quote]</span>
+              "Audit log table lacks ability to sort by timestamp descending without clicking header twice."
+            </div>
+          </div>
+          <div class="card-score-col">
+            <span class="score-label">Priority Score</span>
+            <span class="score-value">28.5</span>
+            <span class="score-sub">Low Priority</span>
+            <button class="view-drawer-btn">Inspect &rarr;</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

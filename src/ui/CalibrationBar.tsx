@@ -91,38 +91,44 @@ export const CalibrationBar: React.FC<CalibrationBarProps> = ({
       style={{
         backgroundColor: 'var(--bg-surface)',
         border: '1px solid var(--border-subtle)',
-        borderRadius: '10px',
+        borderRadius: '3px',
         padding: '1.25rem 1.5rem',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
+        boxShadow: '0 2px 8px rgba(28, 25, 23, 0.03)',
       }}
     >
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: 'baseline',
           flexWrap: 'wrap',
           gap: '1rem',
-          marginBottom: '1rem',
+          marginBottom: '1.25rem',
+          borderBottom: '1px solid var(--border-subtle)',
+          paddingBottom: '0.75rem',
         }}
       >
         <div>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: '2px' }}>
+            PARAMETER TUNING
+          </span>
           <h2
             style={{
-              fontSize: '1rem',
-              fontWeight: 700,
+              fontFamily: 'var(--font-serif)',
+              fontSize: '1.15rem',
+              fontWeight: 600,
               color: 'var(--text-primary)',
-              letterSpacing: '-0.01em',
+              letterSpacing: '-0.015em',
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem',
+              margin: 0,
             }}
           >
-            <span>⚖️</span>
             <span>Priority Calibration (Live 60-FPS Re-ranking)</span>
           </h2>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-            Adjust trade-off balance across Impact, Frequency, and Severity. Sliders normalize automatically to 100%.
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
+            Adjust trade-off balance across Impact, Frequency, and Severity. Normalized dynamically to 100%.
           </p>
         </div>
 
@@ -133,13 +139,14 @@ export const CalibrationBar: React.FC<CalibrationBarProps> = ({
           onClick={handleReset}
           disabled={isAtDefault}
           style={{
-            fontSize: '0.8rem',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.75rem',
             fontWeight: 600,
-            padding: '0.45rem 0.9rem',
-            borderRadius: '6px',
-            backgroundColor: isAtDefault ? 'transparent' : 'var(--bg-card)',
-            color: isAtDefault ? 'var(--text-muted)' : '#38BDF8',
-            border: `1px solid ${isAtDefault ? 'var(--border-subtle)' : 'rgba(56, 189, 248, 0.4)'}`,
+            padding: '0.35rem 0.85rem',
+            borderRadius: '2px',
+            backgroundColor: isAtDefault ? 'transparent' : 'var(--bg-subtle)',
+            color: isAtDefault ? 'var(--text-muted)' : 'var(--text-primary)',
+            border: `1px solid ${isAtDefault ? 'var(--border-subtle)' : 'var(--border-strong)'}`,
             cursor: isAtDefault ? 'default' : 'pointer',
             transition: 'all 0.15s ease',
             display: 'inline-flex',
@@ -164,27 +171,27 @@ export const CalibrationBar: React.FC<CalibrationBarProps> = ({
         {/* 1. Impact Slider (IC-002: Labeled strictly 'Impact', replacing ARR) */}
         <div
           style={{
-            backgroundColor: 'var(--bg-card)',
-            padding: '0.85rem 1rem',
-            borderRadius: '8px',
+            backgroundColor: 'var(--bg-subtle)',
+            padding: '0.9rem 1.15rem',
+            borderRadius: '2px',
             border: '1px solid var(--border-subtle)',
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.5rem' }}>
             <label
               htmlFor="slider-impact"
-              style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}
+              style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-primary)' }}
             >
               Impact
             </label>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem' }}>
               <span
                 id="pct-impact"
-                style={{ fontSize: '1rem', fontWeight: 800, color: '#38BDF8' }}
+                style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)' }}
               >
                 {pctImpact}%
               </span>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
                 (raw: {localWeights.arr})
               </span>
             </div>
@@ -204,13 +211,13 @@ export const CalibrationBar: React.FC<CalibrationBarProps> = ({
             aria-valuetext={`${pctImpact} percent Impact weight`}
             style={{
               width: '100%',
-              accentColor: '#38BDF8',
+              accentColor: '#292524',
               cursor: 'pointer',
             }}
           />
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '0.35rem' }}>
             <span>0 (Ignore)</span>
-            <span>Customer Tier Weight Priority</span>
+            <span>Customer Tier Proxy</span>
             <span>100</span>
           </div>
         </div>
@@ -218,27 +225,27 @@ export const CalibrationBar: React.FC<CalibrationBarProps> = ({
         {/* 2. Frequency Slider (IC-002: Labeled strictly 'Frequency', replacing Volume) */}
         <div
           style={{
-            backgroundColor: 'var(--bg-card)',
-            padding: '0.85rem 1rem',
-            borderRadius: '8px',
+            backgroundColor: 'var(--bg-subtle)',
+            padding: '0.9rem 1.15rem',
+            borderRadius: '2px',
             border: '1px solid var(--border-subtle)',
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.5rem' }}>
             <label
               htmlFor="slider-frequency"
-              style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}
+              style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-primary)' }}
             >
               Frequency
             </label>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem' }}>
               <span
                 id="pct-frequency"
-                style={{ fontSize: '1rem', fontWeight: 800, color: '#60A5FA' }}
+                style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)' }}
               >
                 {pctFreq}%
               </span>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
                 (raw: {localWeights.vol})
               </span>
             </div>
@@ -258,13 +265,13 @@ export const CalibrationBar: React.FC<CalibrationBarProps> = ({
             aria-valuetext={`${pctFreq} percent Frequency weight`}
             style={{
               width: '100%',
-              accentColor: '#60A5FA',
+              accentColor: '#292524',
               cursor: 'pointer',
             }}
           />
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '0.35rem' }}>
             <span>0 (Ignore)</span>
-            <span>Affected Account Reach</span>
+            <span>Account Reach</span>
             <span>100</span>
           </div>
         </div>
@@ -272,27 +279,27 @@ export const CalibrationBar: React.FC<CalibrationBarProps> = ({
         {/* 3. Severity Slider */}
         <div
           style={{
-            backgroundColor: 'var(--bg-card)',
-            padding: '0.85rem 1rem',
-            borderRadius: '8px',
+            backgroundColor: 'var(--bg-subtle)',
+            padding: '0.9rem 1.15rem',
+            borderRadius: '2px',
             border: '1px solid var(--border-subtle)',
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.5rem' }}>
             <label
               htmlFor="slider-severity"
-              style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}
+              style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-primary)' }}
             >
               Severity
             </label>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem' }}>
               <span
                 id="pct-severity"
-                style={{ fontSize: '1rem', fontWeight: 800, color: '#F87171' }}
+                style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)' }}
               >
                 {pctSev}%
               </span>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
                 (raw: {localWeights.sev})
               </span>
             </div>
@@ -312,13 +319,13 @@ export const CalibrationBar: React.FC<CalibrationBarProps> = ({
             aria-valuetext={`${pctSev} percent Severity weight`}
             style={{
               width: '100%',
-              accentColor: '#F87171',
+              accentColor: '#292524',
               cursor: 'pointer',
             }}
           />
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '0.35rem' }}>
             <span>0 (Ignore)</span>
-            <span>Workflow Failure Criticality</span>
+            <span>Workflow Criticality</span>
             <span>100</span>
           </div>
         </div>

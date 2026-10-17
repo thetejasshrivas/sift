@@ -1,42 +1,48 @@
 /**
- * SIFT Design System — PRD §8.2, §8.4
- * Slate surfaces, semantic badges, WCAG 2.1 AA contrast
+ * SIFT Design System — Concept C: Editorial Analytics
+ * Warm Alabaster canvas, Fraunces serif typography, Swiss broadsheet discipline, WCAG 2.1 AA/AAA contrast.
  */
 
 :root {
-  /* Slate Neutral Surfaces */
-  --bg-app: #0F172A;        /* Slate 900 */
-  --bg-surface: #1E293B;    /* Slate 800 */
-  --bg-card: #334155;       /* Slate 700 */
-  --bg-hover: #475569;      /* Slate 600 */
+  /* Canvas & Neutral Surfaces */
+  --bg-app: #FBF9F5;             /* Warm Alabaster Canvas */
+  --bg-surface: #FFFFFF;         /* Crisp White Card/Panel Surface */
+  --bg-card: #FFFFFF;            /* White Card Surface */
+  --bg-subtle: #F4F1EA;          /* Inset Parchment / Quote Box */
+  --bg-hover: #EFECE4;           /* Subtle Hover Tint */
 
-  /* Text Roles (WCAG AA Compliant >= 4.5:1 contrast against dark slate) */
-  --text-primary: #F8FAFC;   /* Slate 50 */
-  --text-secondary: #CBD5E1; /* Slate 300 */
-  --text-muted: #94A3B8;     /* Slate 400 */
+  /* Hairline Borders & Rules */
+  --border-subtle: #E5DFD5;       /* Neutral Hairline Border */
+  --border-strong: #292524;       /* High-contrast Ink Border */
+  --border-dashed: #A8A29E;       /* Matrix Dashed Crosshairs */
+  --border-focus: #1C1917;        /* Accessible Focus Ring */
 
-  /* Borders */
-  --border-subtle: #334155;  /* Slate 700 */
-  --border-strong: #475569;  /* Slate 600 */
-  --border-focus: #38BDF8;   /* Sky 400 */
+  /* Typographic Ink Roles (WCAG AAA >= 14:1) */
+  --text-primary: #1C1917;        /* Deep Ink Black */
+  --text-secondary: #57534E;      /* Warm Slate 600 (WCAG AA >= 6.8:1) */
+  --text-muted: #78716C;          /* Warm Stone 500 */
 
   /* Semantic Status Roles */
-  --color-gold: #D97706;     /* Enterprise Risk */
-  --color-gold-bg: rgba(217, 119, 6, 0.15);
-  --color-blue: #2563EB;     /* High Volume / Action */
-  --color-blue-bg: rgba(37, 99, 235, 0.15);
-  --color-red: #DC2626;      /* Critical Blocker / Error */
-  --color-red-bg: rgba(220, 38, 38, 0.15);
-  --color-green: #059669;    /* Verified / Baseline */
-  --color-green-bg: rgba(5, 150, 105, 0.15);
-  --color-amber: #F59E0B;    /* Data Quality Warning */
-  --color-amber-bg: #451A03;
+  --color-gold: #B45309;          /* Enterprise Risk / Amber 700 */
+  --color-gold-bg: #FFFBEB;
+  --color-blue: #0F172A;          /* Broadsheet Ink Primary */
+  --color-blue-bg: #F1F5F9;
+  --color-red: #991B1B;           /* Critical Blocker / Crimson 800 */
+  --color-red-bg: #FEF2F2;
+  --color-green: #15803D;         /* Verified Provenance / Green 700 */
+  --color-green-bg: #F0FDF4;
+  --color-amber: #B45309;         /* Data Quality Warning */
+  --color-amber-bg: #FFFBEB;
   --color-amber-border: #F59E0B;
-  --color-amber-text: #FEF3C7;
+  --color-amber-text: #92400E;
 
-  /* Typography */
-  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color-scheme: dark;
+  /* Editorial Typography */
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  --font-family: var(--font-sans);
+
+  color-scheme: light;
 }
 
 * {
@@ -65,6 +71,14 @@ body {
   outline-offset: 2px;
 }
 
+/* Headings with Editorial Serif */
+h1, h2, h3, .editorial-heading {
+  font-family: var(--font-serif);
+  letter-spacing: -0.015em;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
 /* Buttons & Interactive Elements */
 button {
   font-family: inherit;
@@ -82,7 +96,7 @@ button:disabled {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(28, 25, 23, 0.65);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -94,12 +108,12 @@ button:disabled {
 .modal-content {
   background: var(--bg-surface);
   border: 1px solid var(--border-strong);
-  border-radius: 12px;
+  border-radius: 4px;
   max-width: 680px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 16px 32px rgba(28, 25, 23, 0.12);
   padding: 1.75rem;
 }
 
@@ -143,7 +157,7 @@ button:disabled {
   .dual-view-workspace-container {
     display: grid;
     grid-template-columns: 45fr 55fr;
-    gap: 1.5rem;
+    gap: 1.75rem;
     align-items: start;
   }
   .workspace-matrix-col,
@@ -204,3 +218,11 @@ button:disabled {
   }
 }
 
+/* Reduced motion preference support (impeccable rule) */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

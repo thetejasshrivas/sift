@@ -187,8 +187,8 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.75)',
-        backdropFilter: 'blur(4px)',
+        backgroundColor: 'rgba(28, 25, 23, 0.45)',
+        backdropFilter: 'blur(3px)',
         zIndex: 1000,
         display: 'flex',
         justifyContent: 'flex-end',
@@ -205,9 +205,9 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
           width: '600px',
           maxWidth: '100vw',
           height: '100vh',
-          backgroundColor: '#0F172A',
-          borderLeft: '1px solid #334155',
-          boxShadow: '-10px 0 30px rgba(0, 0, 0, 0.7)',
+          backgroundColor: 'var(--bg-app)',
+          borderLeft: '2px solid var(--border-strong)',
+          boxShadow: '-8px 0 32px rgba(28, 25, 23, 0.15)',
           display: 'flex',
           flexDirection: 'column',
           zIndex: 1001,
@@ -239,8 +239,8 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
         <div
           style={{
             padding: '1.25rem 1.5rem',
-            borderBottom: '1px solid #334155',
-            backgroundColor: '#1E293B',
+            borderBottom: '1px solid var(--border-main)',
+            backgroundColor: 'var(--bg-surface)',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
@@ -251,16 +251,18 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
           }}
         >
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem', flexWrap: 'wrap' }}>
               <span
                 id="drawer-cluster-rank"
                 style={{
-                  fontSize: '0.75rem',
-                  fontWeight: 800,
-                  backgroundColor: '#2563EB',
-                  color: '#FFFFFF',
-                  padding: '0.2rem 0.5rem',
-                  borderRadius: '4px',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  fontFamily: 'var(--font-serif)',
+                  fontStyle: 'italic',
+                  backgroundColor: '#1C1917',
+                  color: '#FAF8F5',
+                  padding: '0.15rem 0.5rem',
+                  borderRadius: '3px',
                 }}
               >
                 #{cluster.rank}
@@ -268,13 +270,15 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
               <span
                 id="drawer-cluster-category"
                 style={{
-                  fontSize: '0.75rem',
+                  fontSize: '0.72rem',
                   fontWeight: 600,
-                  backgroundColor: 'rgba(56, 189, 248, 0.12)',
-                  color: '#38BDF8',
-                  padding: '0.2rem 0.5rem',
-                  borderRadius: '4px',
-                  border: '1px solid rgba(56, 189, 248, 0.25)',
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
+                  backgroundColor: '#F5F2EB',
+                  color: '#44403C',
+                  padding: '0.15rem 0.5rem',
+                  borderRadius: '3px',
+                  border: '1px solid #D6CEBE',
                 }}
               >
                 {cluster.canonical_category}
@@ -283,12 +287,13 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                 id="drawer-quadrant-badge"
                 data-ic014={ic014Label}
                 style={{
-                  fontSize: '0.75rem',
+                  fontSize: '0.72rem',
                   fontWeight: 600,
-                  backgroundColor: isHighImpact ? 'rgba(239, 68, 68, 0.15)' : 'rgba(100, 116, 139, 0.15)',
-                  color: isHighImpact ? '#F87171' : '#94A3B8',
-                  padding: '0.2rem 0.5rem',
-                  borderRadius: '4px',
+                  backgroundColor: isHighImpact ? 'rgba(180, 83, 9, 0.08)' : 'rgba(120, 113, 108, 0.08)',
+                  color: isHighImpact ? '#B45309' : '#78716C',
+                  border: isHighImpact ? '1px solid rgba(180, 83, 9, 0.25)' : '1px solid rgba(120, 113, 108, 0.2)',
+                  padding: '0.15rem 0.5rem',
+                  borderRadius: '3px',
                 }}
               >
                 {quadrantName} ({ic014Label})
@@ -297,11 +302,13 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
             <h2
               id="drawer-cluster-title"
               style={{
-                fontSize: '1.15rem',
-                fontWeight: 700,
-                color: '#F8FAFC',
+                fontSize: '1.25rem',
+                fontWeight: 600,
+                color: '#1C1917',
+                fontFamily: 'var(--font-serif)',
                 margin: 0,
                 lineHeight: 1.3,
+                letterSpacing: '-0.01em',
               }}
             >
               {cluster.cluster_title}
@@ -314,17 +321,17 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
             onClick={onClose}
             aria-label="Close deep-dive drawer"
             style={{
-              backgroundColor: 'rgba(51, 65, 85, 0.5)',
-              border: '1px solid #475569',
-              borderRadius: '6px',
-              color: '#94A3B8',
+              backgroundColor: '#F5F2EB',
+              border: '1px solid #D6CEBE',
+              borderRadius: '4px',
+              color: '#44403C',
               width: '32px',
               height: '32px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              fontSize: '1.1rem',
+              fontSize: '1rem',
               transition: 'all 0.15s ease',
             }}
           >
@@ -339,8 +346,9 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
             role="status"
             aria-live="polite"
             style={{
-              backgroundColor: '#059669',
-              color: '#FFFFFF',
+              backgroundColor: '#ECFDF5',
+              color: '#065F46',
+              borderBottom: '1px solid #A7F3D0',
               padding: '0.5rem 1rem',
               fontSize: '0.8rem',
               fontWeight: 600,
@@ -352,7 +360,7 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
         )}
 
         {/* Drawer Body Content */}
-        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           {/* Key Metrics Grid */}
           <div
             id="drawer-metrics-grid"
@@ -360,43 +368,43 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
               gap: '0.75rem',
-              backgroundColor: '#1E293B',
-              padding: '1rem',
-              borderRadius: '8px',
-              border: '1px solid #334155',
+              backgroundColor: 'var(--bg-surface)',
+              padding: '1.25rem',
+              borderRadius: '4px',
+              border: '1px solid var(--border-main)',
             }}
           >
             <div>
-              <span style={{ fontSize: '0.72rem', color: '#94A3B8' }}>Priority Score (P_c):</span>
-              <div id="drawer-priority-score" style={{ fontSize: '1.4rem', fontWeight: 800, color: '#38BDF8' }}>
-                {cluster.priority_score.toFixed(1)} <span style={{ fontSize: '0.8rem', color: '#64748B' }}>/ 100</span>
+              <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: '#78716C' }}>Priority Score (P_c):</span>
+              <div id="drawer-priority-score" style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1C1917', fontFamily: 'var(--font-mono)' }}>
+                {cluster.priority_score.toFixed(1)} <span style={{ fontSize: '0.8rem', color: '#78716C', fontFamily: 'var(--font-sans)' }}>/ 100</span>
               </div>
             </div>
 
             <div>
-              <span style={{ fontSize: '0.72rem', color: '#94A3B8' }}>Tier-Weighted Impact:</span>
-              <div id="drawer-tier-weighted-impact" style={{ fontSize: '1.4rem', fontWeight: 800, color: '#F59E0B' }}>
+              <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: '#78716C' }}>Tier-Weighted Impact:</span>
+              <div id="drawer-tier-weighted-impact" style={{ fontSize: '1.5rem', fontWeight: 700, color: '#854D0E', fontFamily: 'var(--font-mono)' }}>
                 {cluster.metrics.I_c.toFixed(1)}
               </div>
-              <span style={{ fontSize: '0.68rem', color: '#64748B' }}>Relative weight proxy (no $)</span>
+              <span style={{ fontSize: '0.68rem', color: '#78716C' }}>Relative weight proxy (no $)</span>
             </div>
 
             <div>
-              <span style={{ fontSize: '0.72rem', color: '#94A3B8' }}>Unique Accounts:</span>
-              <div id="drawer-unique-accounts" style={{ fontSize: '1.1rem', fontWeight: 700, color: '#F8FAFC' }}>
+              <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: '#78716C' }}>Unique Accounts:</span>
+              <div id="drawer-unique-accounts" style={{ fontSize: '1.15rem', fontWeight: 700, color: '#1C1917', fontFamily: 'var(--font-mono)' }}>
                 {cluster.metrics.U_c}
               </div>
-              <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>
+              <span style={{ fontSize: '0.7rem', color: '#78716C' }}>
                 Confirmed: {cluster.metrics.confirmedAccountsCount} | Estimated: {cluster.metrics.estimatedAccountsCount}
               </span>
             </div>
 
             <div>
-              <span style={{ fontSize: '0.72rem', color: '#94A3B8' }}>Incident Volume & Severity:</span>
-              <div id="drawer-incident-volume" style={{ fontSize: '1.1rem', fontWeight: 700, color: '#F8FAFC' }}>
+              <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: '#78716C' }}>Incident Volume & Severity:</span>
+              <div id="drawer-incident-volume" style={{ fontSize: '1.15rem', fontWeight: 700, color: '#1C1917', fontFamily: 'var(--font-mono)' }}>
                 {cluster.metrics.N_c} rows
               </div>
-              <span style={{ fontSize: '0.7rem', color: cluster.severity_rating === 3 ? '#F87171' : '#94A3B8' }}>
+              <span style={{ fontSize: '0.7rem', color: cluster.severity_rating === 3 ? '#991B1B' : '#78716C' }}>
                 Level {cluster.severity_rating}/3 {cluster.flags.isCriticalBlocker ? '(Critical Blocker)' : ''}
               </span>
             </div>
@@ -406,21 +414,21 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
           <div
             id="drawer-observation-section"
             style={{
-              backgroundColor: '#1E293B',
-              border: '1px solid #334155',
-              borderRadius: '8px',
-              padding: '1rem 1.25rem',
+              backgroundColor: 'var(--bg-surface)',
+              border: '1px solid var(--border-main)',
+              borderRadius: '4px',
+              padding: '1.15rem 1.25rem',
             }}
           >
             <h3
               id="drawer-observation-heading"
-              style={{ fontSize: '0.88rem', fontWeight: 700, color: '#94A3B8', margin: '0 0 0.5rem 0' }}
+              style={{ fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#57534E', margin: '0 0 0.5rem 0' }}
             >
               Observation
             </h3>
             <p
               id="drawer-observation-text"
-              style={{ fontSize: '0.88rem', color: '#CBD5E1', lineHeight: 1.5, margin: 0 }}
+              style={{ fontSize: '0.9rem', color: '#292524', lineHeight: 1.6, margin: 0 }}
             >
               {cluster.problem_summary}
             </p>
@@ -430,27 +438,32 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
           <div
             id="drawer-quotes-section"
             style={{
-              backgroundColor: '#1E293B',
-              border: '1px solid #334155',
-              borderRadius: '8px',
-              padding: '1rem 1.25rem',
+              backgroundColor: 'var(--bg-surface)',
+              border: '1px solid var(--border-main)',
+              borderRadius: '4px',
+              padding: '1.15rem 1.25rem',
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-              <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#38BDF8', margin: 0 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
+              <h3 style={{ fontSize: '0.95rem', fontWeight: 600, fontFamily: 'var(--font-serif)', color: '#1C1917', margin: 0, display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+                  <rect x="2" y="2" width="16" height="16" rx="2" stroke="#1C1917" strokeWidth="1.25"/>
+                  <circle cx="10" cy="10" r="4.5" fill="#ECFDF5" stroke="#059669" strokeWidth="1"/>
+                  <path d="M8.5 10L9.5 11L12 8.5" stroke="#059669" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
                 Customer Quotes & Feedback Receipts ({cluster.quotes?.length || 0})
               </h3>
-              <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>
+              <span style={{ fontSize: '0.7rem', color: '#78716C' }}>
                 Exact Substring Receipts (IC-001)
               </span>
             </div>
 
             {(!cluster.quotes || cluster.quotes.length === 0) ? (
-              <p style={{ fontSize: '0.8rem', color: '#64748B', fontStyle: 'italic', margin: 0 }}>
+              <p style={{ fontSize: '0.8rem', color: '#78716C', fontStyle: 'italic', margin: 0 }}>
                 No verbatim quotes extracted for this cluster.
               </p>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {cluster.quotes.map((quote, idx) => {
                   const check = verifyQuoteAgainstRows(quote.feedback_id, quote.quote_snippet, allRows);
                   return (
@@ -458,17 +471,18 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                       key={`${quote.feedback_id}-${idx}`}
                       id={`drawer-quote-card-${idx}`}
                       style={{
-                        backgroundColor: '#0F172A',
-                        border: '1px solid #334155',
-                        borderRadius: '6px',
-                        padding: '0.75rem',
+                        backgroundColor: '#FAF8F5',
+                        border: '1px solid #E5DFD5',
+                        borderLeft: '3px solid #292524',
+                        borderRadius: '3px',
+                        padding: '0.85rem',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '0.4rem',
+                        gap: '0.45rem',
                       }}
                     >
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.4rem' }}>
-                        <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#38BDF8' }}>
+                        <span style={{ fontSize: '0.75rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: '#44403C' }}>
                           Feedback ID: {quote.feedback_id}
                         </span>
                         {check.status === 'VERIFIED' ? (
@@ -478,11 +492,11 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                             style={{
                               fontSize: '0.68rem',
                               fontWeight: 600,
-                              backgroundColor: 'rgba(5, 150, 105, 0.15)',
-                              color: '#34D399',
+                              backgroundColor: '#ECFDF5',
+                              color: '#065F46',
                               padding: '0.15rem 0.45rem',
-                              borderRadius: '4px',
-                              border: '1px solid rgba(5, 150, 105, 0.3)',
+                              borderRadius: '3px',
+                              border: '1px solid #A7F3D0',
                             }}
                           >
                             ✓ Verified Quote
@@ -494,11 +508,11 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                             style={{
                               fontSize: '0.68rem',
                               fontWeight: 600,
-                              backgroundColor: 'rgba(168, 85, 247, 0.15)',
-                              color: '#C084FC',
+                              backgroundColor: '#FAF5FF',
+                              color: '#6B21A8',
                               padding: '0.15rem 0.45rem',
-                              borderRadius: '4px',
-                              border: '1px solid rgba(168, 85, 247, 0.4)',
+                              borderRadius: '3px',
+                              border: '1px solid #E9D5FF',
                             }}
                           >
                             Near Match / Normalized — Not Verbatim Verified
@@ -510,11 +524,11 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                             style={{
                               fontSize: '0.68rem',
                               fontWeight: 600,
-                              backgroundColor: 'rgba(148, 163, 184, 0.15)',
-                              color: '#94A3B8',
+                              backgroundColor: '#F3F4F6',
+                              color: '#4B5563',
                               padding: '0.15rem 0.45rem',
-                              borderRadius: '4px',
-                              border: '1px solid rgba(148, 163, 184, 0.3)',
+                              borderRadius: '3px',
+                              border: '1px solid #E5E7EB',
                             }}
                           >
                             Source row not found
@@ -526,11 +540,11 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                             style={{
                               fontSize: '0.68rem',
                               fontWeight: 600,
-                              backgroundColor: 'rgba(217, 119, 6, 0.15)',
-                              color: '#FBBF24',
+                              backgroundColor: '#FEF3C7',
+                              color: '#92400E',
                               padding: '0.15rem 0.45rem',
-                              borderRadius: '4px',
-                              border: '1px solid rgba(217, 119, 6, 0.3)',
+                              borderRadius: '3px',
+                              border: '1px solid #FDE68A',
                             }}
                           >
                             ⚠️ Unverified / Rewritten
@@ -541,12 +555,12 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                       <blockquote
                         style={{
                           margin: 0,
-                          fontSize: '0.82rem',
-                          color: '#E2E8F0',
+                          fontSize: '0.85rem',
+                          color: '#292524',
                           fontStyle: 'italic',
-                          lineHeight: 1.4,
-                          borderLeft: '2px solid #2563EB',
-                          paddingLeft: '0.6rem',
+                          lineHeight: 1.5,
+                          borderLeft: '2px solid #A8A29E',
+                          paddingLeft: '0.75rem',
                         }}
                       >
                         "{quote.quote_snippet}"
@@ -560,10 +574,10 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                             className="btn-reveal-raw-row"
                             onClick={() => toggleRawRow(idx)}
                             style={{
-                              backgroundColor: 'transparent',
-                              border: '1px solid #475569',
-                              color: '#94A3B8',
-                              borderRadius: '4px',
+                              backgroundColor: '#FFFFFF',
+                              border: '1px solid #D6CEBE',
+                              color: '#57534E',
+                              borderRadius: '3px',
                               padding: '0.2rem 0.5rem',
                               fontSize: '0.7rem',
                               cursor: 'pointer',
@@ -582,22 +596,22 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                         <div
                           id={`raw-row-container-${idx}`}
                           style={{
-                            marginTop: '0.25rem',
+                            marginTop: '0.35rem',
                             padding: '0.5rem 0.65rem',
-                            backgroundColor: '#1E293B',
-                            border: '1px dashed #64748B',
-                            borderRadius: '4px',
+                            backgroundColor: '#F5F2EB',
+                            border: '1px dashed #A8A29E',
+                            borderRadius: '3px',
                             fontSize: '0.75rem',
                           }}
                         >
-                          <div style={{ color: '#94A3B8', fontSize: '0.68rem', fontWeight: 600, marginBottom: '0.2rem' }}>
+                          <div style={{ color: '#57534E', fontSize: '0.68rem', fontWeight: 600, marginBottom: '0.2rem' }}>
                             Full Raw CSV Row ({quote.feedback_id}):
                           </div>
                           <div
                             id={`raw-row-text-${idx}`}
                             style={{
-                              color: '#F8FAFC',
-                              fontFamily: 'monospace',
+                              color: '#1C1917',
+                              fontFamily: 'var(--font-mono)',
                               lineHeight: 1.4,
                               whiteSpace: 'pre-wrap',
                               wordBreak: 'break-word',
@@ -610,7 +624,7 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
 
                       {/* Explicit notification if source record was not found */}
                       {check.status === 'SOURCE_NOT_FOUND' && (
-                        <div style={{ fontSize: '0.72rem', color: '#64748B', fontStyle: 'italic', marginTop: '0.15rem' }}>
+                        <div style={{ fontSize: '0.72rem', color: '#78716C', fontStyle: 'italic', marginTop: '0.15rem' }}>
                           Source row not found
                         </div>
                       )}
@@ -625,22 +639,22 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
           <div
             id="drawer-root-cause-section"
             style={{
-              backgroundColor: '#1E293B',
-              border: '1px solid #334155',
-              borderRadius: '8px',
-              padding: '1rem 1.25rem',
+              backgroundColor: 'var(--bg-surface)',
+              border: '1px solid var(--border-main)',
+              borderRadius: '4px',
+              padding: '1.15rem 1.25rem',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
               <span style={{ fontSize: '1rem' }}>🔬</span>
-              <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#38BDF8', margin: 0 }}>
+              <h3 style={{ fontSize: '0.95rem', fontWeight: 600, fontFamily: 'var(--font-serif)', color: '#1C1917', margin: 0 }}>
                 Root-Cause Hypothesis
               </h3>
             </div>
 
             <p
               id="drawer-hypothesis-text"
-              style={{ fontSize: '0.88rem', color: '#E2E8F0', lineHeight: 1.5, margin: '0 0 0.85rem 0' }}
+              style={{ fontSize: '0.9rem', color: '#292524', lineHeight: 1.6, margin: '0 0 0.85rem 0' }}
             >
               {cluster.root_cause_hypothesis || 'AI hypothesis pending verification from quote patterns.'}
             </p>
@@ -649,13 +663,13 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
             <div
               id="drawer-boundary-notice"
               style={{
-                backgroundColor: 'rgba(217, 119, 6, 0.1)',
-                border: '1px solid rgba(217, 119, 6, 0.3)',
-                borderRadius: '6px',
-                padding: '0.6rem 0.85rem',
+                backgroundColor: '#FEF3C7',
+                border: '1px solid #FDE68A',
+                borderRadius: '4px',
+                padding: '0.65rem 0.85rem',
                 fontSize: '0.75rem',
-                color: '#FBBF24',
-                lineHeight: 1.4,
+                color: '#92400E',
+                lineHeight: 1.5,
               }}
             >
               <strong>Notice:</strong> Root causes are AI-inferred hypotheses based on quote patterns. Verify against system logs before major engineering changes.
@@ -666,26 +680,26 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
           <div
             id="drawer-score-breakdown"
             style={{
-              backgroundColor: '#1E293B',
-              border: '1px solid #334155',
-              borderRadius: '8px',
-              padding: '1rem 1.25rem',
+              backgroundColor: 'var(--bg-surface)',
+              border: '1px solid var(--border-main)',
+              borderRadius: '4px',
+              padding: '1.15rem 1.25rem',
             }}
           >
-            <h3 style={{ fontSize: '0.88rem', fontWeight: 700, color: '#94A3B8', margin: '0 0 0.65rem 0' }}>
+            <h3 style={{ fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#57534E', margin: '0 0 0.65rem 0' }}>
               Mathematical Score Breakdown (Explainable Scoring)
             </h3>
 
             <div
               id="drawer-formula-display"
               style={{
-                fontFamily: 'monospace',
+                fontFamily: 'var(--font-mono)',
                 fontSize: '0.78rem',
-                backgroundColor: '#0F172A',
-                border: '1px solid #334155',
-                borderRadius: '6px',
-                padding: '0.6rem 0.85rem',
-                color: '#38BDF8',
+                backgroundColor: '#FAF8F5',
+                border: '1px solid var(--border-main)',
+                borderRadius: '4px',
+                padding: '0.65rem 0.85rem',
+                color: '#1C1917',
                 marginBottom: '0.85rem',
                 wordBreak: 'break-all',
               }}
@@ -695,28 +709,28 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
 
             {cluster.breakdown?.weights && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', fontSize: '0.72rem' }}>
-              <div style={{ backgroundColor: '#0F172A', padding: '0.5rem', borderRadius: '4px', border: '1px solid #334155' }}>
-                <span style={{ color: '#94A3B8' }}>Impact Weight (W_ARR):</span>
-                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#F59E0B' }}>
+              <div style={{ backgroundColor: '#FAF8F5', padding: '0.6rem', borderRadius: '4px', border: '1px solid var(--border-main)' }}>
+                <span style={{ color: '#78716C', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Impact Weight (W_ARR):</span>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#854D0E', fontFamily: 'var(--font-mono)' }}>
                   {Math.round(cluster.breakdown.weights.wArr * 100)}%
                 </div>
-                <div style={{ color: '#64748B', fontSize: '0.68rem' }}>I_n: {cluster.normalized.I_n.toFixed(4)}</div>
+                <div style={{ color: '#78716C', fontSize: '0.68rem', fontFamily: 'var(--font-mono)' }}>I_n: {cluster.normalized.I_n.toFixed(4)}</div>
               </div>
 
-              <div style={{ backgroundColor: '#0F172A', padding: '0.5rem', borderRadius: '4px', border: '1px solid #334155' }}>
-                <span style={{ color: '#94A3B8' }}>Frequency Weight (W_Vol):</span>
-                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#38BDF8' }}>
+              <div style={{ backgroundColor: '#FAF8F5', padding: '0.6rem', borderRadius: '4px', border: '1px solid var(--border-main)' }}>
+                <span style={{ color: '#78716C', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Frequency Weight (W_Vol):</span>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#1C1917', fontFamily: 'var(--font-mono)' }}>
                   {Math.round(cluster.breakdown.weights.wVol * 100)}%
                 </div>
-                <div style={{ color: '#64748B', fontSize: '0.68rem' }}>F_n: {cluster.normalized.F_n.toFixed(4)}</div>
+                <div style={{ color: '#78716C', fontSize: '0.68rem', fontFamily: 'var(--font-mono)' }}>F_n: {cluster.normalized.F_n.toFixed(4)}</div>
               </div>
 
-              <div style={{ backgroundColor: '#0F172A', padding: '0.5rem', borderRadius: '4px', border: '1px solid #334155' }}>
-                <span style={{ color: '#94A3B8' }}>Severity Weight (W_Sev):</span>
-                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#F87171' }}>
+              <div style={{ backgroundColor: '#FAF8F5', padding: '0.6rem', borderRadius: '4px', border: '1px solid var(--border-main)' }}>
+                <span style={{ color: '#78716C', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Severity Weight (W_Sev):</span>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#991B1B', fontFamily: 'var(--font-mono)' }}>
                   {Math.round(cluster.breakdown.weights.wSev * 100)}%
                 </div>
-                <div style={{ color: '#64748B', fontSize: '0.68rem' }}>S_n: {cluster.normalized.S_n.toFixed(4)}</div>
+                <div style={{ color: '#78716C', fontSize: '0.68rem', fontFamily: 'var(--font-mono)' }}>S_n: {cluster.normalized.S_n.toFixed(4)}</div>
               </div>
             </div>
             )}
@@ -726,20 +740,20 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
           <div
             id="drawer-actions-section"
             style={{
-              backgroundColor: '#1E293B',
-              border: '1px solid #334155',
-              borderRadius: '8px',
-              padding: '1rem 1.25rem',
+              backgroundColor: 'var(--bg-surface)',
+              border: '1px solid var(--border-main)',
+              borderRadius: '4px',
+              padding: '1.15rem 1.25rem',
               display: 'flex',
               flexDirection: 'column',
               gap: '0.75rem',
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3 style={{ fontSize: '0.88rem', fontWeight: 700, color: '#94A3B8', margin: 0 }}>
+              <h3 style={{ fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#57534E', margin: 0 }}>
                 Action Output Generators (REQ-012)
               </h3>
-              <span style={{ fontSize: '0.7rem', color: '#64748B' }}>
+              <span style={{ fontSize: '0.7rem', color: '#78716C' }}>
                 P0: PM & Dev Only (IC-013)
               </span>
             </div>
@@ -750,14 +764,14 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                 id="btn-copy-strategic-rationale"
                 onClick={handleCopyRationale}
                 style={{
-                  backgroundColor: '#2563EB',
-                  color: '#FFFFFF',
+                  backgroundColor: '#1C1917',
+                  color: '#FAF8F5',
                   padding: '0.55rem 0.95rem',
-                  borderRadius: '6px',
+                  borderRadius: '4px',
                   fontSize: '0.8rem',
                   fontWeight: 600,
                   cursor: 'pointer',
-                  border: 'none',
+                  border: '1px solid #1C1917',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.4rem',
@@ -772,14 +786,14 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                 id="btn-copy-engineering-spec"
                 onClick={handleCopyEngineeringSpec}
                 style={{
-                  backgroundColor: '#334155',
-                  color: '#F8FAFC',
+                  backgroundColor: '#FAF8F5',
+                  color: '#1C1917',
                   padding: '0.55rem 0.95rem',
-                  borderRadius: '6px',
+                  borderRadius: '4px',
                   fontSize: '0.8rem',
                   fontWeight: 600,
                   cursor: 'pointer',
-                  border: '1px solid #475569',
+                  border: '1px solid #D6CEBE',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.4rem',
@@ -798,11 +812,11 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                 aria-live="polite"
                 style={{
                   marginTop: '0.75rem',
-                  backgroundColor: '#064E3B',
-                  color: '#A7F3D0',
-                  border: '1px solid #059669',
+                  backgroundColor: '#ECFDF5',
+                  color: '#065F46',
+                  border: '1px solid #A7F3D0',
                   padding: '0.5rem 0.85rem',
-                  borderRadius: '6px',
+                  borderRadius: '4px',
                   fontSize: '0.8rem',
                   fontWeight: 500,
                   display: 'flex',
@@ -822,7 +836,7 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                   style={{
                     display: 'block',
                     fontSize: '0.75rem',
-                    color: '#94A3B8',
+                    color: '#57534E',
                     marginBottom: '0.35rem',
                     fontWeight: 600,
                   }}
@@ -837,13 +851,13 @@ export const DeepDiveDrawer: React.FC<DeepDiveDrawerProps> = ({
                   rows={8}
                   style={{
                     width: '100%',
-                    backgroundColor: '#0F172A',
-                    color: '#F8FAFC',
-                    border: '1px solid #334155',
-                    borderRadius: '6px',
+                    backgroundColor: '#FAF8F5',
+                    color: '#1C1917',
+                    border: '1px solid #D6CEBE',
+                    borderRadius: '4px',
                     padding: '0.5rem 0.65rem',
                     fontSize: '0.75rem',
-                    fontFamily: 'monospace',
+                    fontFamily: 'var(--font-mono)',
                     lineHeight: 1.4,
                     resize: 'vertical',
                   }}

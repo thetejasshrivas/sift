@@ -109,27 +109,38 @@ export const Dropzone: React.FC<DropzoneProps> = ({ onFileAccepted, onError, isL
         disabled={isLoading}
       />
 
+      {/* Collimating Aperture Technical Line Illustration */}
       <div
         style={{
-          width: '56px',
-          height: '56px',
-          borderRadius: '50%',
-          backgroundColor: 'var(--bg-card)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '1.75rem',
-          color: '#38BDF8'
+          marginBottom: '0.25rem',
         }}
       >
-        📄
+        <svg width="120" height="76" viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Raw chaotic CSV lines entering left */}
+          <path d="M5 20H25M5 35H30M5 50H20" stroke="#A8A29E" strokeWidth="1" strokeDasharray="3 3"/>
+          {/* Sifting lattice / filter aperture */}
+          <rect x="35" y="10" width="10" height="50" rx="1" fill="var(--bg-subtle)" stroke="var(--border-strong)" strokeWidth="1.25"/>
+          <line x1="35" y1="22" x2="45" y2="22" stroke="var(--border-strong)" strokeWidth="1"/>
+          <line x1="35" y1="35" x2="45" y2="35" stroke="var(--border-strong)" strokeWidth="1"/>
+          <line x1="35" y1="48" x2="45" y2="48" stroke="var(--border-strong)" strokeWidth="1"/>
+          {/* Ordered synthesis cards emerging right */}
+          <rect x="55" y="14" width="38" height="12" rx="1" fill="var(--bg-surface)" stroke="var(--border-strong)" strokeWidth="1"/>
+          <rect x="55" y="30" width="38" height="12" rx="1" fill="var(--bg-surface)" stroke="var(--border-strong)" strokeWidth="1"/>
+          <rect x="55" y="46" width="38" height="12" rx="1" fill="var(--bg-surface)" stroke="var(--border-strong)" strokeWidth="1"/>
+          {/* Priority accent indicators */}
+          <circle cx="85" cy="20" r="1.5" fill="#B45309"/>
+          <circle cx="85" cy="36" r="1.5" fill="var(--text-primary)"/>
+        </svg>
       </div>
 
       <div>
-        <h3 style={{ fontSize: '1.15rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.375rem' }}>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.375rem' }}>
           {isLoading ? 'Parsing CSV in Memory...' : 'Drop customer feedback CSV here, or browse'}
         </h3>
-        <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
           Standard exports from Zendesk, Intercom, Gong, or product reviews
         </p>
       </div>

@@ -50,23 +50,23 @@ export const BreakdownTooltip: React.FC<BreakdownTooltipProps> = ({
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: '0.35rem',
-          padding: '0.25rem 0.65rem',
-          borderRadius: '9999px',
-          backgroundColor: 'rgba(56, 189, 248, 0.15)',
-          color: '#38BDF8',
-          border: '1px solid rgba(56, 189, 248, 0.35)',
-          fontSize: '0.85rem',
-          fontWeight: 700,
+          gap: '0.4rem',
+          padding: '0.3rem 0.65rem',
+          borderRadius: '2px',
+          backgroundColor: 'var(--bg-subtle)',
+          color: 'var(--text-primary)',
+          border: '1px solid var(--border-subtle)',
+          fontSize: '0.82rem',
+          fontWeight: 600,
           cursor: 'help',
           transition: 'all 0.15s ease',
           outline: 'none',
         }}
       >
-        <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>Score:</span>
-        <span style={{ fontSize: '0.95rem' }}>{priorityScore.toFixed(1)}</span>
-        <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>/100</span>
-        <span aria-hidden="true" style={{ fontSize: '0.75rem', opacity: 0.8 }}>ℹ️</span>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Score:</span>
+        <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1 }}>{priorityScore.toFixed(1)}</span>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)' }}>/100</span>
+        <span aria-hidden="true" style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>ℹ️</span>
       </button>
 
       {/* Floating Tooltip Panel */}
@@ -81,24 +81,24 @@ export const BreakdownTooltip: React.FC<BreakdownTooltipProps> = ({
             transform: 'translateX(-50%)',
             width: '320px',
             maxWidth: '90vw',
-            backgroundColor: '#0F172A',
-            border: '1px solid #334155',
-            borderRadius: '8px',
+            backgroundColor: '#FFFFFF',
+            border: '1px solid var(--border-strong)',
+            borderRadius: '2px',
             padding: '1rem',
-            boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6)',
+            boxShadow: '0 8px 24px rgba(28, 25, 23, 0.12)',
             zIndex: 100,
             fontSize: '0.8rem',
-            color: '#F8FAFC',
+            color: 'var(--text-primary)',
             lineHeight: 1.4,
             pointerEvents: 'none',
           }}
         >
           {/* Header */}
-          <div style={{ borderBottom: '1px solid #1E293B', paddingBottom: '0.5rem', marginBottom: '0.75rem' }}>
-            <div style={{ fontWeight: 700, color: '#38BDF8', fontSize: '0.85rem' }}>
+          <div style={{ borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.5rem', marginBottom: '0.75rem' }}>
+            <div style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.95rem' }}>
               Score Formula Breakdown
             </div>
-            <div style={{ fontSize: '0.75rem', color: '#94A3B8', marginTop: '0.15rem' }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>
               Deterministic Hybrid Priority Score (MDD §3.12)
             </div>
           </div>
@@ -108,12 +108,12 @@ export const BreakdownTooltip: React.FC<BreakdownTooltipProps> = ({
             {/* Impact Component */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div>
-                <div style={{ color: '#E2E8F0', fontWeight: 600 }}>{impactLabel}:</div>
-                <div style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
+                <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.75rem' }}>{impactLabel}:</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)' }}>
                   100 × {weights.wArr.toFixed(2)} × {normalizedMetrics.I_n.toFixed(2)} (Raw I_c: {rawMetrics.I_c.toFixed(1)})
                 </div>
               </div>
-              <div style={{ fontWeight: 700, color: '#38BDF8', whiteSpace: 'nowrap' }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#B45309', whiteSpace: 'nowrap', fontSize: '0.78rem' }}>
                 + {impactContribution.toFixed(1)}
               </div>
             </div>
@@ -121,12 +121,12 @@ export const BreakdownTooltip: React.FC<BreakdownTooltipProps> = ({
             {/* Frequency Component */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div>
-                <div style={{ color: '#E2E8F0', fontWeight: 600 }}>Frequency Component:</div>
-                <div style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
+                <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.75rem' }}>Frequency Component:</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)' }}>
                   100 × {weights.wVol.toFixed(2)} × {normalizedMetrics.F_n.toFixed(2)} ({rawMetrics.U_c} accts, {rawMetrics.N_c} rows)
                 </div>
               </div>
-              <div style={{ fontWeight: 700, color: '#60A5FA', whiteSpace: 'nowrap' }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#475569', whiteSpace: 'nowrap', fontSize: '0.78rem' }}>
                 + {freqContribution.toFixed(1)}
               </div>
             </div>
@@ -134,26 +134,26 @@ export const BreakdownTooltip: React.FC<BreakdownTooltipProps> = ({
             {/* Severity Component */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div>
-                <div style={{ color: '#E2E8F0', fontWeight: 600 }}>Severity Component:</div>
-                <div style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
+                <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.75rem' }}>Severity Component:</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)' }}>
                   100 × {weights.wSev.toFixed(2)} × {normalizedMetrics.S_n.toFixed(2)} (Rating: Level {rawMetrics.S_c}/3)
                 </div>
               </div>
-              <div style={{ fontWeight: 700, color: '#F87171', whiteSpace: 'nowrap' }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#991B1B', whiteSpace: 'nowrap', fontSize: '0.78rem' }}>
                 + {sevContribution.toFixed(1)}
               </div>
             </div>
           </div>
 
           {/* Divider */}
-          <div style={{ borderTop: '1px solid #1E293B', marginTop: '0.75rem', paddingTop: '0.5rem' }}>
+          <div style={{ borderTop: '1px solid var(--border-subtle)', marginTop: '0.75rem', paddingTop: '0.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontWeight: 700, color: '#F8FAFC' }}>Final Priority Score:</span>
-              <span style={{ fontWeight: 800, color: '#38BDF8', fontSize: '1rem' }}>
+              <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, color: 'var(--text-primary)' }}>Final Priority Score:</span>
+              <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, color: 'var(--text-primary)', fontSize: '1.15rem' }}>
                 {priorityScore.toFixed(1)} / 100
               </span>
             </div>
-            <div style={{ fontSize: '0.7rem', color: '#64748B', marginTop: '0.35rem', fontStyle: 'italic', wordBreak: 'break-all' }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '0.35rem', fontStyle: 'italic', wordBreak: 'break-all' }}>
               {formulaDisplay}
             </div>
           </div>
@@ -169,7 +169,7 @@ export const BreakdownTooltip: React.FC<BreakdownTooltipProps> = ({
               height: 0,
               borderLeft: '6px solid transparent',
               borderRight: '6px solid transparent',
-              borderTop: '6px solid #0F172A',
+              borderTop: '6px solid var(--border-strong)',
             }}
           />
         </div>

@@ -121,17 +121,20 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
       }}
     >
       {/* Panel Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.75rem' }}>
         <div>
-          <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em', margin: 0 }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: '2px' }}>
+            RANKED SYNTHESIS
+          </span>
+          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.015em', margin: 0 }}>
             Ranked Insight Cards ({clusters.length})
           </h3>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            Sorted by Priority Score (P_c)
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+            Sorted dynamically by Priority Score (P_c)
           </span>
         </div>
-        <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>
-          Showing <strong style={{ color: '#38BDF8' }}>{filteredClusters.length}</strong> of {clusters.length}
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+          Showing <strong style={{ color: 'var(--text-primary)' }}>{filteredClusters.length}</strong> of {clusters.length}
         </div>
       </div>
 
@@ -159,13 +162,13 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
       <div
         id="card-filter-toolbar"
         style={{
-          backgroundColor: '#0F172A',
-          border: '1px solid #334155',
-          borderRadius: '8px',
-          padding: '0.75rem',
+          backgroundColor: 'var(--bg-surface)',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: '3px',
+          padding: '0.85rem',
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.6rem',
+          gap: '0.65rem',
         }}
       >
         {/* Minimal Search Input */}
@@ -173,19 +176,20 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
           <input
             id="input-card-search"
             type="search"
-            placeholder="Search clusters by title, problem, category..."
+            placeholder="Search clusters by title, problem summary, category..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label="Search ranked clusters"
             style={{
               width: '100%',
               boxSizing: 'border-box',
-              backgroundColor: '#1E293B',
-              border: '1px solid #475569',
-              borderRadius: '6px',
-              color: '#F8FAFC',
-              padding: '0.45rem 0.75rem',
-              fontSize: '0.8rem',
+              backgroundColor: 'var(--bg-subtle)',
+              border: '1px solid var(--border-subtle)',
+              borderRadius: '2px',
+              color: 'var(--text-primary)',
+              padding: '0.5rem 0.75rem',
+              fontSize: '0.82rem',
+              fontFamily: 'var(--font-sans)',
               outline: 'none',
             }}
           />
@@ -199,7 +203,7 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
           style={{
             display: 'flex',
             flexWrap: 'wrap',
-            gap: '0.4rem',
+            gap: '0.45rem',
             alignItems: 'center',
           }}
         >
@@ -209,17 +213,19 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
             onClick={() => setActiveBadgeFilter('ALL')}
             aria-pressed={activeBadgeFilter === 'ALL'}
             style={{
-              fontSize: '0.7rem',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.68rem',
               fontWeight: 600,
-              padding: '0.2rem 0.55rem',
-              borderRadius: '4px',
-              backgroundColor: activeBadgeFilter === 'ALL' ? '#2563EB' : 'rgba(51, 65, 85, 0.5)',
-              color: activeBadgeFilter === 'ALL' ? '#FFFFFF' : '#94A3B8',
-              border: activeBadgeFilter === 'ALL' ? '1px solid #3B82F6' : '1px solid #334155',
+              padding: '0.25rem 0.6rem',
+              borderRadius: '2px',
+              backgroundColor: activeBadgeFilter === 'ALL' ? '#292524' : '#FFFFFF',
+              color: activeBadgeFilter === 'ALL' ? '#FFFFFF' : '#57534E',
+              border: activeBadgeFilter === 'ALL' ? '1px solid #292524' : '1px solid #E5DFD5',
               cursor: 'pointer',
+              transition: 'all 0.15s ease',
             }}
           >
-            All
+            All ({clusters.length})
           </button>
 
           <button
@@ -228,14 +234,16 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
             onClick={() => setActiveBadgeFilter(activeBadgeFilter === 'HIGH_IMPACT' ? 'ALL' : 'HIGH_IMPACT')}
             aria-pressed={activeBadgeFilter === 'HIGH_IMPACT'}
             style={{
-              fontSize: '0.7rem',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.68rem',
               fontWeight: 600,
-              padding: '0.2rem 0.55rem',
-              borderRadius: '4px',
-              backgroundColor: activeBadgeFilter === 'HIGH_IMPACT' ? '#D97706' : 'rgba(217, 119, 6, 0.12)',
-              color: activeBadgeFilter === 'HIGH_IMPACT' ? '#FFFFFF' : '#F59E0B',
-              border: '1px solid rgba(217, 119, 6, 0.3)',
+              padding: '0.25rem 0.6rem',
+              borderRadius: '2px',
+              backgroundColor: activeBadgeFilter === 'HIGH_IMPACT' ? '#B45309' : '#FFFBEB',
+              color: activeBadgeFilter === 'HIGH_IMPACT' ? '#FFFFFF' : '#B45309',
+              border: '1px solid #FDE68A',
               cursor: 'pointer',
+              transition: 'all 0.15s ease',
             }}
           >
             👑 High Impact
@@ -247,14 +255,16 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
             onClick={() => setActiveBadgeFilter(activeBadgeFilter === 'HIGH_VOLUME' ? 'ALL' : 'HIGH_VOLUME')}
             aria-pressed={activeBadgeFilter === 'HIGH_VOLUME'}
             style={{
-              fontSize: '0.7rem',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.68rem',
               fontWeight: 600,
-              padding: '0.2rem 0.55rem',
-              borderRadius: '4px',
-              backgroundColor: activeBadgeFilter === 'HIGH_VOLUME' ? '#0284C7' : 'rgba(56, 189, 248, 0.12)',
-              color: activeBadgeFilter === 'HIGH_VOLUME' ? '#FFFFFF' : '#38BDF8',
-              border: '1px solid rgba(56, 189, 248, 0.3)',
+              padding: '0.25rem 0.6rem',
+              borderRadius: '2px',
+              backgroundColor: activeBadgeFilter === 'HIGH_VOLUME' ? '#475569' : '#F1F5F9',
+              color: activeBadgeFilter === 'HIGH_VOLUME' ? '#FFFFFF' : '#475569',
+              border: '1px solid #CBD5E1',
               cursor: 'pointer',
+              transition: 'all 0.15s ease',
             }}
           >
             📊 High Volume
@@ -266,14 +276,16 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
             onClick={() => setActiveBadgeFilter(activeBadgeFilter === 'CRITICAL_BLOCKER' ? 'ALL' : 'CRITICAL_BLOCKER')}
             aria-pressed={activeBadgeFilter === 'CRITICAL_BLOCKER'}
             style={{
-              fontSize: '0.7rem',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.68rem',
               fontWeight: 600,
-              padding: '0.2rem 0.55rem',
-              borderRadius: '4px',
-              backgroundColor: activeBadgeFilter === 'CRITICAL_BLOCKER' ? '#DC2626' : 'rgba(239, 68, 68, 0.12)',
-              color: activeBadgeFilter === 'CRITICAL_BLOCKER' ? '#FFFFFF' : '#F87171',
-              border: '1px solid rgba(239, 68, 68, 0.3)',
+              padding: '0.25rem 0.6rem',
+              borderRadius: '2px',
+              backgroundColor: activeBadgeFilter === 'CRITICAL_BLOCKER' ? '#991B1B' : '#FEF2F2',
+              color: activeBadgeFilter === 'CRITICAL_BLOCKER' ? '#FFFFFF' : '#991B1B',
+              border: '1px solid #FECACA',
               cursor: 'pointer',
+              transition: 'all 0.15s ease',
             }}
           >
             🚨 Critical Blocker
@@ -285,14 +297,16 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
             onClick={() => setActiveBadgeFilter(activeBadgeFilter === 'SMALL_SAMPLE' ? 'ALL' : 'SMALL_SAMPLE')}
             aria-pressed={activeBadgeFilter === 'SMALL_SAMPLE'}
             style={{
-              fontSize: '0.7rem',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.68rem',
               fontWeight: 600,
-              padding: '0.2rem 0.55rem',
-              borderRadius: '4px',
-              backgroundColor: activeBadgeFilter === 'SMALL_SAMPLE' ? '#64748B' : 'rgba(148, 163, 184, 0.12)',
-              color: activeBadgeFilter === 'SMALL_SAMPLE' ? '#FFFFFF' : '#94A3B8',
-              border: '1px solid rgba(148, 163, 184, 0.3)',
+              padding: '0.25rem 0.6rem',
+              borderRadius: '2px',
+              backgroundColor: activeBadgeFilter === 'SMALL_SAMPLE' ? '#78716C' : '#F5F2EB',
+              color: activeBadgeFilter === 'SMALL_SAMPLE' ? '#FFFFFF' : '#78716C',
+              border: '1px solid #E5DFD5',
               cursor: 'pointer',
+              transition: 'all 0.15s ease',
             }}
           >
             ⚠️ Small Sample
@@ -304,14 +318,16 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
             onClick={() => setActiveBadgeFilter(activeBadgeFilter === 'UNCERTAIN' ? 'ALL' : 'UNCERTAIN')}
             aria-pressed={activeBadgeFilter === 'UNCERTAIN'}
             style={{
-              fontSize: '0.7rem',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.68rem',
               fontWeight: 600,
-              padding: '0.2rem 0.55rem',
-              borderRadius: '4px',
-              backgroundColor: activeBadgeFilter === 'UNCERTAIN' ? '#B45309' : 'rgba(245, 158, 11, 0.12)',
-              color: activeBadgeFilter === 'UNCERTAIN' ? '#FFFFFF' : '#FBBF24',
-              border: '1px solid rgba(245, 158, 11, 0.3)',
+              padding: '0.25rem 0.6rem',
+              borderRadius: '2px',
+              backgroundColor: activeBadgeFilter === 'UNCERTAIN' ? '#B45309' : '#FFFBEB',
+              color: activeBadgeFilter === 'UNCERTAIN' ? '#FFFFFF' : '#B45309',
+              border: '1px solid #FDE68A',
               cursor: 'pointer',
+              transition: 'all 0.15s ease',
             }}
           >
             ⚠️ Uncertain
@@ -323,8 +339,9 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
               type="button"
               onClick={handleClearFilters}
               style={{
+                fontFamily: 'var(--font-mono)',
                 fontSize: '0.7rem',
-                color: '#CBD5E1',
+                color: 'var(--text-muted)',
                 textDecoration: 'underline',
                 background: 'none',
                 border: 'none',
@@ -421,24 +438,20 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                 onMouseLeave={() => onHoverCluster && onHoverCluster(null)}
                 style={{
                   backgroundColor: isSelected
-                    ? 'var(--bg-card)'
+                    ? '#FFFFFF'
                     : isHovered
-                    ? 'rgba(30, 41, 59, 0.95)'
+                    ? 'var(--bg-subtle)'
                     : 'var(--bg-surface)',
                   border: isSelected
-                    ? '2px solid #38BDF8'
+                    ? '2px solid var(--border-strong)'
                     : isHovered
-                    ? '2px solid rgba(56, 189, 248, 0.6)'
+                    ? '1px solid var(--border-strong)'
                     : isUnclustered
                     ? '1px dashed var(--border-subtle)'
                     : '1px solid var(--border-subtle)',
-                  borderRadius: '8px',
-                  padding: '1rem',
-                  boxShadow: isSelected
-                    ? '0 0 15px rgba(56, 189, 248, 0.25)'
-                    : isHovered
-                    ? '0 0 12px rgba(56, 189, 248, 0.15)'
-                    : '0 1px 3px rgba(0,0,0,0.2)',
+                  borderRadius: '3px',
+                  padding: '1.25rem',
+                  boxShadow: isHovered ? '0 4px 16px rgba(28, 25, 23, 0.05)' : 'none',
                   transition: 'all 0.15s ease',
                   cursor: 'pointer',
                   transform: isHovered ? 'translateY(-1px)' : 'none',
@@ -446,19 +459,18 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                 }}
               >
                 {/* Card Header: Rank, Title, Category, Score Tooltip */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '0.5rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flex: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '0.65rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1 }}>
                     <span
                       id={`card-rank-${cluster.cluster_id}`}
                       style={{
-                        fontSize: '0.75rem',
-                        fontWeight: 800,
-                        padding: '0.2rem 0.5rem',
-                        borderRadius: '4px',
-                        backgroundColor: isUnclustered ? '#334155' : 'var(--color-blue)',
-                        color: '#FFFFFF',
-                        minWidth: '28px',
+                        fontFamily: 'var(--font-serif)',
+                        fontSize: '1.35rem',
+                        fontWeight: 600,
+                        color: isSelected ? 'var(--text-primary)' : 'var(--text-muted)',
+                        minWidth: '32px',
                         textAlign: 'center',
+                        lineHeight: 1,
                       }}
                     >
                       #{cluster.rank}
@@ -467,17 +479,19 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                       <h4
                         id={`card-title-${cluster.cluster_id}`}
                         style={{
-                          fontSize: '0.95rem',
-                          fontWeight: 700,
+                          fontFamily: 'var(--font-serif)',
+                          fontSize: '1.05rem',
+                          fontWeight: 600,
                           color: 'var(--text-primary)',
                           lineHeight: 1.3,
                           margin: 0,
+                          letterSpacing: '-0.01em',
                         }}
                       >
                         {cluster.cluster_title}
                       </h4>
-                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginTop: '0.15rem' }}>
-                        <span style={{ fontSize: '0.75rem', color: '#94A3B8' }}>
+                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginTop: '0.2rem' }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
                           {cluster.canonical_category}
                         </span>
                       </div>
@@ -505,13 +519,14 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                       id={`badge-high-impact-${cluster.cluster_id}`}
                       className="badge-gold-impact"
                       style={{
-                        fontSize: '0.7rem',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.68rem',
                         fontWeight: 600,
                         padding: '0.15rem 0.45rem',
-                        borderRadius: '4px',
-                        backgroundColor: 'rgba(217, 119, 6, 0.15)',
-                        color: '#F59E0B',
-                        border: '1px solid rgba(217, 119, 6, 0.3)',
+                        borderRadius: '2px',
+                        backgroundColor: '#FFFBEB',
+                        color: '#B45309',
+                        border: '1px solid #FDE68A',
                       }}
                     >
                       👑 High Tier-Weighted Impact
@@ -524,13 +539,14 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                       id={`badge-high-volume-${cluster.cluster_id}`}
                       className="badge-blue-volume"
                       style={{
-                        fontSize: '0.7rem',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.68rem',
                         fontWeight: 600,
                         padding: '0.15rem 0.45rem',
-                        borderRadius: '4px',
-                        backgroundColor: 'rgba(56, 189, 248, 0.15)',
-                        color: '#38BDF8',
-                        border: '1px solid rgba(56, 189, 248, 0.3)',
+                        borderRadius: '2px',
+                        backgroundColor: '#F1F5F9',
+                        color: '#475569',
+                        border: '1px solid #CBD5E1',
                       }}
                     >
                       📊 High Volume
@@ -543,13 +559,14 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                       id={`badge-critical-blocker-${cluster.cluster_id}`}
                       className="badge-red-blocker"
                       style={{
-                        fontSize: '0.7rem',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.68rem',
                         fontWeight: 700,
                         padding: '0.15rem 0.45rem',
-                        borderRadius: '4px',
-                        backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                        color: '#F87171',
-                        border: '1px solid rgba(239, 68, 68, 0.3)',
+                        borderRadius: '2px',
+                        backgroundColor: '#FEF2F2',
+                        color: '#991B1B',
+                        border: '1px solid #FECACA',
                       }}
                     >
                       🚨 {cluster.metrics.U_c < 3 ? 'Critical Blocker (Low Frequency)' : 'Critical Blocker'}
@@ -562,13 +579,14 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                       id={`badge-small-sample-${cluster.cluster_id}`}
                       className="badge-gray-sample"
                       style={{
-                        fontSize: '0.7rem',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.68rem',
                         fontWeight: 600,
                         padding: '0.15rem 0.45rem',
-                        borderRadius: '4px',
-                        backgroundColor: 'rgba(148, 163, 184, 0.12)',
-                        color: '#94A3B8',
-                        border: '1px solid rgba(148, 163, 184, 0.25)',
+                        borderRadius: '2px',
+                        backgroundColor: '#F5F2EB',
+                        color: '#78716C',
+                        border: '1px solid #E5DFD5',
                       }}
                     >
                       ⚠️ Small Sample (Low Confidence)
@@ -581,13 +599,14 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                       id={`badge-uncertain-${cluster.cluster_id}`}
                       className="badge-amber-uncertain"
                       style={{
-                        fontSize: '0.7rem',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.68rem',
                         fontWeight: 600,
                         padding: '0.15rem 0.45rem',
-                        borderRadius: '4px',
-                        backgroundColor: 'rgba(245, 158, 11, 0.15)',
-                        color: '#FBBF24',
-                        border: '1px solid rgba(245, 158, 11, 0.3)',
+                        borderRadius: '2px',
+                        backgroundColor: '#FFFBEB',
+                        color: '#B45309',
+                        border: '1px solid #FDE68A',
                       }}
                     >
                       ⚠️ Uncertain Cluster — Review Recommended
@@ -600,13 +619,14 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                       id={`badge-estimated-freq-${cluster.cluster_id}`}
                       className="badge-indigo-estimated"
                       style={{
-                        fontSize: '0.7rem',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.68rem',
                         fontWeight: 600,
                         padding: '0.15rem 0.45rem',
-                        borderRadius: '4px',
-                        backgroundColor: 'rgba(99, 102, 241, 0.15)',
-                        color: '#A5B4FC',
-                        border: '1px solid rgba(99, 102, 241, 0.3)',
+                        borderRadius: '2px',
+                        backgroundColor: '#EEF2FF',
+                        color: '#4338CA',
+                        border: '1px solid #C7D2FE',
                       }}
                     >
                       ℹ️ Account IDs Unmapped — Frequency Estimated
@@ -617,13 +637,14 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                   <span
                     id={`card-coords-${cluster.cluster_id}`}
                     style={{
-                      fontSize: '0.7rem',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.68rem',
                       fontWeight: 600,
                       padding: '0.15rem 0.45rem',
-                      borderRadius: '4px',
-                      backgroundColor: 'rgba(56, 189, 248, 0.08)',
-                      color: '#38BDF8',
-                      border: '1px solid rgba(56, 189, 248, 0.2)',
+                      borderRadius: '2px',
+                      backgroundColor: '#F4F1EA',
+                      color: '#57534E',
+                      border: '1px solid #E5DFD5',
                     }}
                     title="Matrix scatter coordinates (F_n, I_n) derived strictly from physical metrics. Remain stationary as sliders move."
                   >
@@ -635,10 +656,11 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                 <p
                   id={`card-summary-${cluster.cluster_id}`}
                   style={{
-                    fontSize: '0.8rem',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '0.82rem',
                     color: 'var(--text-secondary)',
-                    lineHeight: 1.4,
-                    margin: '0 0 0.65rem 0',
+                    lineHeight: 1.45,
+                    margin: '0 0 0.75rem 0',
                   }}
                 >
                   {cluster.problem_summary}
@@ -650,30 +672,31 @@ export const RankedCardList: React.FC<RankedCardListProps> = ({
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    fontSize: '0.75rem',
-                    color: '#94A3B8',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.72rem',
+                    color: 'var(--text-muted)',
                     borderTop: '1px solid var(--border-subtle)',
-                    paddingTop: '0.5rem',
+                    paddingTop: '0.6rem',
                   }}
                 >
                   <div id={`card-metrics-${cluster.cluster_id}`}>
                     <span>Tier-Weighted Impact: </span>
-                    <strong id={`card-impact-${cluster.cluster_id}`} style={{ color: '#F59E0B' }}>
+                    <strong id={`card-impact-${cluster.cluster_id}`} style={{ color: '#B45309' }}>
                       {cluster.metrics.I_c.toFixed(1)}
                     </strong>
                     <span> • Accounts: </span>
-                    <strong id={`card-accounts-${cluster.cluster_id}`} style={{ color: '#E2E8F0' }}>
+                    <strong id={`card-accounts-${cluster.cluster_id}`} style={{ color: 'var(--text-primary)' }}>
                       {cluster.metrics.U_c}
                     </strong>
                     <span> • Incidents: </span>
-                    <strong id={`card-incidents-${cluster.cluster_id}`} style={{ color: '#E2E8F0' }}>
+                    <strong id={`card-incidents-${cluster.cluster_id}`} style={{ color: 'var(--text-primary)' }}>
                       {cluster.metrics.N_c}
                     </strong>
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ color: '#38BDF8', fontSize: '0.7rem', fontWeight: 600 }}>
-                      Deep Dive →
+                    <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', fontSize: '0.72rem', fontWeight: 600 }}>
+                      Inspect Dossier →
                     </span>
                   </div>
                 </div>

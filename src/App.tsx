@@ -355,9 +355,9 @@ export const App: React.FC = () => {
       {/* Header / Ingestion Bar per MDD §2.7 */}
       <header
         style={{
-          borderBottom: '1px solid var(--border-subtle)',
+          borderBottom: '2px solid var(--border-strong)',
           backgroundColor: 'var(--bg-surface)',
-          padding: '1rem 2rem',
+          padding: '1.25rem 2rem',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -365,29 +365,33 @@ export const App: React.FC = () => {
           gap: '1rem'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.85rem' }}>
           <div
+            id="brand-logo-mark"
+            aria-hidden="true"
             style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '8px',
-              backgroundColor: 'var(--color-blue)',
+              width: '32px',
+              height: '32px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: 800,
-              fontSize: '1.2rem',
-              color: '#FFFFFF'
+              flexShrink: 0,
             }}
           >
-            S
+            <svg width="30" height="30" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22" cy="22" r="19" stroke="var(--text-primary)" strokeWidth="1.75"/>
+              <line x1="22" y1="3" x2="22" y2="41" stroke="var(--text-primary)" strokeWidth="1.75"/>
+              <line x1="3" y1="22" x2="41" y2="22" stroke="var(--text-primary)" strokeWidth="1.75"/>
+              <path d="M22 22L22 3.5C32.2173 3.5 40.5 11.7827 40.5 22L22 22Z" fill="var(--text-primary)"/>
+              <circle cx="31" cy="31" r="2.5" fill="var(--text-primary)"/>
+            </svg>
           </div>
           <div>
-            <h1 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.65rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.02em', margin: 0, lineHeight: 1 }}>
               SIFT
             </h1>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-              AI Product Feedback → Insight Agent
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--text-muted)', marginTop: '3px' }}>
+              EXECUTIVE INTELLIGENCE &amp; PRIORITY SYNTHESIS
             </p>
           </div>
         </div>
@@ -397,12 +401,15 @@ export const App: React.FC = () => {
             <button
               onClick={() => setIsConfirmDialogOpen(true)}
               style={{
-                fontSize: '0.8rem',
-                padding: '0.4rem 0.75rem',
-                backgroundColor: 'var(--bg-card)',
-                color: 'var(--text-secondary)',
-                borderRadius: '6px',
-                border: '1px solid var(--border-subtle)'
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                padding: '0.4rem 0.85rem',
+                backgroundColor: 'var(--bg-subtle)',
+                color: 'var(--text-primary)',
+                borderRadius: '2px',
+                border: '1px solid var(--border-subtle)',
+                cursor: 'pointer',
               }}
             >
               ↺ Start New Analysis
@@ -417,17 +424,19 @@ export const App: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               gap: '0.4rem',
-              fontSize: '0.8rem',
-              fontWeight: 500,
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.75rem',
+              fontWeight: 600,
               padding: '0.4rem 0.85rem',
-              borderRadius: '9999px',
-              backgroundColor: 'rgba(56, 189, 248, 0.12)',
-              color: '#38BDF8',
-              border: '1px solid rgba(56, 189, 248, 0.3)'
+              borderRadius: '2px',
+              backgroundColor: 'var(--bg-subtle)',
+              color: 'var(--text-secondary)',
+              border: '1px solid var(--border-subtle)',
+              cursor: 'pointer',
             }}
           >
             <span aria-hidden="true">🔒</span>
-            <span>Ephemeral Privacy & AI Disclosure</span>
+            <span>Zero Payload Logging</span>
           </button>
         </div>
       </header>
@@ -645,7 +654,7 @@ export const App: React.FC = () => {
                   aria-label="Workspace View Tabs"
                   style={{
                     gap: '0.75rem',
-                    marginBottom: '0.5rem',
+                    marginBottom: '0.75rem',
                   }}
                 >
                   <button
@@ -657,13 +666,14 @@ export const App: React.FC = () => {
                     style={{
                       flex: 1,
                       padding: '0.65rem 1rem',
-                      borderRadius: '8px',
-                      fontSize: '0.85rem',
-                      fontWeight: 700,
-                      backgroundColor: tabletActiveTab === 'matrix' ? '#2563EB' : '#1E293B',
-                      color: tabletActiveTab === 'matrix' ? '#FFFFFF' : '#94A3B8',
+                      borderRadius: '2px',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.8rem',
+                      fontWeight: 600,
+                      backgroundColor: tabletActiveTab === 'matrix' ? '#292524' : '#FFFFFF',
+                      color: tabletActiveTab === 'matrix' ? '#FFFFFF' : '#57534E',
                       border: '1px solid',
-                      borderColor: tabletActiveTab === 'matrix' ? '#3B82F6' : '#334155',
+                      borderColor: tabletActiveTab === 'matrix' ? '#292524' : '#E5DFD5',
                       cursor: 'pointer',
                       transition: 'all 0.15s ease',
                     }}
@@ -679,13 +689,14 @@ export const App: React.FC = () => {
                     style={{
                       flex: 1,
                       padding: '0.65rem 1rem',
-                      borderRadius: '8px',
-                      fontSize: '0.85rem',
-                      fontWeight: 700,
-                      backgroundColor: tabletActiveTab === 'cards' ? '#2563EB' : '#1E293B',
-                      color: tabletActiveTab === 'cards' ? '#FFFFFF' : '#94A3B8',
+                      borderRadius: '2px',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.8rem',
+                      fontWeight: 600,
+                      backgroundColor: tabletActiveTab === 'cards' ? '#292524' : '#FFFFFF',
+                      color: tabletActiveTab === 'cards' ? '#FFFFFF' : '#57534E',
                       border: '1px solid',
-                      borderColor: tabletActiveTab === 'cards' ? '#3B82F6' : '#334155',
+                      borderColor: tabletActiveTab === 'cards' ? '#292524' : '#E5DFD5',
                       cursor: 'pointer',
                       transition: 'all 0.15s ease',
                     }}
@@ -699,61 +710,61 @@ export const App: React.FC = () => {
                   <div
                     id="mobile-quadrant-summary-card"
                     style={{
-                      backgroundColor: '#1E293B',
-                      border: '1px solid #334155',
-                      borderRadius: '8px',
-                      padding: '1rem',
+                      backgroundColor: 'var(--bg-surface)',
+                      border: '1px solid var(--border-strong)',
+                      borderRadius: '2px',
+                      padding: '1.25rem',
                       marginBottom: '1rem',
-                      boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                      boxShadow: 'none',
                     }}
                   >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                      <h4 style={{ fontSize: '0.88rem', fontWeight: 700, color: '#F8FAFC', margin: 0 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.5rem' }}>
+                      <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                         2×2 Quadrant Summary
                       </h4>
-                      <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
                         split at 0.5 of normalized scale
                       </span>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.6rem' }}>
-                      <div style={{ backgroundColor: 'rgba(239, 68, 68, 0.12)', border: '1px solid rgba(239, 68, 68, 0.25)', borderRadius: '6px', padding: '0.6rem' }}>
-                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#F87171' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
+                      <div style={{ backgroundColor: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '2px', padding: '0.75rem' }}>
+                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 600, color: '#991B1B' }}>
                           High Impact / High Frequency
-                          <span style={{ display: 'block', fontSize: '0.6rem', color: '#FCA5A5', opacity: 0.9 }}>High Revenue Risk / High Volume</span>
+                          <span style={{ display: 'block', fontSize: '0.6rem', color: '#B91C1C', opacity: 0.9 }}>High Revenue Risk / High Volume</span>
                         </div>
-                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#F8FAFC', marginTop: '0.2rem' }}>
-                          {mobileQuadrantCounts.hiHf} <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>clusters</span>
+                        <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', fontWeight: 600, color: '#1C1917', marginTop: '0.2rem' }}>
+                          {mobileQuadrantCounts.hiHf} <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>clusters</span>
                         </div>
                       </div>
 
-                      <div style={{ backgroundColor: 'rgba(217, 119, 6, 0.12)', border: '1px solid rgba(217, 119, 6, 0.25)', borderRadius: '6px', padding: '0.6rem' }}>
-                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#F59E0B' }}>
+                      <div style={{ backgroundColor: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: '2px', padding: '0.75rem' }}>
+                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 600, color: '#B45309' }}>
                           High Impact / Low Frequency
-                          <span style={{ display: 'block', fontSize: '0.6rem', color: '#FCD34D', opacity: 0.9 }}>Enterprise Risk / Low Volume</span>
+                          <span style={{ display: 'block', fontSize: '0.6rem', color: '#92400E', opacity: 0.9 }}>Enterprise Risk / Low Volume</span>
                         </div>
-                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#F8FAFC', marginTop: '0.2rem' }}>
-                          {mobileQuadrantCounts.hiLf} <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>clusters</span>
+                        <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', fontWeight: 600, color: '#1C1917', marginTop: '0.2rem' }}>
+                          {mobileQuadrantCounts.hiLf} <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>clusters</span>
                         </div>
                       </div>
 
-                      <div style={{ backgroundColor: 'rgba(59, 130, 246, 0.12)', border: '1px solid rgba(59, 130, 246, 0.25)', borderRadius: '6px', padding: '0.6rem' }}>
-                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#38BDF8' }}>
+                      <div style={{ backgroundColor: '#F1F5F9', border: '1px solid #CBD5E1', borderRadius: '2px', padding: '0.75rem' }}>
+                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 600, color: '#475569' }}>
                           Low Impact / High Frequency
-                          <span style={{ display: 'block', fontSize: '0.6rem', color: '#7DD3FC', opacity: 0.9 }}>Mass Friction / Low ARR</span>
+                          <span style={{ display: 'block', fontSize: '0.6rem', color: '#334155', opacity: 0.9 }}>Mass Friction / Low ARR</span>
                         </div>
-                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#F8FAFC', marginTop: '0.2rem' }}>
-                          {mobileQuadrantCounts.liHf} <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>clusters</span>
+                        <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', fontWeight: 600, color: '#1C1917', marginTop: '0.2rem' }}>
+                          {mobileQuadrantCounts.liHf} <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>clusters</span>
                         </div>
                       </div>
 
-                      <div style={{ backgroundColor: 'rgba(100, 116, 139, 0.12)', border: '1px solid rgba(100, 116, 139, 0.25)', borderRadius: '6px', padding: '0.6rem' }}>
-                        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94A3B8' }}>
+                      <div style={{ backgroundColor: '#F5F2EB', border: '1px solid #E5DFD5', borderRadius: '2px', padding: '0.75rem' }}>
+                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 600, color: '#78716C' }}>
                           Low Impact / Low Frequency
-                          <span style={{ display: 'block', fontSize: '0.6rem', color: '#CBD5E1', opacity: 0.9 }}>Low Priority</span>
+                          <span style={{ display: 'block', fontSize: '0.6rem', color: '#57534E', opacity: 0.9 }}>Low Priority</span>
                         </div>
-                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#F8FAFC', marginTop: '0.2rem' }}>
-                          {mobileQuadrantCounts.liLf} <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>clusters</span>
+                        <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', fontWeight: 600, color: '#1C1917', marginTop: '0.2rem' }}>
+                          {mobileQuadrantCounts.liLf} <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>clusters</span>
                         </div>
                       </div>
                     </div>
@@ -764,8 +775,9 @@ export const App: React.FC = () => {
                         id="btn-toggle-mobile-scatter"
                         onClick={() => setMobileScatterOpen(!mobileScatterOpen)}
                         style={{
+                          fontFamily: 'var(--font-mono)',
                           fontSize: '0.75rem',
-                          color: '#38BDF8',
+                          color: 'var(--text-primary)',
                           fontWeight: 600,
                           cursor: 'pointer',
                           padding: '0.2rem 0.4rem',
