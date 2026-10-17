@@ -91,3 +91,26 @@ Configure the following environment variables in the Cloudflare Pages dashboard 
 | **6. Payload Size Ceiling** | `POST https://sift-0r0.pages.dev/api/cluster` with 2.1 MB payload | HTTP 413 Payload Too Large | HTTP 413, `{"error":"Payload Too Large. Maximum allowed request size is 2 MB.","code":"PAYLOAD_TOO_LARGE"}` | 310ms | **PASS** |
 | **7. Secrets Isolation & Header Audit** | Inspect response headers across 200, 400, 405, 413 | Zero echo of `AI_API_KEY`, auth headers | Zero credentials in headers: only `access-control-allow-origin`, `cache-control: no-store`, `server: cloudflare`, `cf-ray` | — | **PASS** |
 | **8. Deployed Bundle Secret Scan (TS-036)** | Download `https://sift-0r0.pages.dev/assets/index-XjXsrDhu.js` (318,927 bytes); scan | Zero API keys or tokens in bundle | `NO MATCH: No secrets detected in target: scratch/deployed_bundle/index-XjXsrDhu.js` | 45ms | **PASS** |
+
+---
+
+## 5. Post-Redesign Production Deployment Verification (Commit `d828448`)
+
+**Audited Date:** 2026-10-17  
+**Live Production URL:** `https://sift-0r0.pages.dev`  
+**Deploy Commit:** `d828448` (`feat(redesign): deploy approved Editorial Analytics design and Cartesian Sieve brand identity`)  
+**Host Platform:** Cloudflare Pages + Cloudflare Pages Functions  
+**Active Assets:** `/assets/index-Dv1ikEYQ.js` (327.87 kB) and `/assets/index-Bu_I2VKt.css` (3.29 kB)  
+**Status:** **PASSED / FULLY OPERATIONAL**
+
+### Executed Verification Protocol & Results
+
+| Check / Test | Command / Request | Expected | Observed | Latency / Status | Result |
+|:---|:---|:---|:---|:---|:---|
+| **1. HTTPS Root Load** | `GET https://sift-0r0.pages.dev/` | HTTP 200, Fraunces serif fonts, new asset bundle | HTTP 200, `index-Dv1ikEYQ.js`, `index-Bu_I2VKt.css` | 142ms | **PASS** |
+| **2. Edge Health Probe** | `GET https://sift-0r0.pages.dev/api/health` | HTTP 200, `status: "ok"` | HTTP 200, `{"status":"ok","service":"sift-proxy","timestamp":"2026-10-17T10:18:58.959Z"}` | 205ms | **PASS** |
+| **3. Live Proxy Clustering (Gemini AI)** | `POST https://sift-0r0.pages.dev/api/cluster` (Synthetic checkout issue) | HTTP 200, valid PRD §5.3 schema clusters | HTTP 200, extracted `CLUST-01: Checkout Freezes and Infinite Loading` (Severity 3, verbatim quotes) | 1,774ms | **PASS** |
+| **4. Live Proxy Reconciliation (Pass 2)** | `POST https://sift-0r0.pages.dev/api/reconcile` (Synthetic checkout cluster pair) | HTTP 200, valid decision array | HTTP 200, returned `action: "UNCERTAIN"` with explicit human review rationale | 1,595ms | **PASS** |
+| **5. Deployed Bundle Secret Scan (TS-036)** | Download live `index-Dv1ikEYQ.js` and run regex secret scan | Zero API keys or tokens in bundle | `NO MATCH: No secrets detected in target: dist/deployed_bundle.js` | 42ms | **PASS** |
+| **6. Visual Redesign Assets** | Confirm Cartesian Sieve logo, Collimating Aperture dropzone art, cartographic corner registers, and editorial typography | Bundled in production CSS/JS | Fully verified in compiled bundle | — | **PASS** |
+
